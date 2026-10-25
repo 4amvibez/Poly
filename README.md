@@ -81,6 +81,13 @@ animate_scene(s, "mine.gif")
 | `wash(W, H, polygon, ink)` | a flat ink wash (hats, robes, rocks), revealed top to bottom |
 | `s.p` | the underlying claude-drawing `Painting`, for paper, misty mountains (`ridge` + `wash`, then `s.add_background()`) |
 
+## 日本語: a documentary reel
+
+`reels/nihongo/` is a 110-second Instagram Reel about where Japanese writing came from, built on `poly_ink`:
+every kanji and kana is written by the bristle brush in stroke order, over painted scenes (a Yayoi settlement,
+an antique map of East Asia, manuscripts, a street, a breaking wave), with a generated voiceover, score and
+captions. See [reels/nihongo/README.md](reels/nihongo/README.md); the film is `drawing_output/reels/nihongo.mp4`.
+
 ## Use it from the command line
 
 ```bash

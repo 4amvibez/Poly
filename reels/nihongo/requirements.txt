@@ -1,0 +1,6 @@
+numpy>=1.24
+Pillow>=10.0
+scipy>=1.10
+soundfile>=0.12
+# only to regenerate the voiceover:
+# kokoro-onnx>=0.4

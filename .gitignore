@@ -1,3 +1,5 @@
 __pycache__/
 *.pyc
 .pytest_cache/
+drawing_output/reels/_chunks/
+drawing_output/reels/stills/

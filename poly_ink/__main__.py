@@ -1,16 +1,17 @@
 """Command line:
     python -m poly_ink cloud-temple out.png [--stages DIR] [--gif out.gif]
+    python -m poly_ink water-swordsman out.png [--gif out.gif]
     python -m poly_ink landscape out.png [--title 山水] [--seal 山居] [--seed 1] [--size 1920x1080] [--no-sun] [--stages DIR] [--gif out.gif]
 """
 import argparse
 import os
 
-from . import cloud_temple, find_cjk_font, ink_landscape, make_gif
+from . import animate_scene, cloud_temple, find_cjk_font, ink_landscape, make_gif, water_swordsman
 
 
 def main(argv=None):
     ap = argparse.ArgumentParser(prog='python -m poly_ink', description='Ink wash paintings drawn in code.')
-    ap.add_argument('scene', choices=['cloud-temple', 'landscape'])
+    ap.add_argument('scene', choices=['cloud-temple', 'landscape', 'water-swordsman'])
     ap.add_argument('out', help='output image (.png or .jpg)')
     ap.add_argument('--stages', help='also save each drawing stage as a PNG in this directory')
     ap.add_argument('--gif', help='also write a draw-on animation GIF')
@@ -23,6 +24,14 @@ def main(argv=None):
 
     if not find_cjk_font():
         print('warning: no CJK font found, title and seal are skipped (set INKPAINT_FONT to a .ttf/.ttc)')
+    if a.scene == 'water-swordsman':                     # written stroke by stroke, not in stages
+        s = water_swordsman()
+        s.render().convert('RGB').save(a.out, **({'quality': 92} if a.out.lower().endswith(('.jpg', '.jpeg')) else {}))
+        print('saved', a.out)
+        if a.gif:
+            n, secs = animate_scene(s, a.gif, stages_dir=a.stages)
+            print('saved', a.gif, f'({n} frames, {secs:.2f} s)')
+        return
     if a.scene == 'cloud-temple':
         img, stages = cloud_temple(with_stages=True)
     else:

@@ -7,6 +7,10 @@
     stages = cloud_temple(with_stages=True)[1]            # [(name, Image), ...] for a draw-on animation
     make_gif(stages, "out.gif")
 
+    s = water_swordsman()                                 # 水: brush calligraphy + a dry-brush wave (an InkScene)
+    s.render().save("water.png")                          # finished, or s.render(at=2500) mid-painting
+    animate_scene(s, "water.gif")                         # written stroke by stroke
+
 No image model is involved: every wash and brush stroke is computed with numpy + Pillow, and a fixed
 seed always gives the same picture.
 """
@@ -42,7 +46,10 @@ def find_cjk_font():
 if not os.environ.get('INKPAINT_FONT') and find_cjk_font():
     os.environ['INKPAINT_FONT'] = find_cjk_font()
 
-from .scenes import cloud_temple, ink_landscape   # noqa: E402
-from .animate import make_gif                       # noqa: E402
+from .scenes import cloud_temple, ink_landscape                                     # noqa: E402
+from .animate import animate_scene, make_gif                                          # noqa: E402
+from .brush import InkScene, brush_stroke, splatter, sweep, wash                      # noqa: E402
+from .calligraphy import water_swordsman                                              # noqa: E402
 
-__all__ = ['cloud_temple', 'ink_landscape', 'make_gif', 'find_cjk_font', 'SKILL_LIB']
+__all__ = ['cloud_temple', 'ink_landscape', 'water_swordsman', 'make_gif', 'animate_scene', 'InkScene',
+           'brush_stroke', 'sweep', 'splatter', 'wash', 'find_cjk_font', 'SKILL_LIB']

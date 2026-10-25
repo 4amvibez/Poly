@@ -31,8 +31,9 @@ BEATS = {
                  ('I study', '"I study Japanese."'), ('Kanji form', 'Kanji 私・日本語・勉強 underlined'),
                  ('Hiragana link', 'は・を・します turn vermilion; "katakana: none"')],
     'street': ['Ink wash opens a traditional street', ('Every line', 'Track forward: pagoda, lanterns, traveller, falling blossom')],
-    'modern': ['A brushstroke passes; photos of Japan today (Ueno alley, road signs, Shibuya signs)',
-               ('Three scripts', 'Tokyo night street: カラオケ = katakana, 居酒屋 = kanji, やきとり = hiragana ringed and named')],
+    'modern': ['A brushstroke passes; your Tokyo footage: rainy Shinjuku, ラーメン shop, BIG ECHO karaoke, yokocho alley, GiGO',
+               ('Three scripts', 'GiGO sign freezes into a print: ゲーム・オアシス (katakana), の・に・び・め (hiragana), 飛・込 (kanji) ringed'),
+               ('One language', '"Dive into the oasis of games!" — one sign, three scripts, one language')],
     'endcard': [('Follow for more', '"Follow for more Japanese content", @raj_in_jp + seal; vermilion sun, ink mountains, petals')],
 }
 
@@ -46,7 +47,8 @@ def main():
     for n, a, b in T.SCENES:
         first = True
         for bt in BEATS[n]:
-            tt, txt = (a, bt) if isinstance(bt, str) else (at(bt[0], 1 if (n == 'modern' and bt[0] == 'Three scripts') else 0)[0], bt[1])
+            nth = 1 if (n == 'modern' and bt[0] == 'Three scripts') else 0
+            tt, txt = (a, bt) if isinstance(bt, str) else (at(bt[0], nth)[0], bt[1])
             L.append(f"| {n if first else ''} | {fmt(a) + '–' + fmt(b) if first else ''} | {fmt(tt)} | {txt} |")
             first = False
         if n == 'endcard':
@@ -64,7 +66,8 @@ def main():
           '- Iroha poem (いろはにほへと ちりぬるを わかよたれそ つねならむ), Heian period (794–1185)',
           "- Heart Sutra opening (Xuanzang's Chinese): 觀自在菩薩 行深般若波羅蜜多時 照見五蘊皆空 度一切苦厄",
           '- 私は日本語を勉強します。 "I study Japanese." Kanji: 私, 日本語, 勉強. Hiragana: は, を, します. Katakana: none.',
-          '- Signs in your Tokyo photo: カラオケ (karaoke, katakana), 居酒屋 (izakaya, kanji), やきとり (yakitori, hiragana)',
+          '- GiGO sign in your footage: ゲームのオアシスに飛び込め！ (gēmu no oashisu ni tobikome!, "Dive into the oasis of games!"). '
+          'Katakana: ゲーム, オアシス. Hiragana: の, に, び, め. Kanji: 飛, 込.',
           '- End card: 最後まで見てくれてありがとう。またね！ (saigo made mite kurete arigatō. mata ne!)',
           '- Fonts: Shippori Mincho B1 and Noto Serif CJK JP (JP face), with an automatic glyph-coverage check; stroke-order '
           'kanji from Make Me a Hanzi outlines (Arphic Public License). No image generation was used for any character.']

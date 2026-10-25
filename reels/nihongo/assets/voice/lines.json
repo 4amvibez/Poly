@@ -1,150 +1,132 @@
 {
- "voice": "af_heart",
- "speed": 0.97,
+ "voice": "ElevenLabs Raj (eleven_v4)",
+ "tempo": 1.07,
  "lines": [
   {
    "i": 0,
    "scene": 1,
    "caption": "Every sentence of modern Japanese weaves together three different writing systems.",
-   "phonemes": "ˈɛvɹi sˈɛntəns ʌv mˈɑːdɚn dʒˌæpənˈiːz wˈiːvz təɡˌɛðɚ θɹˈiː dˈɪfɹənt ɹˈaɪɾɪŋ sˈɪstəmz.",
-   "dur": 4.778666666666667,
-   "sr": 24000
+   "dur": 4.652833333333334,
+   "sr": 48000
   },
   {
    "i": 1,
    "scene": 2,
    "caption": "To see why, we have to go back to a time before Japan had writing at all.",
-   "phonemes": "tə sˈiː wˈaɪ, wiː hæv tə ɡˌoʊ bˈæk tʊ ɐ tˈaɪm bᵻfˌɔːɹ dʒəpˈæn hæd ɹˈaɪɾɪŋ æɾ ˈɔːl.",
-   "dur": 4.49,
-   "sr": 24000
+   "dur": 4.573458333333333,
+   "sr": 48000
   },
   {
    "i": 2,
    "scene": 2,
    "caption": "For centuries, the language of these islands lived only in speech: in conversation, in song, and in memory.",
-   "phonemes": "fɔːɹ sˈɛntʃɚɹiz, ðə lˈæŋɡwɪdʒ ʌv ðiːz ˈaɪləndz lˈɪvd ˈoʊnli ɪn spˈiːtʃ: ɪn kɑːnvɚsˈeɪʃən, ɪn sˈɔŋ, ænd ɪn mˈɛmɚɹi.",
-   "dur": 6.937125,
-   "sr": 24000
+   "dur": 7.2954791666666665,
+   "sr": 48000
   },
   {
    "i": 3,
    "scene": 3,
    "caption": "Writing came from the continent.",
-   "phonemes": "ɹˈaɪɾɪŋ kˈeɪm fɹʌmðə kˈɑːntɪnənt.",
-   "dur": 1.727625,
-   "sr": 24000
+   "dur": 1.8791875,
+   "sr": 48000
   },
   {
    "i": 4,
    "scene": 3,
    "caption": "Through centuries of contact with China and the Korean kingdoms, Chinese characters reached Japan, carried by scribes, scholars and Buddhist scriptures.",
-   "phonemes": "θɹuː sˈɛntʃɚɹiz ʌv kˈɑːntækt wɪð tʃˈaɪnə ænd ðə kɚɹˈiːən kˈɪŋdəmz, tʃaɪnˈiːz kˈæɹɪktɚz ɹˈiːtʃt dʒəpˈæn, kˈæɹid baɪ skɹˈaɪbz, skˈɑːlɚz ænd bˈuːdɪst skɹˈɪptʃɚz.",
-   "dur": 9.348458333333333,
-   "sr": 24000
+   "dur": 8.693729166666667,
+   "sr": 48000
   },
   {
    "i": 5,
    "scene": 4,
    "caption": "These characters, kanji, were created for Chinese, a very different language.",
-   "phonemes": "ðiːz kˈæɹɪktɚz, kˈɑːndʒi, wɜː kɹiːˈeɪɾᵻd fɔːɹ tʃaɪnˈiːz, ɐ vˈɛɹi dˈɪfɹənt lˈæŋɡwɪdʒ.",
-   "dur": 4.6665,
-   "sr": 24000
+   "dur": 4.999583333333334,
+   "sr": 48000
   },
   {
    "i": 6,
    "scene": 4,
    "caption": "So scribes in Japan adapted them. Some kanji were used for their meaning. Others were borrowed purely for their sound.",
-   "phonemes": "sˌoʊ skɹˈaɪbz ɪn dʒəpˈæn ɐdˈæptᵻd ðˌɛm. sˌʌm kˈɑːndʒi wɜː jˈuːzd fɔːɹ ðɛɹ mˈiːnɪŋ. ˈʌðɚz wɜː bˈɑːɹoʊd pjˈʊɹli fɔːɹ ðɛɹ sˈaʊnd.",
-   "dur": 7.130166666666667,
-   "sr": 24000
+   "dur": 6.841875,
+   "sr": 48000
   },
   {
    "i": 7,
    "scene": 5,
    "caption": "Written quickly with a brush, those sound characters became softer and more flowing.",
-   "phonemes": "ɹˈɪʔn kwˈɪkli wɪð ɐ bɹˈʌʃ, ðoʊz sˈaʊnd kˈæɹɪktɚz bɪkˌeɪm sˈɔftɚ ænd mˈɔːɹ flˈoʊɪŋ.",
-   "dur": 4.804458333333334,
-   "sr": 24000
+   "dur": 4.763625,
+   "sr": 48000
   },
   {
    "i": 8,
    "scene": 5,
    "caption": "Over generations, the cursive forms were simplified into a new script: hiragana.",
-   "phonemes": "ˌoʊvɚ dʒˌɛnɚɹˈeɪʃənz, ðə kˈɜːsɪv fˈɔːɹmz wɜː sˈɪmplᵻfˌaɪd ˌɪntʊ ɐ nˈuː skɹˈɪpt: hˌiɾɑɡˈɑːnɑ.",
-   "dur": 5.1535,
-   "sr": 24000
+   "dur": 5.120770833333333,
+   "sr": 48000
   },
   {
    "i": 9,
    "scene": 5,
    "caption": "The kanji 安 (an), in flowing cursive, gradually became あ (a).",
-   "phonemes": "ðə kˈɑːndʒi ˈɑn, ɪn flˈoʊɪŋ kˈɜːsɪv, ɡɹˈædʒuːəli bɪkˈeɪm ˈɑː.",
-   "dur": 3.550125,
-   "sr": 24000
+   "dur": 4.444833333333333,
+   "sr": 48000
   },
   {
    "i": 10,
    "scene": 6,
    "caption": "Katakana took a different path.",
-   "phonemes": "kˌɑtɑkˈɑːnɑ tˈʊk ɐ dˈɪfɹənt pˈæθ.",
-   "dur": 1.8745,
-   "sr": 24000
+   "dur": 1.6430833333333332,
+   "sr": 48000
   },
   {
    "i": 11,
    "scene": 6,
    "caption": "Buddhist monks and scholars, annotating Chinese texts, needed a quicker shorthand, so they often wrote just one part of a kanji.",
-   "phonemes": "bˈuːdɪst mˈʌŋks ænd skˈɑːlɚz, ˈænətˌeɪɾɪŋ tʃaɪnˈiːz tˈɛksts, nˈiːdᵻd ɐ kwˈɪkɚ ʃˈɔːɹthænd, sˌoʊ ðeɪ ˈɔfən ɹˈoʊt dʒˈʌst wˈʌn pˈɑːɹt əvə kˈɑːndʒi.",
-   "dur": 8.257333333333333,
-   "sr": 24000
+   "dur": 7.683020833333333,
+   "sr": 48000
   },
   {
    "i": 12,
    "scene": 6,
    "caption": "The left side of 伊 (i) became the katakana イ (i).",
-   "phonemes": "ðə lˈɛft sˈaɪd ʌv ˈiː bɪkˈeɪm ðə kˌɑtɑkˈɑːnɑ ˈiː.",
-   "dur": 2.602375,
-   "sr": 24000
+   "dur": 3.1514583333333333,
+   "sr": 48000
   },
   {
    "i": 13,
    "scene": 7,
    "caption": "Today, all three work together. Kanji carry meaning. Hiragana handle grammar. And katakana mostly write words borrowed from other languages.",
-   "phonemes": "tədˈeɪ, ˈɔːl θɹˈiː wˈɜːk təɡˈɛðɚ. kˈɑːndʒi kˈæɹi mˈiːnɪŋ. hˌiɾɑɡˈɑːnɑ hˈændəl ɡɹˈæmɚ. ænd kˌɑtɑkˈɑːnɑ mˈoʊstli ɹˈaɪt wˈɜːdz bˈɑːɹoʊd fɹʌm ˈʌðɚ lˈæŋɡwɪdʒᵻz.",
-   "dur": 9.28,
-   "sr": 24000
+   "dur": 9.188270833333334,
+   "sr": 48000
   },
   {
    "i": 14,
    "scene": 8,
    "caption": "私は日本語を勉強します。 I study Japanese.",
-   "phonemes": "wɑtˈɑʃi wɑ nˌihˈoŋɡo o bˈeŋkjoː ʃimˈɑs aɪ stˈʌdi dʒˌæpənˈiːz.",
-   "dur": 3.515041666666667,
-   "sr": 24000
+   "dur": 3.9972083333333335,
+   "sr": 48000
   },
   {
    "i": 15,
    "scene": 8,
    "caption": "Kanji give us \"I\", \"Japanese\" and \"study\". Hiragana supply the particles wa and o, and the verb shimasu.",
-   "phonemes": "kˈɑːndʒi ɡˈɪv ˌʌs \"ˈaɪ\", \"dʒˌæpənˈiːz\" ænd \"stˈʌdi\". hˌiɾɑɡˈɑːnɑ səplˈaɪ ðə pˈɑːɹɾɪkəlz wˈɑ ænd ˈoː, ænd ðə vˈɜːb ʃimˈɑs.",
-   "dur": 6.997333333333334,
-   "sr": 24000
+   "dur": 7.847895833333333,
+   "sr": 48000
   },
   {
    "i": 16,
    "scene": 9,
    "caption": "From temple manuscripts to the screen in your hand, these scripts still carry Japanese culture and identity.",
-   "phonemes": "fɹʌm tˈɛmpəl mˈænjuːskɹˌɪpts tə ðə skɹˈiːn ɪn jʊɹ hˈænd, ðiːz skɹˈɪpts stˈɪl kˈæɹi dʒˌæpənˈiːz kˈʌltʃɚ ænd aɪdˈɛntᵻɾi.",
-   "dur": 6.113666666666667,
-   "sr": 24000
+   "dur": 6.190375,
+   "sr": 48000
   },
   {
    "i": 17,
    "scene": 10,
    "caption": "Nihongo. One language, three scripts, and centuries of history in every stroke.",
-   "phonemes": "nˌihˈoŋɡo. wˈʌn lˈæŋɡwɪdʒ, θɹˈiː skɹˈɪpts, ænd sˈɛntʃɚɹiz ʌv hˈɪstɚɹi ɪn ˈɛvɹi stɹˈoʊk.",
-   "dur": 4.598791666666667,
-   "sr": 24000
+   "dur": 5.486645833333333,
+   "sr": 48000
   }
  ]
 }

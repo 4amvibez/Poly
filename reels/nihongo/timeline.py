@@ -12,11 +12,11 @@ from .ink import text_width, wrap
 HERE = os.path.dirname(os.path.abspath(__file__))
 VOICE = os.path.join(HERE, 'assets', 'voice')
 
-LEAD_IN = 1.25          # title brushwork before the first word
-BREATH = 0.35           # between lines of one scene
-SCENE_GAP = 0.7         # between scenes
-EXTRA = {3: 0.25, 9: 0.3, 12: 0.2, 14: 0.25}     # an extra beat before these lines (a reveal lands first)
-TAIL = 2.8              # final hold after the last word
+LEAD_IN = 1.0           # title brushwork before the first word
+BREATH = 0.3            # between lines of one scene
+SCENE_GAP = 0.55        # between scenes
+EXTRA = {3: 0.2, 9: 0.25, 14: 0.2}     # an extra beat before these lines (a reveal lands first)
+TAIL = 2.5              # final hold after the last word
 LEAD = 0.3              # a scene begins this long before its first line
 TRANSITION = {2: 1.2, 3: 1.4, 4: 1.2, 5: 1.0, 6: 0.9, 7: 1.0, 8: 1.1, 9: 1.4, 10: 1.3}
 

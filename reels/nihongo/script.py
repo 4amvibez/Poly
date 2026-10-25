@@ -67,3 +67,13 @@ def parse(line):
         parts.append(('en', line[pos:]))
         cap += line[pos:]
     return cap, parts
+
+
+# What was sent to ElevenLabs (voice "Raj", eleven_v4) where the spoken text differs from the caption: Japanese
+# sounds spelled so an English voice reads them the Japanese way.
+ELEVENLABS_TEXT = {
+    9: 'The kanji "ahn", in flowing cursive, gradually became "ah".',
+    12: 'The left side of "ee" became the katakana "ee".',
+    14: 'Watashi wa Nihongo o benkyou shimasu... I study Japanese.',
+    15: 'Kanji give us "I", "Japanese" and "study". Hiragana supply the particles "wa" and "o", and the verb "shimasu".',
+}

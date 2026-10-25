@@ -202,7 +202,7 @@ def build(tl, scenes, out_path):
     env = np.abs(voice.x)
     env = signal.lfilter(*signal.butter(1, 4 / (SR / 2)), env)
     env = np.clip(env / (env.max() + 1e-9) * 3.0, 0, 1)
-    duck = 1 - 0.5 * env
+    duck = 1 - 0.72 * env          # the bed drops well under the voice whenever it speaks
 
     # ---- music
     mus = Bus(total)
@@ -330,7 +330,12 @@ def build(tl, scenes, out_path):
         fx.add(tt, c, db(-30 + rng.normal(0, 3)))
 
     fxs = reverb(fx.x, 1.2, 0.12, seed=7)
-    mix = v * 1.0 + music * duck * 1.7 + fxs * (0.6 + 0.4 * duck) * 1.35
+    bed = music * duck * 1.0 + fxs * (0.45 + 0.55 * duck) * 0.9
+    mix = v + bed
+    speaking = env > 0.25
+    if speaking.any():
+        rms = lambda a: 20 * np.log10(np.sqrt(np.mean(a[speaking[:len(a)]] ** 2)) + 1e-12)
+        print(f'voice {rms(v):.1f} dB, music+fx under the voice {rms(bed):.1f} dB')
     # fade in / out
     n = len(mix)
     t = np.arange(n) / SR

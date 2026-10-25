@@ -9,32 +9,34 @@ Output: `drawing_output/reels/nihongo.mp4` (H.264 + AAC, −14 LUFS) and `drawin
 
 ## Narration
 
-Voice: Kokoro (`af_heart`, speed 0.97), generated offline. Japanese words are spoken from hand-written IPA
-(`script.py`), so the English voice says *kanji* [kɑːndʒi], *hiragana*, *Nihongo* and the example sentence with
-Japanese vowels instead of English ones.
+Voice: **Raj's own cloned voice on ElevenLabs** ("Raj", model `eleven_v4`), one generation per line, imported
+with `import_voice.py` (silence trimmed, read tightened 7 % with pitch-preserving `atempo` to fit 110 s). The
+music and effects duck by about 20 dB under the voice whenever it speaks. A Kokoro fallback (`voice.py`, local,
+with hand-written IPA for the Japanese words) is kept for drafts.
 
 | Scene | | Time (s) | Line |
 |---|---|---|---|
-| 1 | Opening hook — 日本語 | 1.2–6.0 | Every sentence of modern Japanese weaves together three different writing systems. |
-| 2 | Before writing | 6.7–11.2 | To see why, we have to go back to a time before Japan had writing at all. |
-|  |  | 11.6–18.5 | For centuries, the language of these islands lived only in speech: in conversation, in song, and in memory. |
-| 3 | China, Korea and Japan | 19.5–21.2 | Writing came from the continent. |
-|  |  | 21.5–30.9 | Through centuries of contact with China and the Korean kingdoms, Chinese characters reached Japan, carried by scribes, scholars and Buddhist scriptures. |
-| 4 | The adoption of kanji | 31.6–36.2 | These characters, kanji, were created for Chinese, a very different language. |
-|  |  | 36.6–43.7 | So scribes in Japan adapted them. Some kanji were used for their meaning. Others were borrowed purely for their sound. |
-| 5 | Hiragana | 44.4–49.2 | Written quickly with a brush, those sound characters became softer and more flowing. |
-|  |  | 49.6–54.7 | Over generations, the cursive forms were simplified into a new script: hiragana. |
-|  |  | 55.4–58.9 | The kanji 安 (an), in flowing cursive, gradually became あ (a). |
-| 6 | Katakana | 59.6–61.5 | Katakana took a different path. |
-|  |  | 61.9–70.1 | Buddhist monks and scholars, annotating Chinese texts, needed a quicker shorthand, so they often wrote just one part of a kanji. |
-|  |  | 70.7–73.3 | The left side of 伊 (i) became the katakana イ (i). |
-| 7 | The three scripts | 74.0–83.3 | Today, all three work together. Kanji carry meaning. Hiragana handle grammar. And katakana mostly write words borrowed from other languages. |
-| 8 | Modern Japanese in practice | 84.2–87.7 | 私は日本語を勉強します。 I study Japanese. |
-|  |  | 88.1–95.1 | Kanji give us "I", "Japanese" and "study". Hiragana supply the particles wa and o, and the verb shimasu. |
-| 9 | Past and present | 95.8–101.9 | From temple manuscripts to the screen in your hand, these scripts still carry Japanese culture and identity. |
-| 10 | The final ink composition | 102.6–107.2 | Nihongo. One language, three scripts, and centuries of history in every stroke. |
+| 1 | Opening hook — 日本語 | 1.0–5.7 | Every sentence of modern Japanese weaves together three different writing systems. |
+| 2 | Before writing | 6.2–10.8 | To see why, we have to go back to a time before Japan had writing at all. |
+|  |  | 11.1–18.4 | For centuries, the language of these islands lived only in speech: in conversation, in song, and in memory. |
+| 3 | China, Korea and Japan | 19.1–21.0 | Writing came from the continent. |
+|  |  | 21.3–30.0 | Through centuries of contact with China and the Korean kingdoms, Chinese characters reached Japan, carried by scribes, scholars and Buddhist scriptures. |
+| 4 | The adoption of kanji | 30.5–35.5 | These characters, kanji, were created for Chinese, a very different language. |
+|  |  | 35.8–42.7 | So scribes in Japan adapted them. Some kanji were used for their meaning. Others were borrowed purely for their sound. |
+| 5 | Hiragana | 43.2–48.0 | Written quickly with a brush, those sound characters became softer and more flowing. |
+|  |  | 48.3–53.4 | Over generations, the cursive forms were simplified into a new script: hiragana. |
+|  |  | 54.0–58.4 | The kanji 安 (an), in flowing cursive, gradually became あ (a). |
+| 6 | Katakana | 59.0–60.6 | Katakana took a different path. |
+|  |  | 60.9–68.6 | Buddhist monks and scholars, annotating Chinese texts, needed a quicker shorthand, so they often wrote just one part of a kanji. |
+|  |  | 68.9–72.0 | The left side of 伊 (i) became the katakana イ (i). |
+| 7 | The three scripts | 72.6–81.8 | Today, all three work together. Kanji carry meaning. Hiragana handle grammar. And katakana mostly write words borrowed from other languages. |
+| 8 | Modern Japanese in practice | 82.5–86.5 | 私は日本語を勉強します。 I study Japanese. |
+|  |  | 86.8–94.7 | Kanji give us "I", "Japanese" and "study". Hiragana supply the particles wa and o, and the verb shimasu. |
+| 9 | Past and present | 95.2–101.4 | From temple manuscripts to the screen in your hand, these scripts still carry Japanese culture and identity. |
+| 10 | The final ink composition | 102.0–107.5 | Nihongo. One language, three scripts, and centuries of history in every stroke. |
 
-247 words, 95.8 s of speech (155 words per minute), 110.0 s in all.
+247 words, 98.5 s of speech (151 words per minute), 110.0 s in all.
+
 Direction: curious and quiet at the open, steady through the history, a beat of silence before each reveal
 (the map, あ, イ, the sentence), reflective at the close. Pauses come from the timeline (`timeline.py`), not
 from slowing the voice.
@@ -80,13 +82,13 @@ python -m reels.nihongo.render --stills 5:2,9,14
 python -m reels.nihongo.render --frames 20,64
 ```
 
-To use a recorded voiceover instead, replace `assets/voice/line_XX.wav` (one file per line of `script.py`) and
-run `voice.py`'s duration step again (or edit `lines.json`); the timeline, captions and music follow the new
-durations.
+To use another recorded or generated voiceover, put one file per line of `script.py` in a folder as
+`l00.mp3 … l17.mp3` and run `python -m reels.nihongo.import_voice FOLDER --voice NAME [--tempo 1.0]`; the
+timeline, captions and music follow the new durations.
 
 ## Assets and licences
 
 - Stroke order data: [KanjiVG](https://kanjivg.tagaini.net) © Ulrich Apel, CC BY-SA 3.0 (`assets/kanjivg`).
 - Coastlines and rivers: [Natural Earth](https://www.naturalearthdata.com), public domain (`assets/geo`).
 - Fonts: Shippori Mincho and EB Garamond, SIL Open Font License (`assets/fonts`).
-- Voice: Kokoro-82M (Apache 2.0).
+- Voice: ElevenLabs voice clone "Raj" (the creator's own voice); fallback Kokoro-82M (Apache 2.0).

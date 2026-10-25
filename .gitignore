@@ -9,3 +9,9 @@ reel_japanese/audio/*.wav
 reel_japanese/audio/raj_b.mp3
 reel_japanese/output/master_crf14.mp4
 reel_japanese/audio/new_*.mp3
+reel_kanji/cache/
+reel_kanji/audio/stems/
+reel_kanji/audio/stems_f32/
+reel_kanji/audio/*.wav
+reel_kanji/audio/take_a.mp3
+reel_kanji/output/master_crf14.mp4

@@ -51,3 +51,29 @@ SCENES = []
 for i, (name, _, _, _) in enumerate(_CUTS):
     end = DURATION if i == len(_CUTS) - 1 else _starts[i + 1] + _CUTS[i + 1][3]
     SCENES.append((name, round(_starts[i], 3), round(end, 3)))
+
+
+def quiet_gap(t0, t1, thresh_db=-45.0):
+    """centre (video seconds) of the longest silence in the narration between t0 and t1 — measured from the audio,
+    because word timestamps can be a few hundred ms off at the edges of a breath"""
+    import numpy as np
+    from scipy.io import wavfile
+    sr, x = wavfile.read(os.path.join(HERE, 'audio', 'narration.wav'))
+    x = x.astype(np.float32) / 32768
+    hop = sr // 100
+    a, b = int((t0 - VO_OFFSET) * sr), int((t1 - VO_OFFSET) * sr)
+    seg = x[a:b]
+    e = 20 * np.log10(np.sqrt(np.convolve(seg ** 2, np.ones(hop) / hop, 'same')[::hop]) + 1e-9)
+    q = e < thresh_db
+    best, cur, start = (0, 0), 0, 0
+    for i, v in enumerate(q):
+        if v:
+            if cur == 0:
+                start = i
+            cur += 1
+            if cur > best[1]:
+                best = (start, cur)
+        else:
+            cur = 0
+    s0, n = best
+    return t0 + (s0 + n / 2) / 100, n / 100

@@ -72,8 +72,9 @@ And you can still read it on every street in Japan today. Three scripts. One lan
 |  |  | 1:27.14 | は・を・します turn vermilion; "katakana: none" |
 | street | 1:29.60–1:37.60 | 1:29.60 | Ink wash opens a traditional street |
 |  |  | 1:29.94 | Track forward: pagoda, lanterns, traveller, falling blossom |
-| modern | 1:36.60–1:43.35 | 1:36.60 | A brushstroke passes; photos of Japan today (Ueno alley, road signs, Shibuya signs) |
-|  |  | 1:40.55 | Tokyo night street: カラオケ = katakana, 居酒屋 = kanji, やきとり = hiragana ringed and named |
+| modern | 1:36.60–1:43.35 | 1:36.60 | A brushstroke passes; your Tokyo footage: rainy Shinjuku, ラーメン shop, BIG ECHO karaoke, yokocho alley, GiGO |
+|  |  | 1:40.55 | GiGO sign freezes into a print: ゲーム・オアシス (katakana), の・に・び・め (hiragana), 飛・込 (kanji) ringed |
+|  |  | 1:41.75 | "Dive into the oasis of games!" — one sign, three scripts, one language |
 | endcard | 1:42.65–1:49.80 | 1:42.95 | "Follow for more Japanese content", @raj_in_jp + seal; vermilion sun, ink mountains, petals |
 |  |  | 1:45.40 | 最後まで見てくれてありがとう written as Raj says it in Japanese |
 |  |  | 1:47.70 | またね！ stamped in vermilion; English translation; hold to the end |
@@ -153,6 +154,6 @@ And you can still read it on every street in Japan today. Three scripts. One lan
 - Iroha poem (いろはにほへと ちりぬるを わかよたれそ つねならむ), Heian period (794–1185)
 - Heart Sutra opening (Xuanzang's Chinese): 觀自在菩薩 行深般若波羅蜜多時 照見五蘊皆空 度一切苦厄
 - 私は日本語を勉強します。 "I study Japanese." Kanji: 私, 日本語, 勉強. Hiragana: は, を, します. Katakana: none.
-- Signs in your Tokyo photo: カラオケ (karaoke, katakana), 居酒屋 (izakaya, kanji), やきとり (yakitori, hiragana)
+- GiGO sign in your footage: ゲームのオアシスに飛び込め！ (gēmu no oashisu ni tobikome!, "Dive into the oasis of games!"). Katakana: ゲーム, オアシス. Hiragana: の, に, び, め. Kanji: 飛, 込.
 - End card: 最後まで見てくれてありがとう。またね！ (saigo made mite kurete arigatō. mata ne!)
 - Fonts: Shippori Mincho B1 and Noto Serif CJK JP (JP face), with an automatic glyph-coverage check; stroke-order kanji from Make Me a Hanzi outlines (Arphic Public License). No image generation was used for any character.

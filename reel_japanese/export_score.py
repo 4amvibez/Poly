@@ -39,7 +39,9 @@ def main():
     subs = [{'start': round(c['start'], 3), 'end': round(c['end'], 3), 'text': ' '.join(w for w, _ in c['words'])}
             for c in subtitles.CUES]
     import scenes
-    cuts = [[a, 1.2] for _, a, _ in SCENES[1:]] + [[round(s, 3), 0.5] for s in scenes.get('modern').starts[1:]]
+    m = scenes.get('modern')
+    cuts = [[a, 1.2] for _, a, _ in SCENES[1:]] + [[round(s, 3), 0.5] for s in m.starts[1:]]
+    cuts.append([round(m.t_print[0], 3), round(m.t_print[1] - m.t_print[0] + 0.1, 3)])   # the freeze settling into a print
     data = {'FPS': 30, 'FORMAT': '9:16', 'DURATION': DURATION, 'S': S, 'markers': markers(), 'cuts': cuts, 'subtitles': subs}
     js = ('(function (root, f) { if (typeof module === "object") module.exports = f(); else root.SCORE = f(); })'
           '(this, function () {\n  return ' + json.dumps(data, ensure_ascii=False, indent=1) + ';\n});\n')

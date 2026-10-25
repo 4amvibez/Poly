@@ -30,7 +30,8 @@ class Scene(SceneBase):
             self.rows.append(dict(D=D, T=T, halo=blur(D, 5), lbl=lbl, y=y, t=s3 - 0.12 + 0.36 * k))
         self.t_but = at('But')[0]
         self.t_why = at('why')[0]
-        self.t_dot = max(at('But')[1] + 0.06, self.t_why - 0.14)        # a clean hit just before the word
+        from timeline import quiet_gap
+        self.t_dot, _ = quiet_gap(at('But')[0], at('why')[0] + 0.2)      # a clean hit in the breath before "why?"
         # the question mark: one sweeping vermilion stroke and a heavy dot
         q = StrokeSet(W, H)
         path = spline([(392, 720), (420, 612), (535, 548), (668, 592), (700, 706), (628, 800), (560, 868), (544, 965),

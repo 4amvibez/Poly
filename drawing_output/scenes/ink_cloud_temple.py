@@ -35,30 +35,33 @@ p.moss(second, TX - 360, TX + 280, n=40)
 p.ridge_line(second, TX - 420, TX + 320)
 p.stage('主峰')
 
-# ---- pilgrim paths climbing out of the mist to the summit temple, pavilions on both peaks
-paths = p.trails(main, (SX, SY), n=12, x_range=(SX - 120, SX + 420), start_y=(820, 860), red_index=6, seed=12)
-p.mist(860, 90, 0.9)
+# ---- mist in the gorge, the footbridge across it, a pavilion on the left peak's shoulder
+p.mist(860, 80, 0.85)
 p.mist(640, 50, 0.5)
-for (i, t) in [(3, 0.4), (6, 0.55), (9, 0.35)]:
-    q = paths[i][int(t * (len(paths[i]) - 1))]
-    p.traveller(q[0], q[1])
+BY = 742
+p.stroke(spline([(905, BY), (960, BY + 12), (1015, BY)], 10), 3, 0.75, dry=0.25, taper=(0.1, 0.1))
+p.stroke(spline([(905, BY - 14), (960, BY - 3), (1015, BY - 14)], 10), 1.4, 0.55, dry=0.3, taper=(0.1, 0.1))
+for x in np.linspace(912, 1008, 7):
+    y = BY + 12 * (1 - ((x - 960) / 55) ** 2)
+    p.stroke([(x, y - 14), (x, y)], 1.1, 0.5, dry=0.3)
 p.pagoda(TX, int(second[TX]) + 6)
 p.pagoda(SX, int(main[SX]) + 6)
-p.stage('山径')
+p.traveller(940, BY + 4)
+p.stage('桥亭')
 
 # ---- foreground rock and pine, bottom-left
 rock = 820 + 260 * ((p.xs / 560) ** 1.5) + 28 * fbm1d(1920, 70, 4, 17)
 rock[p.xs > 560] = 2000
 p.rock(rock)
-p.pine((240, 1010), (330, 700), bend=60,
-       branches=[((290, 830), (470, 780), -30), ((306, 770), (190, 735), 26), ((322, 725), (450, 680), -20)],
-       extra_tufts=[(335, 690), (390, 706)])
+p.pine((220, 1000), (300, 620), bend=60,
+       branches=[((270, 770), (450, 720), -30), ((284, 700), (150, 660), 26), ((296, 650), (420, 600), -20)],
+       extra_tufts=[(305, 610), (360, 628)])
 p.stage('松石')
 
 # ---- red sun, birds, title and seal in the open sky at top left
 p.sun(1560, 170, 40)
 p.birds([(1380, 280, 0.9), (1420, 300, 0.7), (1350, 312, 0.6)])
-p.title_vertical('云深不知处', 150, 110, 80)
+p.title_vertical('云深不知处', 150, 120, 86)
 p.seal('山居', 258, 150, 40)
 p.save(out, stages_dir=stages)
 print('saved', out)

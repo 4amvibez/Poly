@@ -32,8 +32,8 @@ def test_script_parses_japanese_terms():
 
 def test_timeline_fits_reels_and_captions_cover_every_line():
     tl = Timeline()
-    assert 100 <= tl.total <= 110.5
-    assert [n for n in sorted(tl.scenes)] == list(range(1, 11))
+    assert 100 <= tl.total <= 125
+    assert [n for n in sorted(tl.scenes)] == list(range(1, 12))
     caps = tl.captions()
     for ln in tl.lines:
         assert any(c[0] <= ln['start'] + 0.01 and c[1] >= ln['start'] for c in caps)

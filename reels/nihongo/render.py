@@ -16,7 +16,7 @@ import time
 import numpy as np
 from PIL import Image, ImageDraw
 
-from .ink import FPS, H, INK, W, draw_text, ramp, smooth
+from .ink import FPS, H, INK, W, draw_text, ramp, smooth, text_width
 from .timeline import Timeline
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -25,8 +25,8 @@ OUT_DIR = os.path.join(REPO, 'drawing_output', 'reels')
 
 NAMES = {1: ('scenes_a', 'Title'), 2: ('scenes_a', 'BeforeWriting'), 3: ('scenes_b', 'Map'), 4: ('scenes_b', 'Kanji'),
          5: ('scenes_b', 'Hiragana'), 6: ('scenes_b', 'Katakana'), 7: ('scenes_c', 'ThreeScripts'),
-         8: ('scenes_c', 'Sentence'), 9: ('scenes_c', 'Street'), 10: ('scenes_c', 'Finale')}
-CAPTION_Y = 1432          # centre of the caption band: clear of the Reels caption/handle area and side buttons
+         8: ('scenes_c', 'Sentence'), 9: ('scenes_c', 'Street'), 10: ('scenes_c', 'Finale'), 11: ('scenes_c', 'EndCard')}
+CAPTION_Y = 1455          # centre of the caption band: clear of the Reels caption/handle area and side buttons
 CREAM = np.array([0.965, 0.935, 0.87], np.float32)
 
 
@@ -46,54 +46,74 @@ def to_u8(img):
 
 # ------------------------------------------------------------------ captions
 class Captions:
-    """English captions in EB Garamond (Japanese in Shippori Mincho), cream on a dark brushed ink band"""
+    """English captions in EB Garamond (Japanese in Shippori Mincho), cream text on a soft, half-transparent
+    brushed ink wash that is only as wide as its text, with a soft shadow under the letters for legibility —
+    so the painting keeps showing through and around the caption"""
+
+    BAND_ALPHA = 0.5          # peak opacity of the wash behind the text (the shadow under the letters adds more)
 
     def __init__(self, tl, size=50):
-        from poly_ink.brush import sweep
         self.size = size
         self.chunks = tl.captions(size=size)
-        self.bands = {}
-        for nlines in (1, 2):
-            h = 150 if nlines == 1 else 210
+        self._bands, self._cache = {}, {}
+
+    def band(self, nlines, width):
+        """a feathered dry-brush wash, a little wider than the text"""
+        from core import blur
+        from poly_ink.brush import sweep
+        w = int(np.clip(width + 130, 420, W - 40) // 40 * 40)
+        key = (nlines, w)
+        if key not in self._bands:
+            h = 118 if nlines == 1 else 178
             D = np.zeros((h + 80, W), np.float32)
-            for st in sweep(W, h + 80, [(70, h / 2 + 46), (540, h / 2 + 34), (1010, h / 2 + 44)], h, ink=0.86, dry=0.32,
-                            seed=17 + nlines, wash=0.7, profile=((0, 0.55), (0.06, 1.0), (0.92, 0.96), (1, 0.5))):
+            x0, x1 = 540 - w / 2, 540 + w / 2
+            for st in sweep(W, h + 80, [(x0, h / 2 + 44), (540, h / 2 + 36), (x1, h / 2 + 42)], h, ink=0.86, dry=0.3,
+                            seed=17 + nlines + w, wash=0.7, profile=((0, 0.55), (0.07, 1.0), (0.9, 0.96), (1, 0.5))):
                 hh, ww = st.dens.shape
                 b = D[st.y0:st.y0 + hh, st.x0:st.x0 + ww]
                 np.copyto(b, 1 - (1 - b) * (1 - st.dens))
-            self.bands[nlines] = np.clip(D * 1.05, 0, 0.9)
-        self._cache = {}
+            D = blur(D, 2.5)
+            # feather the ends so the wash fades out instead of stopping at a hard edge
+            XX = np.arange(W, dtype=np.float32)
+            feather = np.clip((XX - x0) / 90, 0, 1) * np.clip((x1 - XX) / 90, 0, 1)
+            self._bands[key] = (np.clip(D, 0, 1) * feather[None, :] * self.BAND_ALPHA).astype(np.float32)
+        return self._bands[key]
 
     def text_img(self, lines):
+        from core import blur
         key = tuple(lines)
         if key not in self._cache:
             im = Image.new('L', (W, 220), 0)
             d = ImageDraw.Draw(im)
-            lh = self.size * 1.3
+            lh = self.size * 1.28
             y0 = 110 - (len(lines) - 1) * lh / 2 + self.size * 0.33
             for i, ln in enumerate(lines):
                 draw_text(d, (540, y0 + i * lh), ln, self.size, 255, anchor='ms')
-            self._cache[key] = np.asarray(im, np.float32) / 255
+            tx = np.asarray(im, np.float32) / 255
+            shadow = np.clip(blur(tx, 6) * 1.8, 0, 1)
+            width = max(text_width(ln, self.size) for ln in lines)
+            self._cache[key] = (tx, shadow, width)
         return self._cache[key]
 
     def draw(self, img, T):
         live = [c for c in self.chunks if c[0] - 0.2 <= T <= c[1] + 0.25]
         if not live:
             return img
-        # the band stays up across consecutive chunks; text cross-fades
+        # the wash stays up across consecutive chunks; text cross-fades
         for c in live:
             a_txt = ramp(T, c[0] - 0.18, c[0]) * (1 - ramp(T, c[1], c[1] + 0.2))
             prev = [p for p in self.chunks if p[1] <= c[0] + 0.01 and c[0] - p[1] < 0.3]
             nxt = [p for p in self.chunks if p[0] >= c[1] - 0.01 and p[0] - c[1] < 0.3]
             a_band = (1.0 if prev else ramp(T, c[0] - 0.25, c[0] - 0.02)) * (1.0 if nxt else 1 - ramp(T, c[1] + 0.05, c[1] + 0.3))
-            band = self.bands[len(c[2])]
+            tx, shadow, width = self.text_img(c[2])
+            band = self.band(len(c[2]), width)
             y0 = int(CAPTION_Y - band.shape[0] / 2)
             sl = img[y0:y0 + band.shape[0]]
             k = (band * a_band)[..., None]
-            sl[:] = sl * (1 - k * (1 - INK * 0.9))
-            tx = self.text_img(c[2])
+            sl[:] = sl * (1 - k * (1 - INK))
             y1 = int(CAPTION_Y - tx.shape[0] / 2)
             sl = img[y1:y1 + tx.shape[0]]
+            sl[:] = sl * (1 - (shadow * 0.5 * a_txt)[..., None] * (1 - INK))
             k = (tx * a_txt)[..., None]
             sl[:] = sl * (1 - k) + CREAM * k
         return img

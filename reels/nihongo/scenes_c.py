@@ -443,7 +443,7 @@ def _traveller_sprite():
 # ===================================================================== 10. the closing wave
 class Finale(Scene):
     """Paper; a huge wave written in dry brush sweeps across from the right and curls over; a vermilion sun;
-    日本語 brushed down the left; a small traveller faces the wave; the handle @raj_in_jp settles in at the end."""
+    日本語 brushed down the left; a small traveller faces the wave."""
     S = 1.25
 
     def build(self):
@@ -497,14 +497,6 @@ class Finale(Scene):
         dist = np.hypot(XX - sx, YY - sy)
         self.sun = (np.clip((r - dist) / 3, 0, 1) * (0.82 + 0.18 * noise(wh, ww, u(14), 3, 21)) * 0.88).astype(np.float32)
         self.sun_d = (dist / r).astype(np.float32)
-        # the handle, in cream on a dark brush band
-        self.band = np.zeros((wh, ww), np.float32)
-        _blit(self.band, sweep(ww, wh, U([(250, 1452), (540, 1442), (830, 1450)]), u(104), ink=0.92, dry=0.4, seed=210,
-                               wash=0.6, profile=((0, 0.6), (0.08, 1.0), (0.9, 0.95), (1, 0.4))))
-        self.handle = Labels(ww, wh)
-        self.t_handle = self.L[0][1] + 0.5
-        self.handle.add('@raj_in_jp', *u(540, 1468), u(54), self.t_handle + 0.3, color=(0.95, 0.91, 0.82), ink=1.0)
-        self.band_front = InkFront(wh // 4, ww // 4, direction=(1, 0), rough=0.3, scale=20, soft=0.1, seed=211)
 
     def cam(self, t):
         u = self.u
@@ -517,15 +509,94 @@ class Finale(Scene):
         sp = ramp(t, 0.9, 2.0)
         if sp > 0:
             R = 1 - (1 - R) * (1 - self.sun * np.clip((sp * 1.15 - self.sun_d) / 0.15, 0, 1))
-        bp = ramp(t, self.t_handle - 0.2, self.t_handle + 0.5)
-        if bp > 0:
-            m = _up(self.band_front.mask(bp), (self.ww, self.wh))
-            over(D, self.band * m)
-        img = compose(view_rgb(self.pap, cam), view(D, cam), view(R, cam))
-        return self.handle.draw(img, cam, t)
+        return compose(view_rgb(self.pap, cam), view(D, cam), view(R, cam))
 
     def enter(self, t, p):
         """one last brushstroke crosses the street, and leaves an open sheet of paper behind it"""
         if not hasattr(self, '_fr'):
             self._fr = directional_front(12, rough=0.4, soft=0.06, seed=219)
+        return _up(self._fr.mask(ease(p)), (W, H))
+
+
+# ===================================================================== 11. the end card
+class EndCard(Scene):
+    """The sign-off: "Follow for more Japanese" over the @raj_in_jp band, 最後までみてくれてありがとう。 brushed in
+    stroke order with its translation, and a vermilion またね！ to close, above a quiet ridge in mist."""
+    S = 1.25
+
+    def build(self):
+        u, U, ww, wh = self.u, self.U, self.ww, self.wh
+        self.pap = paper(ww, wh, seed=221)
+        T = self.track
+        # a quiet ridge in mist at the foot of the card, and a traveller walking off into it
+        p = Painting(ww, wh, seed=222)
+        r = p.ridge(u(1300), peaks=[(u(220), u(150), u(190)), (u(820), u(210), u(200))], rough=u(10), seed=223)
+        p.wash(r, dens=0.15, decay=u(130), tex=u(80), edge=0.3, mist_y=u(1400), mist_h=u(60), seed=224)
+        self.hills = p.D.copy()
+        tx, ty = 735, 1262
+        for st in [wash(ww, wh, U([(tx, ty - 46), (tx - 16, ty - 35), (tx + 16, ty - 35)]), ink=0.55, soft=u(0.8), seed=231),
+                   wash(ww, wh, U([(tx - 6, ty - 34), (tx + 6, ty - 34), (tx + 10, ty), (tx - 10, ty)]), ink=0.6, soft=u(1), seed=232),
+                   brush_stroke(ww, wh, U([(tx + 11, ty - 40), (tx + 13, ty + 2)]), u(1.6), ink=0.8, dry=0.2, profile=BLUNT,
+                                seed=233)]:
+            _blit(self.hills, st)
+        # "Follow for more Japanese" and the handle on a soft ink band
+        t_follow = self.L[0][0] - 0.1
+        self.band = np.zeros((wh, ww), np.float32)
+        _blit(self.band, sweep(ww, wh, U([(250, 408), (540, 400), (830, 406)]), u(96), ink=0.9, dry=0.4, seed=240,
+                               wash=0.6, profile=((0, 0.6), (0.08, 1.0), (0.9, 0.95), (1, 0.4))))
+        self.band_front = InkFront(wh // 4, ww // 4, direction=(1, 0), rough=0.3, scale=20, soft=0.1, seed=241)
+        self.t_band = t_follow
+        L = self.labels = Labels(ww, wh)
+        L.add('Follow for more Japanese', *u(540, 318), u(46), t_follow, latin='italic', ink=0.85)
+        L.add('@raj_in_jp', *u(540, 424), u(58), t_follow + 0.45, color=(0.95, 0.91, 0.82), ink=1.0)
+        # 最後までみてくれてありがとう。 brushed in two lines
+        t0 = t_follow + 1.0
+        sz = 96
+        ws, t = write_text(ww, wh, '最後までみてくれて', *u(540 - 9 * sz / 2, 560), u(sz), t0, spacing=1.0, weight=0.1,
+                           dry=0.3, ink=0.96, speed=7.0, seed=250, pause=0.01)
+        T.add(ws)
+        ws, t = write_text(ww, wh, 'ありがとう', *u(540 - 5.6 * sz / 2, 690), u(sz), t + 0.05, spacing=1.0, weight=0.1,
+                           dry=0.3, ink=0.96, speed=6.5, seed=260, pause=0.01)
+        T.add(ws)
+        cx, cy = 540 - 5.6 * sz / 2 + 5 * sz + 22, 690 + sz * 0.8           # 。
+        ring = [(cx + np.cos(a) * 10, cy + np.sin(a) * 9.5) for a in np.linspace(-1.9, 4.2, 14)]
+        T.add(Written(brush_stroke(ww, wh, U(ring), u(4.5), ink=0.9, dry=0.2, profile=BLUNT, seed=270), t, t + 0.12,
+                      np.array(U(ring), np.float32)))
+        self.thanks_end = t + 0.12
+        L.add('Thank you for watching till the end.', *u(540, 868), u(40), self.thanks_end - 0.1, latin='italic', ink=0.8)
+        # またね！ in vermilion
+        t_m = self.wt(20, 'Mata ne') - 1.1
+        sz = 150
+        x0 = 540 - 4 * sz / 2
+        ws, t = write_text(ww, wh, 'またね', *u(x0, 960), u(sz), t_m, spacing=1.0, weight=0.105, dry=0.4, ink=0.95,
+                           speed=4.0, seed=280, all_red=True, pause=0.03)
+        T.add(ws)
+        ex = x0 + 3 * sz + sz * 0.45
+        T.add(Written(brush_stroke(ww, wh, U([(ex, 980), (ex - 2, 1050), (ex - 4, 1072)]), u(15), ink=0.95, dry=0.35,
+                                   profile=PRESS_DOWN, seed=281, red=True), t, t + 0.12,
+                      np.array(U([(ex, 980), (ex - 4, 1072)]), np.float32), red=True))
+        T.add(Written(brush_stroke(ww, wh, U([(ex - 5, 1092), (ex - 2, 1100)]), u(15), ink=0.95, dry=0.2,
+                                   profile=((0, 0.5), (0.4, 1.0), (1, 0.6)), seed=282, red=True), t + 0.15, t + 0.22,
+                      np.array(U([(ex - 5, 1092), (ex - 2, 1100)]), np.float32), red=True))
+        self.matane_end = t + 0.22
+        L.add('mata ne  ·  see you', *u(540, 1180), u(36), self.matane_end - 0.1, latin='italic', red=True, ink=0.9)
+
+    def cam(self, t):
+        u = self.u
+        return self.clamp(Keys([(-0.6, (*u(540, 780), 0.88)), (self.dur + 1, (*u(540, 760), 0.82))])(t))
+
+    def frame(self, t):
+        cam = self.cam(t)
+        D, R = self.track.density(t)
+        over(D, self.hills * ramp(t, -0.5, 1.2))
+        bp = ramp(t, self.t_band - 0.2, self.t_band + 0.5)
+        if bp > 0:
+            over(D, self.band * _up(self.band_front.mask(bp), (self.ww, self.wh)))
+        img = compose(view_rgb(self.pap, cam), view(D, cam), view(R, cam))
+        return self.labels.draw(img, cam, t)
+
+    def enter(self, t, p):
+        """the wave settles: a soft ink wash opens onto a clean sheet"""
+        if not hasattr(self, '_fr'):
+            self._fr = InkFront(H // 4, W // 4, origin=(W / 8, 700 / 4), rough=0.3, scale=80, soft=0.12, seed=229)
         return _up(self._fr.mask(ease(p)), (W, H))

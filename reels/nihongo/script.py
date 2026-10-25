@@ -18,14 +18,14 @@ JA = {
     'kanji': 'kˈɑːndʒi', 'Kanji': 'kˈɑːndʒi',
     'hiragana': 'hˌiɾɑɡˈɑːnɑ', 'Hiragana': 'hˌiɾɑɡˈɑːnɑ',
     'katakana': 'kˌɑtɑkˈɑːnɑ', 'Katakana': 'kˌɑtɑkˈɑːnɑ',
-    'Nihongo': 'nˌihˈoŋɡo',
+    'Nihongo': 'nˌihˈoŋɡo', 'saigo': 'sˈaɪɡo mˈɑde mˈite kɯɾˈete ˌɑɾiɡˈɑtoː',
     'an': 'ˈɑn', 'a': 'ˈɑː', 'i': 'ˈiː', 'wa': 'wˈɑ', 'o': 'ˈoː', 'shimasu': 'ʃimˈɑs',
     'Watashi wa nihongo o benkyō shimasu': 'wɑtˈɑʃi wɑ nˌihˈoŋɡo o bˈeŋkjoː ʃimˈɑs',
 }
 
 LINES = [
     # (scene, caption text with {japanese|spoken-key})
-    (1, "Every sentence of modern Japanese weaves together three different writing systems."),
+    (1, "Japanese has three scripts. But why?"),
     (2, "To see why, we have to go back to a time before Japan had writing at all."),
     (2, "For centuries, the language of these islands lived only in speech: in conversation, in song, and in memory."),
     (3, "Writing came from the continent."),
@@ -48,6 +48,10 @@ LINES = [
         "and the verb {shimasu}."),
     (9, "From temple manuscripts to the screen in your hand, these scripts still carry Japanese culture and identity."),
     (10, "{Nihongo}. One language, three scripts, and centuries of history in every stroke."),
+    # the outro, an end card (spoken by Raj; the Japanese line in his Japanese voice clone)
+    (11, "Follow for more Japanese-related content."),
+    (11, "{最後までみてくれてありがとう。|saigo}"),
+    (11, "Until then, see you in the next video. Mata ne!"),
 ]
 
 
@@ -72,6 +76,8 @@ def parse(line):
 # What was sent to ElevenLabs (voice "Raj", eleven_v4) where the spoken text differs from the caption: Japanese
 # sounds spelled so an English voice reads them the Japanese way.
 ELEVENLABS_TEXT = {
+    0: 'Japanese has three scripts... but why?',
+    19: '最後までみてくれてありがとう。  (voice "Raj in Japanese")',
     9: 'The kanji "ahn", in flowing cursive, gradually became "ah".',
     12: 'The left side of "ee" became the katakana "ee".',
     14: 'Watashi wa Nihongo o benkyou shimasu... I study Japanese.',

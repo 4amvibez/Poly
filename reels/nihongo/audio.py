@@ -276,13 +276,18 @@ def build(tl, scenes, out_path):
         mus.add(st[9] + t, flute(hz(note(d, 2)), ln, seed=150 + k), db(-25))
     phrase(st[9] + 0.6, [0, 2, 3, 4, 5, 7, 8, 9], 0.7, gain=-25, seed=160)
     # 10: the wave — taiko and a boom as it breaks, the bell with the handle, the drone resolves
-    s10 = scenes[10]
     for k, t in enumerate([0.25, 0.85, 1.25, 1.55]):
         mus.add(st[10] + t, taiko(1.6, 120, 48, seed=300 + k), db(-14 + (2 if k == 0 else 0)))
     mus.add(st[10] + 1.0, impact(4.5, seed=4), db(-13))
-    mus.add(st[10] + s10.t_handle + 0.2, bell(659.0, 7.0), db(-20))
-    mus.add(st[10] + s10.t_handle + 0.2, bell(329.6, 7.0), db(-28))
     phrase(st[10] + 2.6, [0, 3, 5], 0.5, octave=1, gain=-22, seed=170, dur=4.0)
+    # 11: the end card — a soft pluck with the handle, the flute under the thanks, the bell on またね
+    if 11 in scenes:
+        s11 = scenes[11]
+        mus.add(st[11] + s11.t_band + 0.2, karplus(hz(note(5, 1)), 3.0, seed=180), db(-22))
+        mus.add(st[11] + s11.L[1][0], flute(hz(note(3, 2)), 2.6, seed=181), db(-27))
+        mus.add(st[11] + s11.matane_end - 0.1, bell(659.0, 7.0), db(-20))
+        mus.add(st[11] + s11.matane_end - 0.1, bell(329.6, 7.0), db(-28))
+        phrase(st[11] + s11.matane_end + 0.4, [0, 3, 5], 0.55, octave=1, gain=-24, seed=190, dur=4.0)
 
     music = reverb(mus.x, 3.0, 0.3, seed=5)
 
@@ -314,7 +319,7 @@ def build(tl, scenes, out_path):
         sig = (o * 2.2 + surf * 0.12 * swell) * np.minimum(1, np.minimum(t / 1.0, (t[-1] - t) / 1.0))
         fx.add(a, sig / (np.abs(sig).max() + 1e-9), db(g))
     # wind over the settlement and the street
-    for a, b in [(st[2] - 0.6, st[3] + 0.5), (st[9] - 0.5, st[10] + 0.5)]:
+    for a, b in [(st[2] - 0.6, st[3] + 0.5), (st[9] - 0.5, st[10] + 0.5)] + ([(st[11] - 0.5, total)] if 11 in st else []):
         n = int((b - a) * SR)
         t = np.arange(n) / SR
         wnd = signal.lfilter(*signal.butter(2, [250 / (SR / 2), 1100 / (SR / 2)], 'band'), rng.normal(0, 1, n))

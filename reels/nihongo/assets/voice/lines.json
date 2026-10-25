@@ -1,12 +1,12 @@
 {
- "voice": "ElevenLabs Raj (eleven_v4)",
+ "voice": "ElevenLabs Raj (eleven_v4); line 19 Raj in Japanese",
  "tempo": 1.07,
  "lines": [
   {
    "i": 0,
    "scene": 1,
-   "caption": "Every sentence of modern Japanese weaves together three different writing systems.",
-   "dur": 4.652833333333334,
+   "caption": "Japanese has three scripts. But why?",
+   "dur": 3.0123125,
    "sr": 48000
   },
   {
@@ -126,6 +126,27 @@
    "scene": 10,
    "caption": "Nihongo. One language, three scripts, and centuries of history in every stroke.",
    "dur": 5.486645833333333,
+   "sr": 48000
+  },
+  {
+   "i": 18,
+   "scene": 11,
+   "caption": "Follow for more Japanese-related content.",
+   "dur": 2.2048125,
+   "sr": 48000
+  },
+  {
+   "i": 19,
+   "scene": 11,
+   "caption": "最後までみてくれてありがとう。",
+   "dur": 1.8606666666666667,
+   "sr": 48000
+  },
+  {
+   "i": 20,
+   "scene": 11,
+   "caption": "Until then, see you in the next video. Mata ne!",
+   "dur": 3.0245625,
    "sr": 48000
   }
  ]

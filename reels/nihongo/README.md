@@ -1,6 +1,6 @@
 # 日本語 — where Japanese writing came from
 
-A 110-second documentary for Instagram Reels (1080×1920, 30 fps) about the Japanese writing system, painted
+A two-minute (119 s) documentary for Instagram Reels (1080×1920, 30 fps) about the Japanese writing system, painted
 entirely in code in sumi-e ink wash with the `poly_ink` bristle brush. Every kanji and kana on screen is
 **written by the brush, stroke by stroke, in the correct stroke order** (stroke paths from KanjiVG); the
 voiceover, the music and the sound effects are generated locally too. No image or video model is involved.

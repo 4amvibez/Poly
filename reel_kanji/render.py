@@ -17,6 +17,8 @@ from timeline import DURATION  # noqa: E402
 
 
 def worker(f0, f1, path):
+    import cv2
+    cv2.setNumThreads(1)                      # one thread per worker: the workers already fill the cores
     import compose
     cmd = ['ffmpeg', '-y', '-loglevel', 'error', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-s', f'{W}x{H}', '-r', str(FPS),
            '-i', '-', '-c:v', 'libx264', '-preset', 'medium', '-crf', '14', '-pix_fmt', 'yuv420p', path]

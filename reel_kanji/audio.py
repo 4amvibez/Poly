@@ -4,8 +4,8 @@ Score: a quiet drone in the miyako-bushi scale (D Eb G A Bb) with Karplus-Strong
 taiko when 日 lands in the sun, singing-bowl chimes on the reveals that end a thought (today's 日, the bird, 河 "ka",
 the trail of history, またね！) — every hit placed in a measured breath of the narration, never on a word.
 Sound design: brush-on-paper texture generated from every stroke and glyph the scenes write (timed from the scene
-objects themselves), soft clay knocks as the tablets are laid down, a knife scratching bone for the carved
-pictographs over a low fire (oracle bones were cracked with heat), ocean swell under the boat, paper whooshes at the
+objects themselves), a low fire by the painted cliff, a knife scratching bone for the carved pictographs over a
+low fire (oracle bones were cracked with heat), ocean swell under the boat, paper whooshes at the
 transitions.  The music ducks under the narration.
 
     python audio.py            -> audio/mix.wav (48 kHz stereo) + audio/stems/*.wav
@@ -161,14 +161,6 @@ def whoosh(dur=1.2, lo=300, hi=3000):
     return out * np.sin(np.pi * np.linspace(0, 1, n)) ** 2 * 0.12
 
 
-def knock(pitch=180, dur=0.35):
-    """a clay tablet set down on a wooden table: a dull low knock with a little grit"""
-    t = np.arange(int(dur * SR)) / SR
-    body = np.sin(2 * np.pi * pitch * t * (1 - 0.15 * t)) * np.exp(-t * 26)
-    grit = bp(rng.normal(0, 1, len(t)), 600, 3000) * np.exp(-t * 60) * 0.35
-    return (body + grit) * 0.35
-
-
 def carve(dur):
     """a blade scratching bone: bright band-passed noise in short strokes"""
     n = int(max(dur, 0.08) * SR)
@@ -218,18 +210,18 @@ def scene_events():
     s = scenes.get('swirl')
     from_strokes(s.ss, 1.3)
     s = scenes.get('nature')
-    for R in s.rows:
-        ev.append((R['t'], 0.5, 0.8, True))
-        from_glyph(R['mod'], R['t'] + 0.8, R['t'] + 1.4, 0.9)
-    from_strokes(s.arrows, 0.3)
-    ev.append((s.t_bird, 0.6, 0.8, True))
-    from_glyph(s.bird_mod, s.t_bird + 1.6, s.t_bird + 2.4, 0.9)
+    for I in s.items:                                                 # painting → pictograph → kanji, in place
+        ev.append((I['t'], 0.45 * I['slow'], 0.8, True))
+        from_glyph(I['kan'], I['t'] + 1.05 * I['slow'], I['t'] + 1.4 * I['slow'], 0.9)
     s = scenes.get('compound')
     from_glyph(s.g, s.t_write, s.t_write_end, 1.0)
     from_strokes(s.arrows, 0.4)
+    R = s.rest
+    ev.append((R['t'], 0.45, 0.8, True))
+    from_glyph(R['kan'], R['t'] + 1.05, R['t'] + 1.4, 0.9)
     for R in s.rows:
-        from_glyph(R['gr'], R['t'] + 0.6, R['t'] + 1.05, 0.8)
-        ev.append((R['t'], 0.3, 0.5, False))
+        from_glyph(R['gr'], R['t'] + 0.45, R['t'] + 0.8, 0.8)
+        ev.append((R['t'], 0.25, 0.5, False))
     from_strokes(s.ops, 0.3)
     s = scenes.get('scholar')
     ev.append((s.t_kan, 0.5, 1.0, True))
@@ -256,7 +248,7 @@ def build(out_dir=os.path.join(HERE, 'audio')):
 
     # drone pad: chord colour per scene, swelling with the story
     chords = {
-        'hook': ([('D', 2), ('A', 2), ('D', 3)], 0.6), 'tablets': ([('D', 2), ('A', 2)], 0.5),
+        'hook': ([('D', 2), ('A', 2), ('D', 3)], 0.6), 'record': ([('D', 2), ('A', 2)], 0.5),
         'oracle': ([('D', 2), ('Eb', 3), ('A', 3)], 0.6), 'objects': ([('G', 2), ('D', 3), ('A', 3)], 0.55),
         'sun': ([('D', 2), ('A', 2), ('D', 3), ('A', 3)], 0.65), 'swirl': ([('Bb', 1), ('D', 3), ('A', 3)], 0.6),
         'nature': ([('G', 2), ('D', 3), ('Bb', 3)], 0.6), 'compound': ([('D', 2), ('A', 2), ('G', 3)], 0.55),
@@ -276,7 +268,7 @@ def build(out_dir=os.path.join(HERE, 'audio')):
             place(music, koto(note(n, o)), t0 + k * gap, gain, pan=pan + 0.1 * np.sin(k))
 
     phrase(0.05, [('D', 4), ('A', 4)], gap=0.3, gain=0.7)
-    phrase(T0['tablets'] + 0.4, [('D', 4), ('Eb', 4), ('A', 4)], gap=0.45, gain=0.55)
+    phrase(T0['record'] + 0.4, [('D', 4), ('Eb', 4), ('A', 4)], gap=0.45, gain=0.55)
     phrase(T0['oracle'] + 0.5, [('A', 3), ('D', 4), ('Eb', 4), ('D', 4)], gap=0.5, gain=0.6, pan=-0.2)
     so = scenes.get('objects')
     for (k, tt), n in zip(so.times.items(), [('D', 5), ('A', 4), ('G', 4), ('D', 4)]):
@@ -287,13 +279,13 @@ def build(out_dir=os.path.join(HERE, 'audio')):
         phrase(tt, [n], gain=0.45)
     phrase(T0['swirl'] + 0.3, [('Bb', 3), ('D', 4), ('Eb', 4), ('G', 4), ('A', 4)], gap=0.16, gain=0.55, pan=-0.3)
     sn = scenes.get('nature')
-    for R, n in zip(sn.rows, [('A', 4), ('G', 4), ('D', 4)]):
-        phrase(R['t'] + 0.8, [n], gain=0.5)
-    phrase(sn.t_bird, [('D', 5), ('A', 5)], gap=0.5, gain=0.45)
+    for I, n in zip(sn.items, [('A', 4), ('G', 4), ('D', 4), ('D', 5)]):
+        phrase(I['t'] + 1.05 * I['slow'], [n], gain=0.5)
     sc = scenes.get('compound')
     phrase(T0['compound'] + 0.4, [('G', 4), ('A', 4)], gap=0.5, gain=0.5)
-    for R, n in zip(sc.rows, [('D', 4), ('A', 4), ('D', 5)]):
-        phrase(R['t'] + 0.6, [n], gain=0.45)
+    phrase(sc.rest['t'] + 1.05, [('A', 4)], gain=0.5)
+    for R, n in zip(sc.rows, [('D', 5), ('A', 4)]):
+        phrase(R['t'] + 0.45, [n], gain=0.45)
     phrase(T0['map'] + 0.4, [('D', 4), ('Eb', 4), ('G', 4), ('A', 4), ('Bb', 4), ('D', 5)], gap=0.26, gain=0.6)
     sm = scenes.get('map')
     phrase(sm.leg_t[2][0], [('A', 4), ('D', 5)], gap=0.35, gain=0.5)
@@ -319,10 +311,20 @@ def build(out_dir=os.path.join(HERE, 'audio')):
         place(sfx, brush(d, inten, heavy), t, 1.0, pan=rng.uniform(-0.25, 0.25))
     for name, a, b in SCENES[1:]:
         place(sfx, whoosh(1.1, 250, 2600), a - 0.1, 0.8, pan=rng.uniform(-0.3, 0.3))
-    # clay tablets laid down
-    st = scenes.get('tablets')
-    for k, p in enumerate(st.parts):
-        place(sfx, knock(150 + 25 * (k % 4)), p['t'] + 0.3, 0.9, pan=rng.uniform(-0.4, 0.4))
+    # the painted cliff: a little fire, and the ochre brush on stone for each picture
+    sr_ = scenes.get('record')
+    a, b = sr_.t0, sr_.t1
+    n = int((b - a) * SR)
+    crack = np.zeros(n)
+    for _ in range(int((b - a) * 6)):
+        i = int(rng.uniform(0, b - a) * SR)
+        k = int(rng.uniform(0.002, 0.008) * SR)
+        if i + k < n:
+            crack[i:i + k] += rng.normal(0, 1, k) * np.exp(-np.arange(k) / k * 5) * rng.uniform(0.2, 1)
+    e = np.clip(np.minimum(np.arange(n) / SR / 1.0, (n - np.arange(n)) / SR / 0.8), 0, 1)
+    place(amb, (hp(crack, 1500) * 0.05 + lp(rng.normal(0, 1, n), 400) * 0.03) * e, a)
+    for Dw in sr_.drawings:
+        place(sfx, brush(0.45, 0.7, False), Dw['t'], 1.0, pan=0.2)
     # oracle bones: low fire, and a blade on bone as each pictograph is carved
     so3 = scenes.get('oracle')
     a, b = so3.t0, so3.t1
@@ -338,9 +340,9 @@ def build(out_dir=os.path.join(HERE, 'audio')):
     place(amb, fire * e, a)
     for T in so3.tiles:
         place(sfx, carve(0.45), T['t'] + 0.2, 1.0, pan=rng.uniform(-0.3, 0.3))
-    for R in sn.rows:
-        place(sfx, carve(0.35), R['t'] + 0.4, 0.8)
-    place(sfx, carve(0.5), sn.t_bird + 0.8, 0.8)
+    for I in sn.items:                                                # the pictograph traced over each painting
+        place(sfx, carve(0.4 * I['slow']) * 0.6, I['t'] + 0.35 * I['slow'], 0.8)
+    place(sfx, carve(0.4) * 0.6, sc.rest['t'] + 0.35, 0.8)
     # the voyage: swell and wash under the boat legs
     for k in (2, 3):
         a, b = sm.leg_t[k][0] - 0.3, sm.leg_t[k][1] + 0.4

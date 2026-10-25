@@ -44,7 +44,8 @@ Follow Raj in J.P. to discover more fascinating stories about Japanese.
 |---|---|---|---|
 | hook | 0:00.00–0:04.81 | 0:00.00 | "How was KANJI created?", KANJI brushed in vermilion; sun, mountains, pagoda, blossom, a figure from behind |
 |  |  | 0:03.04 | The oracle-bone sun (a circle with a mark inside) is brushed round the sun, then 日 is written into it (taiko) |
-| tablets | 0:04.01–0:09.16 | 0:04.16 | Your photo of Mesopotamian clay tablets, laid on the paper one by one; card "Clay tablets · Mesopotamia" |
+| record | 0:04.01–0:09.16 | 0:04.16 | Dawn by a river cliff: two people at a fire, a third paints on the rock |
+|  |  | 0:06.92 | Sun, mountains, fish, tree appear in red ochre on the rock, one after another |
 | oracle | 0:08.26–0:18.66 | 0:08.56 | Your oracle-bone photo; 甲骨文 brushed vertically; card "Oracle bones · Shang dynasty, China · c. 1200 BCE" |
 |  |  | 0:12.40 | The second oracle-bone photo slides in |
 |  |  | 0:13.68 | Eight pictographs carved into bone tiles: sun, moon, mountain, tree, river, rain, person, fish |
@@ -58,15 +59,15 @@ Follow Raj in J.P. to discover more fascinating stories about Japanese.
 |  |  | 0:29.76 | Column: 甲骨文 oracle bone (Shang) → 金文 bronze (Zhou) → 篆書 seal (Qin) → 隷書 clerical (Han) → 楷書 regular |
 |  |  | 0:35.80 | A vermilion frame closes on today's 日 in the breath after "today" (bowl) |
 | swirl | 0:36.36–0:39.24 | 0:36.48 | A big brush sweeps a spiral across a misty peak; the next page opens out of the ink |
-| nature | 0:38.34–0:49.77 | 0:38.64 | 山: painting → oracle form → 山, yama "mountain" |
-|  |  | 0:40.48 | 川: river → oracle form → 川, kawa |
-|  |  | 0:42.24 | 木: tree → oracle form → 木, ki |
-|  |  | 0:44.00 | Down the page: a painted sparrow → the early bird pictograph → 鳥 tori, "bird" |
-|  |  | 0:46.96 | A vermilion ghost of the sparrow lands on the pictograph (bowl in the breath) |
+| nature | 0:38.34–0:49.77 | 0:38.64 | Formed in place: a painted mountain → its pictograph traced over it → 山 yama "mountain" |
+|  |  | 0:40.48 | A river between its banks → three wavy lines → 川 kawa "river" |
+|  |  | 0:42.24 | A tree with branches and roots → its pictograph → 木 ki "tree"; the three line up at the top |
+|  |  | 0:44.00 | A painted sparrow → the early bird pictograph → 鳥 tori "bird" |
+|  |  | 0:46.96 | The paintings return faintly behind every character (bowl in the breath) |
 | compound | 0:48.97–1:03.99 | 0:49.12 | The brush writes 河 (river) |
 |  |  | 0:55.32 | 氵 turns water-blue, "meaning: water" |
 |  |  | 0:57.44 | 可 turns vermilion, "sound: ka"; the parts click back together: 河 "ka", river (bowl) |
-|  |  | 0:59.04 | 田 + 力 → 男 man; 八 + 刀 → 分 divide; 雨 + lightning → 電 electricity |
+|  |  | 0:59.04 | A person resting beside a tree → person + tree → 休 yasumi "rest"; then 日 + 月 → 明 bright, 田 + 力 → 男 man |
 | map | 1:03.19–1:14.58 | 1:03.44 | THE JOURNEY OF KANJI map: Anyang, c. 1200 BCE (oracle bones) |
 |  |  | 1:06.08 | Chang'an, Han dynasty ("kanji" = "Han characters"); the trail runs east to the coast |
 |  |  | 1:08.08 | A boat takes over, red trail behind it, across the Yellow Sea |
@@ -147,8 +148,8 @@ Follow Raj in J.P. to discover more fascinating stories about Japanese.
 - 甲骨文 oracle-bone script (Shang dynasty, c. 1250–1050 BCE, shown as "c. 1200 BCE"); 金文 bronze script (Zhou); 篆書 seal script (standardised under the Qin, 221 BCE); 隷書 clerical script (Han); 楷書 regular script (today's form)
 - The ancient forms are hand-redrawn, simplified illustrations of each period style, following your reference sheets
 - 河 = 氵 (water: the meaning) + 可 (ka: the sound); 河 reads ka (on'yomi) and kawa (kun'yomi), "river"
-- 男 = 田 field + 力 strength; 分 = 八 split + 刀 knife; 電 = 雨 rain + the early form of 申, which depicted lightning
+- 休 = 亻 person + 木 tree: a person resting by a tree, "rest" (休み yasumi); 明 = 日 sun + 月 moon, "bright"; 男 = 田 field + 力 strength, "man"
 - 漢字 kanji = 漢 kan, the Han dynasty (China) + 字 ji, "character"
 - Map: Anyang 安陽 (late Shang capital, where the oracle bones were found); Chang'an 長安 (Han capital); Baekje 百済 (Korean kingdom; tradition credits its scholars with bringing Chinese books to Japan, 4th–5th c.); Nara 奈良; the Kojiki (712) is Japan's oldest surviving book. The route is an illustration, not one documented voyage.
 - End card: 最後まで見てくれてありがとう。またね！ (saigo made mite kurete arigatō. mata ne!)
-- No image generation was used for any character or map. The photographs (oracle bones, clay tablets) were supplied by you; see data/README.md about credits.
+- No image generation was used for any character or map. The oracle-bone photographs were supplied by you; see data/README.md about credits.

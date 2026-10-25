@@ -3,14 +3,15 @@ related to meaning, with another that gives a clue to pronunciation.  This allow
 far more than simple objects."
 The brush writes 河 (river).  On "meaning" its water radical 氵 turns blue and steps out, tagged "meaning: water";
 on "pronunciation" 可 turns vermilion and steps the other way, tagged "sound: ka"; they rejoin as 河 "ka", river.
-Then the idea grows: three compounds build up one after another (after the reference sheet @raj_in_jp sent):
-田 field + 力 strength → 男 man,  八 split + 刀 knife → 分 divide,  雨 rain + lightning → 電 electricity."""
+Then the idea grows beyond things: a painting of a person resting beside a tree becomes its pictograph, person +
+tree, and the brush turns it into 休 yasumi, "rest"; then 日 sun + 月 moon → 明 bright, and 田 field + 力 strength →
+男 man (from the reference sheet @raj_in_jp sent)."""
 import numpy as np
 
 from ancient import ancient
 from art import brush_sprite, draw_sprite
 from engine import (FONT_EN, FONT_EN_ITALIC, FONT_JP, GREY, H, INK, PAPER, SEA, VERM, W, Cam, StrokeSet, blur, bloom,
-                    ease_io, ease_out, keyframes, lerp, smooth, stroke, text_layer)
+                    ease_io, ease_out, keyframes, lerp, reveal_time, smooth, stroke, text_layer)
 from glyphs import calligraphy
 from poly_ink.brush import PRESS_DOWN
 from scenes.base import SceneBase
@@ -18,10 +19,9 @@ from timeline import at
 
 WATER = np.asarray(SEA, np.float32) * 0.85
 GC = (540, 800)                         # 河 while it is explained
-COMPOUNDS = [(('田', 'field'), ('力', 'strength'), ('男', 'man')),
-             (('八', 'split'), ('刀', 'knife'), ('分', 'divide')),
-             (('雨', 'rain'), ('申', 'lightning'), ('電', 'electricity'))]
-ROW_Y = [720, 960, 1200]
+RC = (540, 700)                         # 休 while it forms
+COMPOUNDS = [(('日', 'sun'), ('月', 'moon'), ('明', 'bright')), (('田', 'field'), ('力', 'strength'), ('男', 'man'))]
+ROW_Y = [1112, 1250]
 
 
 def _tag(text, sub, tint):
@@ -76,27 +76,34 @@ class Scene(SceneBase):
                     stroke(W, H, [(768, 1094), (790, 1100), (792, 1078)], 4, ink=0.7, dry=0.4, profile=PRESS_DOWN, seed=4)],
                    self.t_sound + 0.35, 0.3)
         self.arrows = arrows
-        # the compounds
+        # 休: picture → pictograph → kanji, in place
+        from pictures import picture
+        from engine import wash_map
+        pc = picture('休', 400)
+        D = pc['ink'].shape[0]
+        self.rest = dict(t=self.t_more + 0.5, ink=pc['ink'], T=wash_map(D, D, (D / 2, D / 2), noise_amp=0.4, noise_scale=60, seed=3),
+                         anc=ancient('休', 'oracle', 400, seed=41), kan=calligraphy('休', 360, seed=42),
+                         rd=text_layer('yasumi', FONT_EN_ITALIC, 62)[0], en=text_layer('"rest"', FONT_EN, 48)[0],
+                         fm=text_layer('a person + a tree', FONT_EN_ITALIC, 38)[0])
+        # then two quick compounds
         self.rows = []
         ops = StrokeSet(W, H)
         for k, ((c1, e1), (c2, e2), (cr, er)) in enumerate(COMPOUNDS):
-            t = self.t_more + 0.25 + 1.05 * k
+            t = self.t_more + 2.05 + 0.8 * k
             y = ROW_Y[k]
-            g1 = calligraphy(c1, 130, seed=30 + k)
-            g2 = ancient('申', 'oracle', 130, seed=40) if c2 == '申' else calligraphy(c2, 130, seed=33 + k)
-            gr = calligraphy(cr, 175, seed=36 + k)
-            self.rows.append(dict(t=t, y=y, g1=g1, g2=g2, gr=gr, l1=text_layer(e1, FONT_EN_ITALIC, 34)[0],
-                                  l2=text_layer(e2, FONT_EN_ITALIC, 34)[0], lr=text_layer(er, FONT_EN, 44)[0]))
-            ops.add([stroke(W, H, [(285, y - 2), (325, y - 2)], 5, ink=0.7, dry=0.3, profile=PRESS_DOWN, seed=50 + k),
-                     stroke(W, H, [(305, y - 22), (305, y + 18)], 5, ink=0.7, dry=0.3, profile=PRESS_DOWN, seed=60 + k)], t + 0.2, 0.2)
-            ops.add([stroke(W, H, [(530, y), (600, y - 2)], 5, ink=0.7, dry=0.4, profile=PRESS_DOWN, seed=70 + k),
-                     stroke(W, H, [(582, y - 17), (602, y - 2), (582, y + 14)], 5, ink=0.7, dry=0.4, profile=PRESS_DOWN, seed=80 + k)],
-                    t + 0.5, 0.2)
+            self.rows.append(dict(t=t, y=y, g1=calligraphy(c1, 105, seed=30 + k), g2=calligraphy(c2, 105, seed=33 + k),
+                                  gr=calligraphy(cr, 140, seed=36 + k), l1=text_layer(e1, FONT_EN_ITALIC, 32)[0],
+                                  l2=text_layer(e2, FONT_EN_ITALIC, 32)[0], lr=text_layer(er, FONT_EN, 46)[0]))
+            ops.add([stroke(W, H, [(296, y - 2), (334, y - 2)], 5, ink=0.7, dry=0.3, profile=PRESS_DOWN, seed=50 + k),
+                     stroke(W, H, [(315, y - 20), (315, y + 16)], 5, ink=0.7, dry=0.3, profile=PRESS_DOWN, seed=60 + k)], t + 0.15, 0.15)
+            ops.add([stroke(W, H, [(500, y), (566, y - 2)], 5, ink=0.7, dry=0.4, profile=PRESS_DOWN, seed=70 + k),
+                     stroke(W, H, [(548, y - 16), (568, y - 2), (548, y + 13)], 5, ink=0.7, dry=0.4, profile=PRESS_DOWN, seed=80 + k)],
+                    t + 0.35, 0.15)
         self.ops = ops
 
     def cam(self, t):
         return Cam(*keyframes(t, [(self.t0, (540, 900, 1.05)), (self.t_write_end, (540, 930, 1.0)),
-                                  (self.t_more, (540, 940, 1.0)), (self.t1, (540, 930, 1.03))], ease=ease_io))
+                                  (self.t_more, (540, 940, 1.0)), (self.t1, (540, 935, 1.0))], ease=ease_io))
 
     def render(self, t):
         cam = self.cam(t)
@@ -109,8 +116,8 @@ class Scene(SceneBase):
             sm = smooth((t - self.t_mean) / 0.5) * (1 - smooth((t - self.t_join) / 0.5))
             ss = smooth((t - self.t_sound) / 0.5) * (1 - smooth((t - self.t_join) / 0.5))
             up = ease_io((t - self.t_more) / 0.8)
-            cx, cy = GC[0], lerp(GC[1], 380, up)
-            sc = lerp(1.0, 0.46, up)
+            cx, cy = lerp(GC[0], 215, up), lerp(GC[1], 330, up)
+            sc = lerp(1.0, 0.36, up)
             cw = smooth((t - self.t_mean) / 0.4)                     # colours stay once given
             ck = smooth((t - self.t_sound) / 0.4)
             dw, dk = d * self.m_w, d * self.m_k
@@ -131,21 +138,41 @@ class Scene(SceneBase):
             # 河 = "ka", river (after the parts rejoin, and carried up with the glyph)
             oj = smooth((t - self.t_join) / 0.4)
             if oj > 0:
-                self.place(fr, cam, self.ka, cx + lerp(330, 210, up), cy - lerp(40, 20, up), color=VERM, opacity=oj, scale=lerp(1, 0.8, up))
-                self.place(fr, cam, self.river, cx + lerp(330, 210, up), cy + lerp(40, 26, up), color=GREY, opacity=oj, scale=lerp(1, 0.85, up))
-        # the compounds
+                self.place(fr, cam, self.ka, cx + lerp(330, 170, up), cy - lerp(40, 20, up), color=VERM, opacity=oj, scale=lerp(1, 0.8, up))
+                self.place(fr, cam, self.river, cx + lerp(330, 170, up), cy + lerp(40, 26, up), color=GREY, opacity=oj, scale=lerp(1, 0.85, up))
+        # 休: the painting, the pictograph traced over it, then the kanji
+        R = self.rest
+        u = t - R['t']
+        if u > 0:
+            p_op = 1 - smooth((u - 0.8) / 0.3)
+            if p_op > 0:
+                self.place(fr, cam, reveal_time(R['ink'], R['T'], u / 0.45 * 1.1, soft=0.08, wet=0.3), *RC, opacity=p_op)
+            fo, fm = (u - 0.35) / 0.45, (u - 1.05) / 0.35
+            if fo > 0 and fm < 1:
+                self.place(fr, cam, R['anc'].at(fo, soft=0.03, wet=0.35), *RC, color=VERM, opacity=0.95 * (1 - smooth(fm)),
+                           scale=1 - 0.06 * smooth(fm))
+            if fm > 0:
+                self.place(fr, cam, bloom(R['kan'].at(min(fm * 1.15, 1.05), soft=0.02, wet=0.45), u - 1.45, amount=0.12), RC[0], RC[1] - 6)
+            lo = smooth((u - 1.25) / 0.3)
+            rw, ew = R['rd'].shape[1], R['en'].shape[1]
+            tot = rw + ew + 26
+            self.place(fr, cam, R['rd'], RC[0] - tot / 2 + rw / 2, RC[1] + 232, color=VERM, opacity=lo)
+            self.place(fr, cam, R['en'], RC[0] + tot / 2 - ew / 2, RC[1] + 236, color=GREY, opacity=lo)
+            self.place(fr, cam, R['fm'], RC[0], RC[1] + 290, color=GREY, opacity=smooth((u - 1.45) / 0.3))
+        # two quick compounds
         for R in self.rows:
-            fr_ = (t - R['t']) / 0.3
+            fr_ = (t - R['t']) / 0.25
             if fr_ <= 0:
                 continue
             y = R['y']
-            self.place(fr, cam, R['g1'].at(fr_, soft=0.03), 200, y)
-            self.place(fr, cam, R['g2'].at(fr_ - 1.0, soft=0.03, wet=0.3), 415, y)
-            fm = (t - R['t'] - 0.6) / 0.45
+            self.place(fr, cam, R['g1'].at(fr_, soft=0.03), 215, y)
+            self.place(fr, cam, R['g2'].at(fr_ - 0.8, soft=0.03), 410, y)
+            fm = (t - R['t'] - 0.45) / 0.35
             if fm > 0:
-                self.place(fr, cam, bloom(R['gr'].at(min(fm, 1.05), soft=0.015, wet=0.45), t - R['t'] - 1.05, amount=0.12), 760, y - 8)
-            for a, x, dy, col, dt in ((R['l1'], 200, 92, GREY, 0.2), (R['l2'], 415, 92, GREY, 0.5), (R['lr'], 760, 112, VERM, 0.95)):
-                self.place(fr, cam, a, x, y + dy, color=col, opacity=smooth((t - R['t'] - dt) / 0.3))
+                self.place(fr, cam, bloom(R['gr'].at(min(fm, 1.05), soft=0.015, wet=0.45), t - R['t'] - 0.8, amount=0.12), 650, y - 6)
+            for a, x, dy, col, dt in ((R['l1'], 215, 70, GREY, 0.15), (R['l2'], 410, 70, GREY, 0.35)):
+                self.place(fr, cam, a, x, y + dy, color=col, opacity=smooth((t - R['t'] - dt) / 0.25))
+            self.place(fr, cam, R['lr'], 760 + R['lr'].shape[1] / 2, y, color=VERM, opacity=smooth((t - R['t'] - 0.7) / 0.25))
         self.layer(fr, cam, self.ops.render(t), color=GREY)
         return fr.img
 

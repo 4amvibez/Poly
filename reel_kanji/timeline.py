@@ -34,7 +34,7 @@ def at(phrase, nth=0):
 # the first word of its section, and the outgoing scene overlaps it for the transition.
 _CUTS = [  # (name, first words of the section, lead before the words, transition length into this scene)
     ('hook', None, 0.0, 0.0),
-    ('tablets', 'Thousands of', 0.15, 0.8),
+    ('record', 'Thousands of', 0.15, 0.8),
     ('oracle', 'In ancient', 0.3, 0.9),
     ('objects', 'The sun', 0.2, 0.7),
     ('sun', 'Look at this', 0.35, 0.8),

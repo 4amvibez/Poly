@@ -1,7 +1,7 @@
-"""photos — the archival photographs (supplied by @raj_in_jp), cut out of their backgrounds and graded to sit on
-the washi paper like real objects: two Shang-dynasty oracle bones and a collection of Mesopotamian clay tablets.
+"""photos — the archival photographs of two Shang-dynasty oracle bones (supplied by @raj_in_jp), cut out of their
+backgrounds and graded to sit on the washi paper like real objects.
 
-    cutout(name) -> dict(rgb HxWx3 float, alpha HxW float, parts [(x, y, w, h), ...] for multi-object photos)"""
+    cutout(name) -> dict(rgb HxWx3 float, alpha HxW float, parts [(x, y, w, h), ...])"""
 import os
 
 import cv2
@@ -12,7 +12,6 @@ from engine import HERE, blur, cached
 SRC = {
     'bone1': ('oracle_bone_1.jpg', 'dark'),       # inscribed scapula on black
     'bone2': ('oracle_bone_2.jpg', 'saturated'),  # inscribed fragment on a grey gradient
-    'tablets': ('clay_tablets.jpg', 'dark'),      # fifteen tablets and cones on black
 }
 
 

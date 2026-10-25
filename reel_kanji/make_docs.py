@@ -12,7 +12,8 @@ fmt = lambda s: f'{int(s // 60):d}:{s % 60:05.2f}'
 BEATS = {
     'hook': ['"How was KANJI created?", KANJI brushed in vermilion; sun, mountains, pagoda, blossom, a figure from behind',
              ('pictures', 'The oracle-bone sun (a circle with a mark inside) is brushed round the sun, then 日 is written into it (taiko)')],
-    'tablets': [('Thousands of', 'Your photo of Mesopotamian clay tablets, laid on the paper one by one; card "Clay tablets · Mesopotamia"')],
+    'record': [('Thousands of', 'Dawn by a river cliff: two people at a fire, a third paints on the rock'),
+               ('record the world', 'Sun, mountains, fish, tree appear in red ochre on the rock, one after another')],
     'oracle': [('In ancient', 'Your oracle-bone photo; 甲骨文 brushed vertically; card "Oracle bones · Shang dynasty, China · c. 1200 BCE"'),
                ('turtle shells', 'The second oracle-bone photo slides in'),
                ('Some of these', 'Eight pictographs carved into bone tiles: sun, moon, mountain, tree, river, rain, person, fish')],
@@ -23,13 +24,14 @@ BEATS = {
             ('Over centuries', 'Column: 甲骨文 oracle bone (Shang) → 金文 bronze (Zhou) → 篆書 seal (Qin) → 隷書 clerical (Han) → 楷書 regular'),
             ('today', 'A vermilion frame closes on today\'s 日 in the breath after "today" (bowl)')],
     'swirl': [('And the idea', 'A big brush sweeps a spiral across a misty peak; the next page opens out of the ink')],
-    'nature': [('Yama means', '山: painting → oracle form → 山, yama "mountain"'), ('Kawa means', '川: river → oracle form → 川, kawa'),
-               ('Ki means', '木: tree → oracle form → 木, ki'),
-               ('Look closely', 'Down the page: a painted sparrow → the early bird pictograph → 鳥 tori, "bird"'),
-               ('resemble', 'A vermilion ghost of the sparrow lands on the pictograph (bowl in the breath)')],
+    'nature': [('Yama means', 'Formed in place: a painted mountain → its pictograph traced over it → 山 yama "mountain"'),
+               ('Kawa means', 'A river between its banks → three wavy lines → 川 kawa "river"'),
+               ('Ki means', 'A tree with branches and roots → its pictograph → 木 ki "tree"; the three line up at the top'),
+               ('Look closely', 'A painted sparrow → the early bird pictograph → 鳥 tori "bird"'),
+               ('resemble', 'The paintings return faintly behind every character (bowl in the breath)')],
     'compound': [('But heres', 'The brush writes 河 (river)'), ('related to meaning', '氵 turns water-blue, "meaning: water"'),
                  ('clue to pronunciation', '可 turns vermilion, "sound: ka"; the parts click back together: 河 "ka", river (bowl)'),
-                 ('This allowed', '田 + 力 → 男 man; 八 + 刀 → 分 divide; 雨 + lightning → 電 electricity')],
+                 ('This allowed', 'A person resting beside a tree → person + tree → 休 yasumi "rest"; then 日 + 月 → 明 bright, 田 + 力 → 男 man')],
     'map': [('Over time', 'THE JOURNEY OF KANJI map: Anyang, c. 1200 BCE (oracle bones)'),
             ('sophisticated', 'Chang\'an, Han dynasty ("kanji" = "Han characters"); the trail runs east to the coast'),
             ('They later', 'A boat takes over, red trail behind it, across the Yellow Sea'),
@@ -69,13 +71,14 @@ def main():
           '篆書 seal script (standardised under the Qin, 221 BCE); 隷書 clerical script (Han); 楷書 regular script (today\'s form)',
           '- The ancient forms are hand-redrawn, simplified illustrations of each period style, following your reference sheets',
           '- 河 = 氵 (water: the meaning) + 可 (ka: the sound); 河 reads ka (on\'yomi) and kawa (kun\'yomi), "river"',
-          '- 男 = 田 field + 力 strength; 分 = 八 split + 刀 knife; 電 = 雨 rain + the early form of 申, which depicted lightning',
+          '- 休 = 亻 person + 木 tree: a person resting by a tree, "rest" (休み yasumi); 明 = 日 sun + 月 moon, "bright"; '
+          '男 = 田 field + 力 strength, "man"',
           '- 漢字 kanji = 漢 kan, the Han dynasty (China) + 字 ji, "character"',
           '- Map: Anyang 安陽 (late Shang capital, where the oracle bones were found); Chang\'an 長安 (Han capital); '
           'Baekje 百済 (Korean kingdom; tradition credits its scholars with bringing Chinese books to Japan, 4th–5th c.); '
           'Nara 奈良; the Kojiki (712) is Japan\'s oldest surviving book. The route is an illustration, not one documented voyage.',
           '- End card: 最後まで見てくれてありがとう。またね！ (saigo made mite kurete arigatō. mata ne!)',
-          '- No image generation was used for any character or map. The photographs (oracle bones, clay tablets) were '
+          '- No image generation was used for any character or map. The oracle-bone photographs were '
           'supplied by you; see data/README.md about credits.']
     out = os.path.join(HERE, 'output')
     open(os.path.join(out, 'narration_script_timestamps.md'), 'w').write('\n'.join(L) + '\n')

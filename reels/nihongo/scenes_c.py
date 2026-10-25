@@ -183,7 +183,7 @@ class Sentence(Scene):
         self.pap = paper(ww, wh, seed=131)
         T = self.track
         sz, x0 = 150, 90
-        self.rows = [320, 720]
+        self.rows = [250, 610]
         t = -0.35
         for li, text in enumerate(['私は日本語を', '勉強します']):
             for j, ch in enumerate(text):
@@ -198,7 +198,7 @@ class Sentence(Scene):
                       np.array(U(ring), np.float32)))
         self.write_end = t + 0.15
         L = self.labels = Labels(ww, wh)
-        L.add('“I study Japanese.”', *u(540, 1095), u(58), self.wt(14, 'I study') - 0.2, latin='italic')
+        L.add('“I study Japanese.”', *u(540, 975), u(58), self.wt(14, 'I study') - 0.2, latin='italic')
         for k, (li, a, b, kind, gloss, word) in enumerate(self.GROUPS):
             tw = self.wt(15, word)
             y = self.rows[li] + sz + 22
@@ -212,11 +212,11 @@ class Sentence(Scene):
             L.add('kanji' if kind == 'k' else 'hiragana', *u(xm, y + 75), u(29), tw - 0.05, latin='italic', red=red,
                   ink=0.9)
             L.add(gloss, *u(xm, y + 122), u(38), tw, latin='italic', ink=0.88)
-        L.add('カタカナ — none in this sentence', *u(540, 1178), u(33), self.L[1][1] - 0.6, ink=0.7)
+        L.add('カタカナ — none in this sentence', *u(540, 1040), u(33), self.L[1][1] - 0.6, ink=0.7)
 
     def cam(self, t):
         u = self.u
-        return self.clamp(Keys([(-0.6, (*u(540, 760), 0.84)), (self.dur + 1, (*u(540, 780), 0.88))])(t))
+        return self.clamp(Keys([(-0.6, (*u(540, 660), 0.84)), (self.dur + 1, (*u(540, 680), 0.88))])(t))
 
     def frame(self, t):
         cam = self.cam(t)

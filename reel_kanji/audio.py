@@ -242,6 +242,7 @@ def scene_events():
 def build(out_dir=os.path.join(HERE, 'audio')):
     import scenes
     music = np.zeros((N, 2))
+    music_dips = []
     sfx = np.zeros((N, 2))
     amb = np.zeros((N, 2))
     T0 = {nm: a0 for nm, a0, _ in SCENES}
@@ -299,12 +300,27 @@ def build(out_dir=os.path.join(HERE, 'audio')):
 
     # accents, each in a breath of the narration
     place(music, taiko(2.4, 52), scenes.get('hook').t_hit, 0.9)
-    place(music, bowl(note('A', 4)), ss_.t_hit, 0.55, pan=0.2)
+    place(music, bowl(note('A', 4)), ss_.t_hit, 0.75, pan=0.2)
     place(music, bowl(note('D', 5)), sn.t_hit, 0.5, pan=-0.2)
     place(music, bowl(note('A', 5), 4.0), sc.t_hit, 0.5, pan=0.25)
     place(music, taiko(2.0, 70), T0['map'] + 0.15, 0.3)
-    place(music, bowl(note('D', 5), 5.0), scenes.get('message').t_hit, 0.55)
+    place(music, bowl(note('D', 5), 5.0), scenes.get('message').t_hit, 0.75)
+    place(music, taiko(2.2, 60), scenes.get('message').t_hit, 0.45)        # the emotional peak gets a soft low drum
     place(music, bowl(note('D', 5), 5.0), JA['matane'], 0.45)
+
+    # each bowl hit is struck with a soft mallet, and the bed breathes in for it: a short dip just before the
+    # strike, so the strike is the one onset in the breath
+    hits = [ss_.t_hit, sn.t_hit, sc.t_hit, scenes.get('message').t_hit, JA['matane']]
+    for th in hits:
+        n = int(0.025 * SR)
+        place(music, hp(rng.normal(0, 1, n), 2500) * np.exp(-np.arange(n) / SR * 180) * 0.5, th, 0.8)
+        i0, i1, i2 = int((th - 0.2) * SR), int((th - 0.015) * SR), int((th + 0.25) * SR)
+        g = np.ones(i2 - i0)
+        g[:i1 - i0] = 1 - 0.7 * np.sin(np.linspace(0, np.pi / 2, i1 - i0)) ** 2
+        g[i1 - i0:] = np.minimum(1, 0.3 + 0.7 * np.linspace(0, 1, i2 - i1) ** 0.5)
+        dip = np.ones(N)
+        dip[i0:i2] = g
+        music_dips.append(dip)
 
     # brush on paper
     for t, d, inten, heavy in scene_events():
@@ -376,8 +392,18 @@ def build(out_dir=os.path.join(HERE, 'audio')):
     k = int(0.25 * SR)
     envv = np.convolve(envv, np.ones(k) / k, mode='same')
     envv = envv / (envv.max() + 1e-9)
+    # fast attack, slow release (~0.8 s): the music eases back between sentences instead of jumping up, so the
+    # only onset in a breath is the hit placed there
+    hop = SR // 100
+    e = np.clip(envv[::hop] * 4, 0, 1)
+    out = np.zeros_like(e)
+    for i in range(1, len(e)):
+        out[i] = e[i] if e[i] > out[i - 1] else out[i - 1] * 0.975 + e[i] * 0.025
+    envv = np.interp(np.arange(N), np.arange(len(out)) * hop, out) / 4
     duck = 1 - 0.5 * np.clip(envv * 4, 0, 1)
     music *= duck[:, None]
+    for dip in music_dips:
+        music *= dip[:, None]
     amb *= (1 - 0.3 * np.clip(envv * 4, 0, 1))[:, None]
 
     stems = {'voice': voice, 'music': music * 0.21, 'sfx': sfx * 0.65, 'amb': amb * 0.45}

@@ -7,7 +7,7 @@ from timeline import SCENES
 _MODULES = {
     'hook': 's01_hook', 'before_writing': 's02_before', 'map': 's03_map', 'kanji': 's04_kanji',
     'hiragana': 's05_hiragana', 'katakana': 's06_katakana', 'triptych': 's07_triptych',
-    'sentence': 's08_sentence', 'street': 's09_street', 'finale': 's10_finale',
+    'sentence': 's08_sentence', 'street': 's09_street', 'modern': 's10_modern', 'endcard': 's11_endcard',
 }
 _built = {}
 

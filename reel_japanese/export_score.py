@@ -14,13 +14,15 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 
 def markers():
     import scenes
-    s1, s4, s5, s6, s10 = (scenes.get(n) for n in ('hook', 'kanji', 'hiragana', 'katakana', 'finale'))
+    from timeline import JA
+    s1, s4, s5, s6, s10 = (scenes.get(n) for n in ('hook', 'kanji', 'hiragana', 'katakana', 'modern'))
     return {
-        'title': {'t': round(s1.t_title + 1.45, 3), 'sync': 'av'},          # 日本語 completes + taiko
+        'why': {'t': round(s1.t_why + 0.02, 3), 'sync': 'av'},              # the ？ dot lands + taiko
         'kanji_done': {'t': round(s4.t_write_end + 0.05, 3), 'sync': 'av'},  # 字 completes + bowl
         'hiragana_a': {'t': round(s5.tD + 1.5, 3), 'sync': 'av'},            # あ completes + bowl
         'katakana_i': {'t': round(s6.t_kana + 0.75, 3), 'sync': 'av'},       # イ completes + bowl
-        'final_title': {'t': round(at('Still written today')[1], 3), 'sync': 'av'},
+        'rings': {'t': round(s10.labels[0]['t'], 3), 'sync': 'av'},         # first sign ringed + taiko
+        'matane': {'t': round(JA['matane'], 3), 'sync': 'av'},              # またね！ stamped + bowl
     }
 
 

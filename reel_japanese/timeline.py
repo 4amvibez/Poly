@@ -5,9 +5,11 @@ import re
 
 from engine import HERE
 
-VO_OFFSET = 0.5          # narration starts half a second in, after the first brush contact
+VO_OFFSET = 0.4          # narration starts just after the first brush contact
 
-_words = json.load(open(os.path.join(HERE, 'audio', 'words.json'), encoding='utf8'))['words']
+_W = json.load(open(os.path.join(HERE, 'audio', 'words.json'), encoding='utf8'))
+_words = _W['words']
+JA = {k: (v + VO_OFFSET if isinstance(v, (int, float)) else v) for k, v in _W['ja'].items()}   # Japanese sign-off
 WORDS = [dict(text=w['text'], start=w['start'] + VO_OFFSET, end=w['end'] + VO_OFFSET)
          for w in _words if w.get('type', 'word') == 'word']
 
@@ -40,9 +42,10 @@ _CUTS = [  # (name, first words of the section, lead before the words, transitio
     ('triptych', 'Today all three', 0.36, 0.9),
     ('sentence', 'Take this', 0.4, 0.8),
     ('street', 'Every line', 0.34, 1.0),
-    ('finale', 'Three scripts', 0.42, 1.0),
+    ('modern', 'And you can', 0.35, 1.0),
+    ('endcard', 'Follow for more', 0.3, 0.7),
 ]
-DURATION = round(WORDS[-1]['end'] + 2.6, 2)       # hold the closing composition ~2.6 s after the last word
+DURATION = round(JA['end'] + 1.6, 2)              # hold the end card ~1.6 s after the Japanese sign-off
 _starts = [0.0 if w is None else at(w)[0] - lead for _, w, lead, _ in _CUTS]
 SCENES = []
 for i, (name, _, _, _) in enumerate(_CUTS):

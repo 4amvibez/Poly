@@ -186,7 +186,7 @@ class Scene(SceneBase):
         from engine import ease_io, wipe_mix
         if not hasattr(self, '_T'):
             self._T = prev_scene.exit_map()
-        return wipe_mix(prev_img, cur_img, self._T, ease_io(f) * 1.12 - 0.04, soft=0.035, edge=0.4)
+        return wipe_mix(prev_img, cur_img, self._T, ease_io(f) * 1.12 - 0.04, soft=0.035, edge=0.28)
 
     def _fire(self, fr, cam, t, on, ref):
         fx, fy = self.fire

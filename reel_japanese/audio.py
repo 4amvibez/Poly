@@ -4,7 +4,7 @@ Score: a quiet drone in the miyako-bushi scale (D Eb G A Bb) with Karplus-Strong
 singing-bowl chimes for the hiragana / katakana reveals and low taiko impacts for the two title reveals.
 Sound design: brush-on-paper texture generated from every stroke and glyph the scenes write (timed from the scene
 objects themselves), fire and wind in the village, ocean swell and water for the voyage, paper whooshes at
-transitions, a rushing wave and splash for the finale.  The music ducks under the narration.
+transitions, a rainy night street under the photographs of today's Japan.  The music ducks under the narration.
 
     python audio.py            -> audio/mix.wav (48 kHz stereo) + audio/stems/*.wav
 """
@@ -19,7 +19,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 SR = 48000
 
-from timeline import DURATION, SCENES, VO_OFFSET, at  # noqa: E402
+from timeline import DURATION, JA, SCENES, VO_OFFSET, at  # noqa: E402
 
 N = int(DURATION * SR)
 rng = np.random.default_rng(7)
@@ -178,11 +178,10 @@ def scene_events():
             ev.append((t0 + a * (t1 - t0), (b - a) * (t1 - t0), gain, False))
 
     s1 = scenes.get('hook')
-    from_strokes(s1.ss, 1.4)
-    for k in range(3):
-        ev.append((s1.t_title + 0.5 * k, 0.45, 0.7, False))
-    for ts in s1.three_t:
-        ev.append((ts, 0.4, 0.45, False))
+    ev.append((s1.t_title, 0.55, 0.7, False))
+    for r in s1.rows:
+        ev.append((r['t'], 0.26, 1.0, True))                     # each script stamps onto the page
+    from_strokes(s1.q, 1.4)
     s2 = scenes.get('before_writing')
     from_strokes(s2.ss, 0.45, t_min=s2.t0 + 0.5)
     from_strokes(s2.lines, 0.35)
@@ -215,12 +214,10 @@ def scene_events():
         ev.append((g['ts'], g['dur'], 0.7, False))
     from_strokes(s8.ul_k, 0.6)
     from_strokes(s8.ul_h, 0.6)
-    s10 = scenes.get('finale')
-    from_strokes(s10.wave, 1.2)
-    ts = s10.t_title
-    for g, du in zip(s10.title, s10.title_dur):
-        from_glyph(g, ts, ts + du, 0.9)
-        ts += du + 0.05
+    s11 = scenes.get('endcard')
+    for L in s11.ja:
+        ev.append((L['t0'], L['t1'] - L['t0'], 0.8, False))
+    from_strokes(s11.ul, 0.6)
     return ev
 
 
@@ -237,7 +234,8 @@ def build(out_dir=os.path.join(HERE, 'audio')):
         'hiragana': ([('D', 2), ('A', 2), ('G', 3), ('A', 3)], 0.65), 'katakana': ([('Bb', 1), ('D', 3), ('A', 3)], 0.6),
         'triptych': ([('D', 2), ('A', 2), ('D', 3), ('Eb', 4)], 0.65), 'sentence': ([('G', 2), ('D', 3)], 0.45),
         'street': ([('D', 2), ('A', 2), ('Bb', 3), ('D', 4)], 0.85),
-        'finale': ([('D', 2), ('A', 2), ('D', 3), ('A', 3), ('D', 4)], 0.9)}
+        'modern': ([('D', 2), ('A', 2), ('D', 3), ('A', 3), ('D', 4)], 0.9),
+        'endcard': ([('D', 2), ('A', 2), ('D', 3), ('A', 3)], 0.7)}
     sections = [(a0, b0, *chords[nm]) for nm, a0, b0 in SCENES]
     T0 = {nm: a0 for nm, a0, _ in SCENES}
     for a, b, notes, lvl in sections:
@@ -254,7 +252,10 @@ def build(out_dir=os.path.join(HERE, 'audio')):
             place(music, koto(note(n, o)), t0 + k * gap, gain, pan=pan + 0.1 * np.sin(k))
 
     phrase(0.25, [('D', 4)], gain=0.7)
-    phrase(at('Japanese does')[0] - 0.2, [('A', 4), ('D', 5)], gap=0.18, gain=0.6)
+    import scenes
+    s1_ = scenes.get('hook')
+    for k, (r, n) in enumerate(zip(s1_.rows, [('A', 4), ('D', 5), ('A', 5)])):
+        phrase(r['t'], [n], gain=0.6)
     phrase(T0['before_writing'] + 0.6, [('D', 4), ('A', 4), ('Bb', 4), ('A', 4)], gap=0.45, gain=0.7)
     phrase(at('conversation')[0] - 0.1, [('G', 4), ('A', 4)], gap=0.6, gain=0.45, pan=-0.3)
     phrase(T0['map'] + 0.5, [('D', 4), ('Eb', 4), ('G', 4), ('A', 4), ('Bb', 4), ('D', 5)], gap=0.24, gain=0.7)
@@ -269,15 +270,16 @@ def build(out_dir=os.path.join(HERE, 'audio')):
     phrase(T0['triptych'] + 0.3, [('D', 4), ('G', 4), ('A', 4), ('D', 5)], gap=0.45, gain=0.6)
     phrase(T0['sentence'] + 0.5, [('A', 4), ('D', 5)], gap=0.5, gain=0.45)
     phrase(T0['street'] + 0.4, [('D', 4), ('A', 4), ('Bb', 4), ('D', 5), ('Eb', 5), ('D', 5)], gap=0.5, gain=0.6)
-    phrase(T0['finale'] + 0.2, [('D', 5), ('A', 4), ('G', 4), ('D', 4), ('A', 3)], gap=0.16, gain=0.6)
-    phrase(at('Still written today')[1] - 0.1, [('D', 3), ('A', 3), ('D', 4), ('A', 4)], gap=0.06, gain=0.55)
+    phrase(T0['modern'] + 0.3, [('D', 4), ('A', 4), ('D', 5), ('Eb', 5), ('D', 5), ('A', 4)], gap=0.4, gain=0.55)
+    phrase(T0['endcard'] + 0.6, [('D', 5), ('A', 4), ('G', 4), ('D', 4)], gap=0.3, gain=0.5)
+    phrase(JA['matane'] - 0.05, [('D', 3), ('A', 3), ('D', 4), ('A', 4)], gap=0.06, gain=0.5)
     place(music, flute(note('A', 4), 4.0), T0['before_writing'] + 1.9, 0.5, pan=-0.2)
     place(music, flute(note('D', 5), 3.4), T0['street'] + 1.6, 0.45, pan=0.2)
 
     # accents
     import scenes
     s1 = scenes.get('hook')
-    place(music, taiko(2.4, 52), s1.t_title + 1.45, 0.9)
+    place(music, taiko(2.4, 52), s1.t_why + 0.02, 0.9)
     place(music, taiko(2.0, 70), T0['map'] + 0.15, 0.35)
     s4 = scenes.get('kanji')
     place(music, bowl(note('A', 4)), s4.t_write_end + 0.05, 0.5, pan=0.2)
@@ -285,10 +287,9 @@ def build(out_dir=os.path.join(HERE, 'audio')):
     place(music, bowl(note('D', 5)), s5.tD + 1.5, 0.6, pan=-0.2)
     s6 = scenes.get('katakana')
     place(music, bowl(note('A', 5), 4.0), s6.t_kana + 0.75, 0.5, pan=0.25)
-    s10 = scenes.get('finale')
-    place(music, taiko(2.6, 46), s10.t_wave + 0.9, 0.7)
-    place(music, taiko(3.0, 50), at('Still written today')[1], 0.8)
-    place(music, bowl(note('D', 4), 7.0), at('Still written today')[1] + 0.05, 0.45)
+    s10 = scenes.get('modern')
+    place(music, taiko(2.6, 50), s10.labels[0]['t'], 0.75)
+    place(music, bowl(note('D', 5), 5.0), JA['matane'], 0.45)
 
     # brush on paper
     for t, d, inten, heavy in scene_events():
@@ -334,11 +335,13 @@ def build(out_dir=os.path.join(HERE, 'audio')):
     place(amb, lp(rng.normal(0, 1, n), 700) * 0.035 * e, a)
     for tt, f in ((a + 1.2, note('A', 5) * 2), (a + 3.6, note('D', 6) * 2)):
         place(amb, bowl(f, 3.0) * 0.6, tt, 0.6, pan=0.4)
-    # finale: the wave rushing in, a splash at the crest
-    s10 = scenes.get('finale')
-    place(sfx, whoosh(2.2, 120, 1800) * 2.2, s10.t_wave - 0.2, 1.0)
-    place(sfx, bp(rng.normal(0, 1, int(0.9 * SR)), 800, 6000) * np.exp(-np.linspace(0, 6, int(0.9 * SR))) * 0.12,
-          s10.t_wave + 1.1, 1.0, pan=0.3)
+    # today's Japan: a soft rainy night street under the photographs
+    a, b = s10.t0, s10.t1
+    n = int((b - a) * SR)
+    e = np.clip(np.minimum(np.arange(n) / SR / 0.6, (n - np.arange(n)) / SR / 0.5), 0, 1)
+    rain = hp(rng.normal(0, 1, n), 2500) * 0.02 + lp(rng.normal(0, 1, n), 400) * 0.06
+    place(amb, rain * e, a)
+    place(sfx, whoosh(1.4, 150, 2200) * 1.5, s10.t0 - 0.05, 1.0)
 
     # narration
     sr, vo = wavfile.read(os.path.join(out_dir, 'narration.wav'))

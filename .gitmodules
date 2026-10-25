@@ -1,0 +1,3 @@
+[submodule ".claude/skills/claude-drawing"]
+	path = .claude/skills/claude-drawing
+	url = https://github.com/cloveric/claude-drawing-skill.git

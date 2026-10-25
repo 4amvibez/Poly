@@ -46,76 +46,55 @@ def to_u8(img):
 
 # ------------------------------------------------------------------ captions
 class Captions:
-    """English captions in EB Garamond (Japanese in Shippori Mincho), cream text on a soft, half-transparent
-    brushed ink wash that is only as wide as its text, with a soft shadow under the letters for legibility —
-    so the painting keeps showing through and around the caption"""
+    """English captions in EB Garamond (Japanese in Shippori Mincho): dark ink text on a soft, semi-transparent
+    paper-coloured pad that just fits the words — readable over light paper and dark ink alike, and it hides as
+    little of the painting as possible"""
 
-    BAND_ALPHA = 0.5          # peak opacity of the wash behind the text (the shadow under the letters adds more)
+    PAD_ALPHA = 0.8                       # opacity of the paper pad
+    PAD_RGB = np.array([0.965, 0.945, 0.9], np.float32)
+    TEXT_RGB = np.array([0.11, 0.10, 0.09], np.float32)
 
     def __init__(self, tl, size=50):
         self.size = size
         self.chunks = tl.captions(size=size)
-        self._bands, self._cache = {}, {}
+        self._cache = {}
 
-    def band(self, nlines, width):
-        """a feathered dry-brush wash, a little wider than the text"""
-        from core import blur
-        from poly_ink.brush import sweep
-        w = int(np.clip(width + 130, 420, W - 40) // 40 * 40)
-        key = (nlines, w)
-        if key not in self._bands:
-            h = 118 if nlines == 1 else 178
-            D = np.zeros((h + 80, W), np.float32)
-            x0, x1 = 540 - w / 2, 540 + w / 2
-            for st in sweep(W, h + 80, [(x0, h / 2 + 44), (540, h / 2 + 36), (x1, h / 2 + 42)], h, ink=0.86, dry=0.3,
-                            seed=17 + nlines + w, wash=0.7, profile=((0, 0.55), (0.07, 1.0), (0.9, 0.96), (1, 0.5))):
-                hh, ww = st.dens.shape
-                b = D[st.y0:st.y0 + hh, st.x0:st.x0 + ww]
-                np.copyto(b, 1 - (1 - b) * (1 - st.dens))
-            D = blur(D, 2.5)
-            # feather the ends so the wash fades out instead of stopping at a hard edge
-            XX = np.arange(W, dtype=np.float32)
-            feather = np.clip((XX - x0) / 90, 0, 1) * np.clip((x1 - XX) / 90, 0, 1)
-            self._bands[key] = (np.clip(D, 0, 1) * feather[None, :] * self.BAND_ALPHA).astype(np.float32)
-        return self._bands[key]
-
-    def text_img(self, lines):
-        from core import blur
+    def layers(self, lines):
+        """(text mask, pad mask) for a caption, both W x 260, centred on CAPTION_Y"""
+        from PIL import ImageFilter
         key = tuple(lines)
         if key not in self._cache:
-            im = Image.new('L', (W, 220), 0)
+            h = 260
+            im = Image.new('L', (W, h), 0)
             d = ImageDraw.Draw(im)
             lh = self.size * 1.28
-            y0 = 110 - (len(lines) - 1) * lh / 2 + self.size * 0.33
+            y0 = h / 2 - (len(lines) - 1) * lh / 2 + self.size * 0.33
             for i, ln in enumerate(lines):
                 draw_text(d, (540, y0 + i * lh), ln, self.size, 255, anchor='ms')
             tx = np.asarray(im, np.float32) / 255
-            shadow = np.clip(blur(tx, 6) * 1.8, 0, 1)
-            width = max(text_width(ln, self.size) for ln in lines)
-            self._cache[key] = (tx, shadow, width)
+            tw = max(text_width(ln, self.size) for ln in lines)
+            th = (len(lines) - 1) * lh + self.size * 1.05
+            pad = Image.new('L', (W, h), 0)
+            px, py = 34, 22
+            ImageDraw.Draw(pad).rounded_rectangle([540 - tw / 2 - px, h / 2 - th / 2 - py, 540 + tw / 2 + px,
+                                                   h / 2 + th / 2 + py], radius=14, fill=255)
+            pad = np.asarray(pad.filter(ImageFilter.GaussianBlur(7)), np.float32) / 255
+            self._cache[key] = (tx, pad)
         return self._cache[key]
 
     def draw(self, img, T):
         live = [c for c in self.chunks if c[0] - 0.2 <= T <= c[1] + 0.25]
         if not live:
             return img
-        # the wash stays up across consecutive chunks; text cross-fades
         for c in live:
             a_txt = ramp(T, c[0] - 0.18, c[0]) * (1 - ramp(T, c[1], c[1] + 0.2))
-            prev = [p for p in self.chunks if p[1] <= c[0] + 0.01 and c[0] - p[1] < 0.3]
-            nxt = [p for p in self.chunks if p[0] >= c[1] - 0.01 and p[0] - c[1] < 0.3]
-            a_band = (1.0 if prev else ramp(T, c[0] - 0.25, c[0] - 0.02)) * (1.0 if nxt else 1 - ramp(T, c[1] + 0.05, c[1] + 0.3))
-            tx, shadow, width = self.text_img(c[2])
-            band = self.band(len(c[2]), width)
-            y0 = int(CAPTION_Y - band.shape[0] / 2)
-            sl = img[y0:y0 + band.shape[0]]
-            k = (band * a_band)[..., None]
-            sl[:] = sl * (1 - k * (1 - INK))
-            y1 = int(CAPTION_Y - tx.shape[0] / 2)
-            sl = img[y1:y1 + tx.shape[0]]
-            sl[:] = sl * (1 - (shadow * 0.5 * a_txt)[..., None] * (1 - INK))
+            tx, pad = self.layers(c[2])
+            y0 = int(CAPTION_Y - tx.shape[0] / 2)
+            sl = img[y0:y0 + tx.shape[0]]
+            k = (pad * self.PAD_ALPHA * a_txt)[..., None]
+            sl[:] = sl * (1 - k) + self.PAD_RGB * k
             k = (tx * a_txt)[..., None]
-            sl[:] = sl * (1 - k) + CREAM * k
+            sl[:] = sl * (1 - k) + self.TEXT_RGB * k
         return img
 
     def srt(self, path):

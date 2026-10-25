@@ -636,16 +636,18 @@ class Katakana(Scene):
         self.text_front = InkFront(wh // 4, ww // 4, direction=(-1, 0.15), rough=0.3, scale=40, soft=0.08, seed=62)
         # glosses: small vermilion katakana, brushed in one after another
         L = self.labels = Labels(ww, wh)
-        t = 2.6
+        # 伊 is written on "shorthand"; the glosses are paced to finish, and the camera to arrive, before it
+        t_i = self.wt(11, 'shorthand') - 0.5
+        t = 2.4
+        step = float(np.clip((t_i - 1.5 - t) / len(GLOSSES), 0.18, 0.42))
         for idx in sorted(GLOSSES):
             x, y = self.char_pos[idx]
             for j, ch in enumerate(GLOSSES[idx]):
-                L.add(ch, *u(x + 52, y - 50 + j * 25), u(24), t + j * 0.08, dur=0.25, red=True, ink=0.95,
+                L.add(ch, *u(x + 52, y - 50 + j * 25), u(24), t + j * 0.06, dur=0.22, red=True, ink=0.95,
                       cjk='mincho-bold')
-            t += 0.42
+            t += step
         self.gloss_end = t
         # 伊, large; its left side 亻 (strokes 0, 1) picked out; the rest fades; イ written beside it
-        t_i = self.wt(11, 'shorthand') - 0.5
         self.i_box = (100, 940, 330)
         ws, self.i_end = write(ww, wh, '伊', *u(*self.i_box[:2]), u(self.i_box[2]), t_i, weight=0.1, dry=0.32,
                                speed=1.7, seed=63)
@@ -680,7 +682,7 @@ class Katakana(Scene):
         L.add('イ  i', *u(785, 1312), u(42), self.k_end, red=True)
         self.brush = BrushTool(scale=0.85)
         self.camk = Keys([(-0.5, (*u(880, 520), 1.05)), (0.3, (*u(860, 520), 1.05)),
-                          (self.gloss_end - 0.3, (*u(300, 560), 1.0)), (t_i - 0.5, (*u(540, 900), 0.84)),
+                          (self.gloss_end - 0.2, (*u(300, 560), 1.0)), (max(t_i - 0.3, self.gloss_end + 0.6), (*u(540, 900), 0.84)),
                           (t_part, (*u(500, 1000), 0.9)), (t_k - 0.8, (*u(540, 1010), 0.86)),
                           (self.dur + 1, (*u(540, 1000), 0.88))])
 

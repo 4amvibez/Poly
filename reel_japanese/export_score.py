@@ -17,7 +17,7 @@ def markers():
     from timeline import JA
     s1, s4, s5, s6, s10 = (scenes.get(n) for n in ('hook', 'kanji', 'hiragana', 'katakana', 'modern'))
     return {
-        'why': {'t': round(s1.t_why + 0.02, 3), 'sync': 'av'},              # the ？ dot lands + taiko
+        'why': {'t': round(s1.t_dot, 3), 'sync': 'av'},                     # the ？ dot lands + taiko
         'kanji_done': {'t': round(s4.t_write_end + 0.05, 3), 'sync': 'av'},  # 字 completes + bowl
         'hiragana_a': {'t': round(s5.tD + 1.5, 3), 'sync': 'av'},            # あ completes + bowl
         'katakana_i': {'t': round(s6.t_kana + 0.75, 3), 'sync': 'av'},       # イ completes + bowl
@@ -38,7 +38,9 @@ def main():
     S = {n: [a, b] for n, a, b in SCENES}
     subs = [{'start': round(c['start'], 3), 'end': round(c['end'], 3), 'text': ' '.join(w for w, _ in c['words'])}
             for c in subtitles.CUES]
-    data = {'FPS': 30, 'FORMAT': '9:16', 'DURATION': DURATION, 'S': S, 'markers': markers(), 'subtitles': subs}
+    import scenes
+    cuts = [[a, 1.2] for _, a, _ in SCENES[1:]] + [[round(s, 3), 0.5] for s in scenes.get('modern').starts[1:]]
+    data = {'FPS': 30, 'FORMAT': '9:16', 'DURATION': DURATION, 'S': S, 'markers': markers(), 'cuts': cuts, 'subtitles': subs}
     js = ('(function (root, f) { if (typeof module === "object") module.exports = f(); else root.SCORE = f(); })'
           '(this, function () {\n  return ' + json.dumps(data, ensure_ascii=False, indent=1) + ';\n});\n')
     open(os.path.join(HERE, 'score.js'), 'w', encoding='utf8').write(js)

@@ -5,7 +5,7 @@ slow push-in, joined by ink wipes.  On "Three scripts" the Tokyo street's signs 
 import cv2
 import numpy as np
 
-from engine import (FONT_EN_ITALIC, FONT_JP, H, INK, PAPER, W, Cam, Frame, blur, ease_io, ease_out, noise, reveal_time,
+from engine import (FONT_EN_ITALIC, FONT_JP, H, INK, PAPER, W, Cam, Frame, blur, ease_io, ease_out, ease_sine, noise, reveal_time,
                     smooth, spline, sstep, stroke, text_layer, wipe_mix)
 from glyphs import text_glyphs
 from poly_ink.brush import SWEEP
@@ -48,14 +48,14 @@ class Scene(SceneBase):
             self.ph.append(dict(img=big, s=s, zoom=zz, pan=pp))
         a0 = at('And you can')[0]
         three = at('Three scripts', 1)[0]
-        self.starts = [self.t0, a0 + 1.15, a0 + 2.2, three - 0.3]
+        self.starts = [self.t0, a0 + 1.0, a0 + 1.95, three - 0.6]
         self.t_three = three
         self.wipe_T = [None] + [self._wipe(k) for k in range(1, 4)]
         self.labels = []
         for k, (box, jp, en) in enumerate(SIGNS):
             D, T, _ = text_glyphs(jp, 46, font=FONT_JP, seed=70 + k)
             lab, _ = text_layer(en, FONT_EN_ITALIC, 38)
-            self.labels.append(dict(box=box, D=D, T=T, en=lab, t=three - 0.05 + 0.32 * k))
+            self.labels.append(dict(box=box, D=D, T=T, en=lab, t=three - 0.18 + 0.32 * k))
 
     def _wipe(self, k):
         yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
@@ -68,7 +68,7 @@ class Scene(SceneBase):
         p = self.ph[k]
         t0 = self.starts[k]
         t1 = self.starts[k + 1] + 0.4 if k + 1 < len(self.starts) else self.t1
-        u = ease_io((t - t0) / max(t1 - t0, 0.1))
+        u = ease_sine((t - t0) / max(t1 - t0, 0.1))      # gentle, even push-in
         z = p['zoom'][0] + (p['zoom'][1] - p['zoom'][0]) * u
         (px0, py0), (px1, py1) = p['pan']
         px, py = px0 + (px1 - px0) * u, py0 + (py1 - py0) * u

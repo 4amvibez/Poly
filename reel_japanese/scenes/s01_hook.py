@@ -30,19 +30,20 @@ class Scene(SceneBase):
             self.rows.append(dict(D=D, T=T, halo=blur(D, 5), lbl=lbl, y=y, t=s3 - 0.12 + 0.36 * k))
         self.t_but = at('But')[0]
         self.t_why = at('why')[0]
+        self.t_dot = max(at('But')[1] + 0.06, self.t_why - 0.14)        # a clean hit just before the word
         # the question mark: one sweeping vermilion stroke and a heavy dot
         q = StrokeSet(W, H)
         path = spline([(392, 720), (420, 612), (535, 548), (668, 592), (700, 706), (628, 800), (560, 868), (544, 965),
                        (548, 1048)], 14)
         q.add(stroke(W, H, path, 82, ink=0.95, dry=0.42, profile=((0, 0.55), (0.08, 1.0), (0.7, 0.9), (1, 0.45)),
-                     seed=7, red=True), self.t_why - 0.62, 0.5)
+                     seed=7, red=True), self.t_dot - 0.6, 0.5)
         circ = [(548 + 44 * np.cos(a), 1166 + 46 * np.sin(a)) for a in np.linspace(0, 2 * np.pi, 28, endpoint=False)]
         dot = pwash(W, H, circ, ink=0.96, soft=2.0, seed=8, grain=0.18)
         dot.red = True
-        q.add(dot, self.t_why + 0.02, 0.12, bloom_amt=0.3)
+        q.add(dot, self.t_dot, 0.1, bloom_amt=0.3)
         sp = splatter(W, H, 560, 1170, (90, 60), n=14, size=(1.5, 4.5), seed=9)
         sp.red = True
-        q.add(sp, self.t_why + 0.08, 0.15)
+        q.add(sp, self.t_dot + 0.05, 0.15)
         self.q = q
 
     def cam(self, t):

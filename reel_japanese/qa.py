@@ -64,13 +64,13 @@ def main(path):
         print('  ✓ 9:16 1080x1920, 30 fps, 100–110 s')
 
     score = json.loads(open(os.path.join(HERE, 'score.js')).read().split('return ', 1)[1].rsplit(';', 2)[0])
-    cuts = [b for _, (a0, b) in score['S'].items()][:-1]
+    cuts = score.get('cuts') or [[a0, 1.2] for _, (a0, b) in list(score['S'].items())[1:]]
     d = frame_diffs(path)
     t = (np.arange(len(d)) + 1) / 30
     med = np.median(d)
     spikes = [(float(tt), float(dd)) for tt, dd in zip(t, d) if dd > max(12, med * 8)]
     print(f'frames: {len(d) + 1} decoded, median change {med:.2f}/255 per frame')
-    bad = [s for s in spikes if not any(abs(s[0] - c) < 1.2 for c in cuts)]
+    bad = [s for s in spikes if not any(c - 0.05 <= s[0] <= c + w for c, w in cuts)]
     if bad:
         ok = False
         print('  ✗ unexplained jumps:', ', '.join(f'{s[0]:.2f}s ({s[1]:.0f})' for s in bad))

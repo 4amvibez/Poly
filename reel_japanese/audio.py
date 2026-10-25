@@ -279,7 +279,7 @@ def build(out_dir=os.path.join(HERE, 'audio')):
     # accents
     import scenes
     s1 = scenes.get('hook')
-    place(music, taiko(2.4, 52), s1.t_why + 0.02, 0.9)
+    place(music, taiko(2.4, 52), s1.t_dot, 0.9)
     place(music, taiko(2.0, 70), T0['map'] + 0.15, 0.35)
     s4 = scenes.get('kanji')
     place(music, bowl(note('A', 4)), s4.t_write_end + 0.05, 0.5, pan=0.2)

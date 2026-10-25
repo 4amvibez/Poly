@@ -1,3 +1,9 @@
 __pycache__/
 *.pyc
 .pytest_cache/
+reel_japanese/cache/
+reel_japanese/audio/stems/
+reel_japanese/audio/stems_f32/
+reel_japanese/audio/old_oliver/
+reel_japanese/audio/*.wav
+reel_japanese/audio/raj_b.mp3

@@ -237,7 +237,7 @@ def hit_times():
     import scenes
     from timeline import JA
     g = scenes.get
-    return [('hook_flick', g('hook').t_hit), ('question', g('spaces').t_hit), ('nihongo', g('kanji').t_hit),
+    return [('hook_q', g('hook').t_hit), ('question', g('spaces').t_hit), ('nihongo', g('kanji').t_hit),
             ('couplers', g('hiragana').t_hit), ('cup', g('katakana').t_hit), ('secret', g('secret').t_in),
             ('brain', g('secret').t_brain), ('last_step', g('endcard').t_hit), ('matane', JA['matane'])]
 
@@ -257,10 +257,7 @@ def scene_events():
         for k in range(len(c.jp)):
             ev.append((c.t_in + 0.15 + 0.12 * k, 0.35, 0.8, False))
 
-    s = scenes.get('hook')
-    for L in s.title:
-        ev.append((max(L['t'], 0.0), L['dur'] + min(L['t'], 0), 1.0, False))
-    strokes(s.flick, 1.2)
+    ev.append((0.0, 0.3, 1.5, True))                                  # the NO SPACES?! banner, slapped on in frame 1
     s = scenes.get('spaces')
     ev += [(s.t_en - 0.2, 0.4, 0.8, True), (s.t_jp - 0.2, 0.4, 0.8, True), (s.t_jp + 0.3, 0.9, 0.9, False)]
     strokes(s.line, 1.0)
@@ -346,7 +343,13 @@ def build(out_dir=os.path.join(HERE, 'audio')):
         for k, (n, o) in enumerate(notes):
             place(music, koto(note(n, o)), t0 + k * gap, gain, pan=pan + 0.1 * np.sin(k))
 
-    phrase(0.05, [('D', 4), ('A', 4)], gap=0.3, gain=0.7)
+    place(music, taiko(2.4, 50), 0.0, 1.0)                              # the opening slam
+    hk = g('hook')                                                      # the racing rows: a paper rush that grinds to a halt
+    n = int((hk.t_slow + 0.8) * SR)
+    rush = bp(rng.normal(0, 1, n), 500, 5000) * np.clip(np.arange(n) / (0.03 * SR), 0, 1)
+    rush *= np.clip((hk.t_slow + 0.75 - np.arange(n) / SR) / 0.75, 0, 1) ** 1.5
+    place(amb, rush * 0.05, 0.0)
+    phrase(0.05, [('D', 4), ('A', 4), ('D', 5)], gap=0.12, gain=0.7)
     sp = g('spaces')
     phrase(T0['spaces'] + 0.3, [('D', 4), ('Eb', 4), ('A', 4)], gap=0.45, gain=0.5)
     for tt, n in zip(sp.t_stone, [('G', 4), ('A', 4), ('D', 5)]):
@@ -382,7 +385,8 @@ def build(out_dir=os.path.join(HERE, 'audio')):
     phrase(JA['matane'] + 0.25, [('D', 3), ('A', 3), ('D', 4), ('A', 4)], gap=0.06, gain=0.45)
 
     # accents, each in a breath of the narration
-    place(music, taiko(2.4, 52), H_['hook_flick'], 0.9)
+    place(music, taiko(2.4, 52), H_['hook_q'], 0.9)
+    place(music, bowl(note('A', 4), 4.0), H_['hook_q'], 0.5)
     place(music, bowl(note('A', 4)), H_['question'], 0.75, pan=0.2)
     place(music, bowl(note('D', 5)), H_['nihongo'], 0.6, pan=-0.2)
     place(music, koto(note('A', 4)), H_['nihongo'], 0.6, pan=-0.2)          # a short breath: give the strike a sharp edge

@@ -1,24 +1,26 @@
-"""Scene 1 — the hook: こんなに長い日本語の文章を、どうやって読むの？ / "How do Japanese people read such a long sentence,
-without spaces?"
-The question is brushed in, line by line, as Raj asks it in Japanese (どうやって読むの？ in vermilion).  Below, a long
-handscroll of continuous text runs past — the opening of Natsume Sōseki's 吾輩は猫である (1905, public domain), which
-mixes kanji, hiragana and katakana — with a reader looking up at it from the bottom of the frame.  On "without
-spaces" small vermilion question marks pop up between the characters: where does one word end?"""
+"""Scene 1 — the hook: "How do Japanese people read such a long sentence, without spaces?"
+Raj asks it from the very first frame.  The page is already a wall of unbroken Japanese, rows racing past in opposite
+directions (the opening of Natsume Sōseki's 吾輩は猫である, 1905, public domain, which mixes kanji, hiragana and
+katakana), the camera slams in, and a vermilion brush banner cuts across it: NO SPACES?!  At the bottom a reader sits
+with their back to us, staring up at it, a question mark over their head.  On "without spaces" the rows grind to a
+halt, and in the breath after the question red ？ marks burst out all over the wall (taiko): where does one word end?"""
 import cv2
 import numpy as np
 
-from art import blossom_cluster, cherry_branch, figure_back, pagoda, sun_disc
-from engine import (FONT_JP, FONT_JP_FALLBACK, H, INK, SAKURA, VERM, W, Cam, StrokeSet, blur, bloom, cached,
-                    ease_io, keyframes, noise, reveal_time, smooth, stroke, text_layer)
-from glyphs import text_glyphs
-from scenes.base import SceneBase, dof
-from timeline import JA_HOOK, at, quiet_gap
+from art import figure_back
+from engine import (FONT_BRUSH_EN, FONT_JP, FONT_JP_FALLBACK, H, INK, VERM, W, Cam, StrokeSet, blur, cached, ease_out,
+                    noise, smooth, stroke, text_layer)
+from scenes.base import SceneBase
+from timeline import at, quiet_gap
 
 LINES = ['吾輩は猫である。名前はまだ無い。どこで生れたかとんと見当がつかぬ。何でも薄暗いじめじめした所でニャーニャー泣いていた事だけは記憶している。',
          '吾輩はここで始めて人間というものを見た。しかもあとで聞くとそれは書生という人間中で一番獰悪な種族であったそうだ。この書生というのは時々我々を捕えて煮て食うという話である。',
          'しかしその当時は何という考もなかったから別段恐しいとも思わなかった。ただ彼の掌に載せられてスーと持ち上げられた時何だかフワフワした感じがあったばかりである。']
-SCROLL = (60, 1020, 790, 1100)        # x0, x1, y0, y1 of the paper
-SPEED = (46, 38, 52)
+ROWS = [150 + 84 * k for k in range(13)]                       # the wall: 13 rows of text, alternately left / right
+SPEED = [170, -230, 200, -150, 260, -190, 160, -240, 210, -170, 250, -200, 180]
+BANNER_Y = 640
+IVORY = np.array([0.97, 0.94, 0.86], np.float32)
+PAPER_C = np.array([0.95, 0.92, 0.85], np.float32)
 
 
 class Scene(SceneBase):
@@ -26,96 +28,87 @@ class Scene(SceneBase):
     paper_stains = 0.1
 
     def build(self):
-        a, b = JA_HOOK['start'], JA_HOOK['end']
-        d = (b - a) / 3
-        self.title = []
-        for k, (txt, y, col) in enumerate((('こんなに長い', 300, INK), ('日本語の文章を', 418, INK), ('どうやって読むの？', 548, VERM))):
-            D, T, _ = text_glyphs(txt, 92, font=FONT_JP, seed=10 + k, tracking=0.03)
-            self.title.append(dict(D=D, T=T, halo=blur(D, 4), y=y, col=col, t=a - 0.55 + d * k, dur=d * 1.05))   # line 1 is half written in frame 1
-        # the scroll's text: three long lines, each tiled twice so it can run past endlessly
-        self.lines = []
-        for k, txt in enumerate(LINES):
-            a_, _ = text_layer(txt, FONT_JP_FALLBACK, 54, index=0)
+        self.rows = []
+        for k in range(len(ROWS)):
+            a_, _ = text_layer(LINES[k % 3][(k * 17) % 40:] + LINES[(k + 1) % 3], FONT_JP_FALLBACK, 62, index=0)
             a_ = np.clip(a_ * (0.85 + 0.15 * noise(a_.shape[0], a_.shape[1], 8, 2, k)), 0, 1)
-            self.lines.append(np.concatenate([a_, a_], 1))
-        def deco():
-            from inkpaint import Painting
-            p = Painting(W, H, seed=62)
-            r1 = p.ridge(1290, peaks=[(160, 120, 170), (620, 70, 220), (980, 140, 160)], rough=10, seed=1)
-            p.wash(r1, dens=0.2, decay=90, tex=70, edge=0.3, mist_y=1350, mist_h=40, seed=2)
+            self.rows.append(np.concatenate([a_, a_], 1))
+        yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+        band = np.clip(1 - np.abs(yy - BANNER_Y) / 118, 0, 1) ** 0.6                     # cleared strip for the banner
+        pit = np.clip(1.25 - np.hypot((xx - 540) / 560, (yy - 1420) / 360), 0, 1)     # cleared pool round the reader
+        self.clear = np.clip(np.maximum(band * 1.4, pit * 2.2), 0, 1)
+        self.fade = np.clip((1260 - yy) / 260, 0, 1) * np.clip((yy - 60) / 80, 0, 1)
+
+        def paint():
             ss = StrokeSet(W, H)
-            pagoda(ss, 905, 1310, 0.9, 0, 0.01, seed=3, ink=0.8)
-            tips = cherry_branch(ss, [(1130, 120), (1015, 175), (905, 160), (820, 228), (740, 214)], 18, 0, 0.01, seed=4)
-            figure_back(ss, 330, 1500, 1.5, 0, seed=5, dur=0.01)
-            bl = np.zeros((H, W), np.float32)
-            for k, (bx, by) in enumerate(tips):
-                bl = np.maximum(bl, blossom_cluster(H, W, bx, by, 12, 40, seed=10 + k))
-            return {'land': p.D.astype(np.float32), 'deco': ss.render(9).astype(np.float32), 'bl': bl}
-        self.A = cached('r01_deco_v1', deco)
-        self.sun = sun_disc(H, W, 650, 1235, 115, seed=63)
-        # the scroll paper with rollers
-        x0, x1, y0, y1 = SCROLL
-        pm = np.zeros((H, W), np.float32)
-        pm[y0:y1, x0:x1] = 1
-        self.scroll_mask = blur(pm, 1.2)
-        rol = np.zeros((H, W), np.float32)
-        for x in (x0 - 18, x1 + 2):
-            rol[y0 - 26:y1 + 26, x:x + 16] = 1
-        self.rollers = blur(rol, 1.0)
-        # "without spaces": question marks between characters
-        self.t_q = at('without spaces')[0]
-        q, _ = text_layer('？', FONT_JP, 64)
-        self.qmark = q
-        r = np.random.default_rng(3)
-        self.qpos = [(r.uniform(140, 940), 832 + 108 * (k % 3) - 24) for k in range(7)]
-        # sync hit: in the breath after the Japanese question, a vermilion flick underlines it (+ taiko)
-        c, n = quiet_gap(JA_HOOK['end'], JA_HOOK['end'] + 1.2)
-        self.t_hit = c - n / 2 + 0.3
-        fl = StrokeSet(W, H)
-        fl.add(stroke(W, H, [(150, 616), (540, 606), (930, 614)], 12, ink=0.95, dry=0.45,
-                      profile=((0, 0.4), (0.08, 1.0), (0.8, 0.8), (1, 0.2)), seed=21, red=True), self.t_hit - 0.03, 0.22)
-        self.flick = fl
+            figure_back(ss, 540, 1385, 1.5, 0, seed=5, dur=0.01)
+            bn = StrokeSet(W, H)
+            bn.add(stroke(W, H, [(60, BANNER_Y + 12), (540, BANNER_Y - 6), (1020, BANNER_Y + 6)], 180, ink=0.96, dry=0.45,
+                          profile=((0, 0.55), (0.05, 1.0), (0.88, 0.95), (1, 0.45)), seed=11, red=True), 0, 1)
+            return {'fig': ss.render(9).astype(np.float32), 'banner': bn.render(9).astype(np.float32)}
+        self.A = cached('r01_hook_v3', paint)
+        self.title, _ = text_layer('NO SPACES?!', FONT_BRUSH_EN, 124)
+        self.title = self.title * (0.88 + 0.12 * noise(*self.title.shape, 6, 2, 3))
+        self.qsmall, _ = text_layer('？', FONT_JP, 96)
+        self.qbig, _ = text_layer('？', FONT_JP, 92)
+        self.t_slow = at('without spaces')[0]
+        c, n = quiet_gap(at('without spaces')[1] - 0.2, at('In English')[0])
+        self.t_hit = c - n / 2 + 0.06                                  # sync: the ？ marks burst out (+ taiko)
+        r = np.random.default_rng(8)
+        self.qpos = [(r.uniform(90, 990), ROWS[k] + 2) for k in r.choice([0, 1, 2, 3, 4, 7, 8, 9, 10], 20)]
+        self.qdel = r.uniform(0, 0.12, len(self.qpos))
+
+    def pos(self, k, t):
+        """how far row k has travelled by time t: full speed, then grinding to a stop on "without spaces" """
+        v, D = SPEED[k], 0.75
+        if t < self.t_slow:
+            return v * t
+        u = min((t - self.t_slow) / D, 1.0)
+        return v * self.t_slow + v * D * (u - u * u / 2)
 
     def cam(self, t):
-        return Cam(*keyframes(t, [(0.0, (540, 900, 1.03)), (self.t_q, (540, 930, 1.06)), (self.t1, (540, 960, 1.1))], ease=ease_io))
+        slam = 1.0 + 0.22 * (1 - ease_out(t / 0.45))                     # the first frames slam in
+        punch = 0.05 * np.exp(-max(t - self.t_hit, 0) * 5) * (t > self.t_hit)
+        return Cam(540, 940 - 10 * smooth(t / 4), slam + punch + 0.015 * t)
 
     def render(self, t):
         cam = self.cam(t)
         fr = self.frame(cam)
-        self.layer(fr, cam, self.sun, color=VERM, opacity=0.85, depth=0.85)
-        self.layer(fr, cam, self.A['land'], depth=0.9)
-        self.layer(fr, cam, self.A['deco'])
-        self.layer(fr, cam, self.A['bl'], color=SAKURA, opacity=0.9)
-        # the scroll: shadow, paper, rollers, running text
-        x0, x1, y0, y1 = SCROLL
-        sm = self.project(cam, self.scroll_mask)
-        sh = self.project(cam, blur(np.roll(np.roll(self.scroll_mask, 10, 0), 6, 1), 10))
-        fr.img *= (1 - 0.25 * sh)[..., None]
-        fr.over(np.array([0.97, 0.94, 0.86], np.float32), sm, 0.96)
-        self.layer(fr, cam, self.rollers, color=np.array([0.32, 0.2, 0.12], np.float32), opacity=0.95)
+        # the wall of text
         T = np.zeros((H, W), np.float32)
-        for k, (L, sp) in enumerate(zip(self.lines, SPEED)):
+        for k, (L, y) in enumerate(zip(self.rows, ROWS)):
             half = L.shape[1] // 2
-            off = int((t * sp + 300 * k) % half)
-            y = y0 + 22 + 104 * k
-            seg = L[:, off:off + (x1 - x0)]
+            off = int((self.pos(k, t) + 337 * k) % half)
+            seg = L[:, off:off + W]
             h = min(seg.shape[0], H - y)
-            T[y:y + h, x0:x0 + seg.shape[1]] = np.maximum(T[y:y + h, x0:x0 + seg.shape[1]], seg[:h])
-        T *= self.scroll_mask
+            T[y:y + h, :seg.shape[1]] = np.maximum(T[y:y + h, :seg.shape[1]], seg[:h])
+        T *= self.fade * (1 - self.clear)
         self.layer(fr, cam, T, color=INK, opacity=0.9)
-        # where are the spaces?
-        for k, (qx, qy) in enumerate(self.qpos):
-            f = (t - self.t_q - 0.1 * k) / 0.25
-            if f > 0:
-                pop = 1 + 0.4 * np.exp(-f * 3)
-                self.place(fr, cam, self.qmark, qx, qy, color=VERM, opacity=smooth(f), scale=pop)
-        # the question, brushed in as it is spoken
-        for L in self.title:
-            f = (t - L['t']) / L['dur']
-            if f > 0:
-                d = bloom(reveal_time(L['D'], L['T'], f * 1.1, soft=0.05, wet=0.45), t - L['t'] - L['dur'], amount=0.14, halo=L['halo'])
-                halo = np.clip(blur(cv2.dilate(d, np.ones((13, 13), np.uint8)), 6) * 1.4, 0, 1)
-                fr.over(np.array([0.95, 0.92, 0.85], np.float32), self.project(cam, halo, 540 - d.shape[1] // 2, L['y'] - d.shape[0] // 2), 0.5)
-                self.place(fr, cam, d, 540, L['y'], color=L['col'])
-        self.layer(fr, cam, self.flick.render(t, red=True), color=VERM)
-        return dof(fr.img, 0.3 * (1 - smooth(t / 0.7)), focus_y=0.25, band=0.2)
+        # the reader, looking up at it
+        self.layer(fr, cam, self.A['fig'], opacity=0.95)
+        q = smooth((t - at('long sentence')[0]) / 0.25)
+        bob = 6 * np.sin(t * 5)
+        self.place(fr, cam, self.qbig, 540, 1080 + bob, color=VERM, opacity=q, scale=1 + 0.3 * np.exp(-max(t - at('long sentence')[0], 0) * 4))
+        # NO SPACES?!
+        m = np.zeros_like(self.A['banner'])
+        m[:, :int(W * min(1, t / 0.12 + 0.25))] = 1
+        self.layer(fr, cam, self.A['banner'] * blur(m, 12), color=VERM, opacity=0.95)
+        pop = 1 + 0.3 * (1 - ease_out(t / 0.35))
+        self._over(fr, cam, self.title, 540, BANNER_Y - 4, IVORY, smooth((t + 0.05) / 0.12), pop)
+        # where does one word end?  ？ marks burst out all over the wall
+        for (qx, qy), d in zip(self.qpos, self.qdel):
+            g = (t - self.t_hit - d) / 0.2
+            if g > 0:
+                self._over(fr, cam, blur(cv2.dilate(self.qsmall, np.ones((9, 9), np.uint8)), 3), qx, qy + 31, PAPER_C, smooth(g), 1 + 0.6 * np.exp(-g * 2))
+                self.place(fr, cam, self.qsmall, qx, qy + 31, color=VERM, opacity=smooth(g), scale=1 + 0.6 * np.exp(-g * 2))
+                self.place(fr, cam, self.qsmall, qx, qy + 31, color=VERM, opacity=0.6 * smooth(g), scale=1 + 0.6 * np.exp(-g * 2))
+        return fr.img
+
+    def _over(self, fr, cam, a, x, y, color, op, scale=1.0):
+        if op <= 0:
+            return
+        h, w = a.shape
+        M = cam.matrix()
+        A = np.array([[scale, 0, x - scale * w / 2], [0, scale, y - scale * h / 2]], np.float32)
+        Mt = np.concatenate([M[:, :2] @ A[:, :2], (M[:, :2] @ A[:, 2] + M[:, 2])[:, None]], 1)
+        fr.over(color, cv2.warpAffine(a.astype(np.float32), Mt, (W, H)), op)

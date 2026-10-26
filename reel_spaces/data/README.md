@@ -1,8 +1,8 @@
 # Sources
 
-- Narration: your ElevenLabs voices, **Raj** (English) and **Raj in Japanese** (the hook question, the example sentence
-  and the sign-off), spliced by `../build_vo.py`; word timings from ElevenLabs Scribe drive every cut and sync hit.
-- The hook's handscroll text is the opening of Natsume Sōseki's 吾輩は猫である (1905), which is in the public domain.
+- Narration: your ElevenLabs voices, **Raj** (English, from the first frame) and **Raj in Japanese** (the example
+  sentence, コーヒー and the sign-off), spliced by `../build_vo.py`; word timings from ElevenLabs Scribe drive every cut and sync hit.
+- The hook's wall of text is the opening of Natsume Sōseki's 吾輩は猫である (1905), which is in the public domain.
 - Every illustration (landscapes, stepping stones, bridge, bullet train, cards, coffee cup, the reader's head, the
   figures) is painted in code with the `poly_ink` brush and `inkpaint`; no image generation and no stock images.
 - The storyboard you supplied was used only as a guide for the beats; it is not shown in the film.

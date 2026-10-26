@@ -2,328 +2,328 @@
   return {
  "FPS": 30,
  "FORMAT": "9:16",
- "DURATION": 91.83,
+ "DURATION": 87.53,
  "S": {
   "hook": [
    0.0,
-   10.0
+   5.9
   ],
   "spaces": [
-   9.2,
-   23.28
+   5.1,
+   18.98
   ],
   "kanji": [
-   22.48,
-   36.82
+   18.18,
+   32.52
   ],
   "hiragana": [
-   36.12,
-   49.06
+   31.82,
+   44.76
   ],
   "katakana": [
-   48.36,
-   59.48
+   44.06,
+   55.18
   ],
   "secret": [
-   58.68,
-   76.41
+   54.38,
+   72.11
   ],
   "endless": [
-   75.61,
-   84.1
+   71.31,
+   79.8
   ],
   "endcard": [
-   83.3,
-   91.83
+   79.0,
+   87.53
   ]
  },
  "markers": {
-  "hook_flick": {
-   "t": 3.95,
+  "hook_q": {
+   "t": 4.87,
    "sync": "av"
   },
   "question": {
-   "t": 22.41,
+   "t": 18.11,
    "sync": "av"
   },
   "nihongo": {
-   "t": 33.255,
+   "t": 28.955,
    "sync": "av"
   },
   "couplers": {
-   "t": 44.62,
+   "t": 40.32,
    "sync": "av"
   },
   "cup": {
-   "t": 56.76,
+   "t": 52.445,
    "sync": "av"
   },
   "secret": {
-   "t": 60.655,
+   "t": 56.355,
    "sync": "av"
   },
   "brain": {
-   "t": 71.36,
+   "t": 67.06,
    "sync": "av"
   },
   "last_step": {
-   "t": 86.587,
+   "t": 82.287,
    "sync": "av"
   },
   "matane": {
-   "t": 89.73,
+   "t": 85.43,
    "sync": "av"
   }
  },
  "cuts": [
   [
-   9.2,
+   5.1,
    0.9
   ],
   [
-   22.48,
+   18.18,
    0.9
   ],
   [
-   36.12,
+   31.82,
    0.8
   ],
   [
-   48.36,
+   44.06,
    0.8
   ],
   [
-   58.68,
+   54.38,
    0.9
   ],
   [
-   75.61,
+   71.31,
    0.9
   ],
   [
-   83.3,
+   79.0,
    0.9
   ]
  ],
  "subtitles": [
   {
-   "start": 4.64,
-   "end": 6.58,
+   "start": 0.34,
+   "end": 2.28,
    "text": "How do Japanese people read such"
   },
   {
-   "start": 6.6,
-   "end": 9.35,
+   "start": 2.3,
+   "end": 5.05,
    "text": "a long sentence, without spaces?"
   },
   {
-   "start": 9.44,
-   "end": 11.5,
+   "start": 5.14,
+   "end": 7.2,
    "text": "In English, spaces tell us where"
   },
   {
-   "start": 11.52,
-   "end": 14.06,
+   "start": 7.22,
+   "end": 9.76,
    "text": "one word ends, and the next begins."
   },
   {
-   "start": 14.08,
-   "end": 15.27,
+   "start": 9.78,
+   "end": 10.97,
    "text": "But Japanese?"
   },
   {
-   "start": 15.36,
-   "end": 17.22,
+   "start": 11.06,
+   "end": 12.92,
    "text": "Words often run together,"
   },
   {
-   "start": 17.24,
-   "end": 18.39,
+   "start": 12.94,
+   "end": 14.09,
    "text": "without spaces."
   },
   {
-   "start": 18.48,
-   "end": 20.38,
+   "start": 14.18,
+   "end": 16.08,
    "text": "So how do readers know where one"
   },
   {
-   "start": 20.4,
-   "end": 22.55,
+   "start": 16.1,
+   "end": 18.25,
    "text": "word ends, and another begins?"
   },
   {
-   "start": 22.72,
-   "end": 24.78,
+   "start": 18.42,
+   "end": 20.48,
    "text": "The first clue is kanji."
   },
   {
-   "start": 24.8,
-   "end": 26.15,
+   "start": 20.5,
+   "end": 21.85,
    "text": "Look at this sentence."
   },
   {
-   "start": 26.3,
-   "end": 28.79,
+   "start": 22.0,
+   "end": 24.49,
    "text": "Watashi wa nihongo o benkyō shimasu."
   },
   {
-   "start": 29.19,
-   "end": 31.41,
+   "start": 24.89,
+   "end": 27.11,
    "text": "Kanji carries important meaning."
   },
   {
-   "start": 31.43,
-   "end": 33.37,
+   "start": 27.13,
+   "end": 29.07,
    "text": "When readers see \"nihongo\","
   },
   {
-   "start": 33.39,
-   "end": 34.29,
+   "start": 29.09,
+   "end": 29.99,
    "text": "they can recognize the"
   },
   {
-   "start": 34.31,
-   "end": 36.29,
+   "start": 30.01,
+   "end": 31.99,
    "text": "word for Japanese language."
   },
   {
-   "start": 36.31,
-   "end": 38.13,
+   "start": 32.01,
+   "end": 33.83,
    "text": "Next comes hiragana."
   },
   {
-   "start": 38.15,
-   "end": 40.77,
+   "start": 33.85,
+   "end": 36.47,
    "text": "Characters like \"wa\", \"o\", and"
   },
   {
-   "start": 40.79,
-   "end": 42.93,
+   "start": 36.49,
+   "end": 38.63,
    "text": "\"shimasu\" help readers understand"
   },
   {
-   "start": 42.95,
-   "end": 44.69,
+   "start": 38.65,
+   "end": 40.39,
    "text": "how the sentence is structured."
   },
   {
-   "start": 44.71,
-   "end": 46.65,
+   "start": 40.41,
+   "end": 42.35,
    "text": "They show grammatical relationships,"
   },
   {
-   "start": 46.67,
-   "end": 48.53,
+   "start": 42.37,
+   "end": 44.23,
    "text": "and how words work together."
   },
   {
-   "start": 48.55,
-   "end": 49.74,
+   "start": 44.25,
+   "end": 45.44,
    "text": "And katakana?"
   },
   {
-   "start": 49.83,
-   "end": 51.49,
+   "start": 45.53,
+   "end": 47.19,
    "text": "It often helps readers recognize"
   },
   {
-   "start": 51.51,
-   "end": 53.69,
+   "start": 47.21,
+   "end": 49.39,
    "text": "foreign-origin words, names,"
   },
   {
-   "start": 53.71,
-   "end": 55.89,
+   "start": 49.41,
+   "end": 51.59,
    "text": "and certain emphasized expressions."
   },
   {
-   "start": 55.91,
-   "end": 58.7,
+   "start": 51.61,
+   "end": 54.4,
    "text": "For example, \"kōhī\" means coffee."
   },
   {
-   "start": 58.87,
-   "end": 60.77,
+   "start": 54.57,
+   "end": 56.47,
    "text": "But here's the real secret."
   },
   {
-   "start": 60.79,
-   "end": 61.97,
+   "start": 56.49,
+   "end": 57.67,
    "text": "Japanese readers don't"
   },
   {
-   "start": 61.99,
-   "end": 63.73,
+   "start": 57.69,
+   "end": 59.43,
    "text": "rely on just one clue."
   },
   {
-   "start": 63.75,
-   "end": 66.21,
+   "start": 59.45,
+   "end": 61.91,
    "text": "They combine kanji, kana,"
   },
   {
-   "start": 66.23,
-   "end": 67.77,
+   "start": 61.93,
+   "end": 63.47,
    "text": "grammar, vocabulary,"
   },
   {
-   "start": 67.79,
-   "end": 69.49,
+   "start": 63.49,
+   "end": 65.19,
    "text": "and context, to recognize"
   },
   {
-   "start": 69.51,
-   "end": 71.49,
+   "start": 65.21,
+   "end": 67.19,
    "text": "meaningful chunks of a sentence."
   },
   {
-   "start": 71.51,
-   "end": 72.61,
+   "start": 67.21,
+   "end": 68.31,
    "text": "Their brains learn to see"
   },
   {
-   "start": 72.63,
-   "end": 74.25,
+   "start": 68.33,
+   "end": 69.95,
    "text": "the boundaries, even when"
   },
   {
-   "start": 74.27,
-   "end": 75.73,
+   "start": 69.97,
+   "end": 71.43,
    "text": "spaces aren't written."
   },
   {
-   "start": 75.75,
-   "end": 77.25,
+   "start": 71.45,
+   "end": 72.95,
    "text": "At first, Japanese can"
   },
   {
-   "start": 77.27,
-   "end": 79.33,
+   "start": 72.97,
+   "end": 75.03,
    "text": "look like one endless line."
   },
   {
-   "start": 79.35,
-   "end": 80.21,
+   "start": 75.05,
+   "end": 75.91,
    "text": "But once you understand"
   },
   {
-   "start": 80.23,
-   "end": 81.73,
+   "start": 75.93,
+   "end": 77.43,
    "text": "the patterns, the sentence"
   },
   {
-   "start": 81.75,
-   "end": 83.37,
+   "start": 77.45,
+   "end": 79.07,
    "text": "starts to make sense."
   },
   {
-   "start": 83.39,
-   "end": 85.09,
+   "start": 79.09,
+   "end": 80.79,
    "text": "Follow me to learn Japanese,"
   },
   {
-   "start": 85.11,
-   "end": 86.78,
+   "start": 80.81,
+   "end": 82.48,
    "text": "one step at a time."
   }
  ]

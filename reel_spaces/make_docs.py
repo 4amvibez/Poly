@@ -5,15 +5,17 @@ import os
 import subtitles
 import timeline as T
 from audio import hit_times
-from timeline import JA, JA_HOOK, JA_SENT, at
+from timeline import JA, JA_SENT, at
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 fmt = lambda s: f'{int(s // 60):d}:{s % 60:05.2f}'
 
 BEATS = {
-    'hook': ['こんなに長い / 日本語の文章を / どうやって読むの？ brushed in as Raj asks it in Japanese, over a handscroll of '
-             'unbroken Japanese text running past; sun, mountains, pagoda, blossom, a reader from behind',
-             ('without spaces', 'Vermilion ？ marks pop up between the characters on the scroll')],
+    'hook': ['Frame 1: the camera slams into a wall of unbroken Japanese, rows racing left and right; a vermilion brush '
+             'banner NO SPACES?! is slapped across it (taiko); Raj\'s question starts at once, with captions; a reader sits '
+             'below, staring up at it',
+             ('long sentence', 'A red ？ pops over the reader\'s head'),
+             ('without spaces', 'The rows grind to a halt; in the breath after the question red ？ marks burst out all over the wall (taiko)')],
     'spaces': [('In English', 'A stream: "I", "love", "learning" set down on stepping stones, with a "space" marked in each gap'),
                ('where one word', 'A little reader hops from stone to stone, word to word'),
                ('But Japanese', 'A river and an arched bridge: 私は日本語を勉強します。 written across it in one unbroken run'),
@@ -73,22 +75,19 @@ def main():
             L.append(f"|  |  | {fmt(JA['matane'])} | またね！ in vermilion, the reader turns and waves (bowl); English translation; hold |")
     L += ['', '## Sync hits (picture event + sound, each in a breath of the narration)', '', '| Time | Hit |', '|---|---|']
     L += [f'| {fmt(t)} | {n} |' for n, t in hit_times()]
-    L += ['', '## Captions (video time)', '', '| Start | End | Caption |', '|---|---|---|',
-          f"| {fmt(JA_HOOK['start'])} | {fmt(JA_HOOK['end'])} | (on screen as the title) こんなに長い日本語の文章をどうやって読むの？ |"]
+    L += ['', '## Captions (video time)', '', '| Start | End | Caption |', '|---|---|---|']
     for c in subtitles.CUES:
         L.append(f"| {fmt(c['start'])} | {fmt(c['end'])} | {' '.join(w for w, _ in c['words'])} |")
     L.append(f"| {fmt(JA['start'])} | {fmt(T.DURATION)} | (on the end card) 最後まで見てくれてありがとう。またね！ — "
              '"Thanks for watching till the end. See you next time!" |')
     L += ['', '## Japanese on screen (checked)', '',
-          '- こんなに長い日本語の文章をどうやって読むの？ (konna ni nagai nihongo no bunshō o dō yatte yomu no?) "How do you read '
-          'such a long Japanese sentence?"',
           '- 私は日本語を勉強します。 (watashi wa nihongo o benkyō shimasu) "I study Japanese." Chunks 私は | 日本語を | 勉強します。',
           '- は is the topic particle, read "wa"; を is the object particle, read "o"; します is the polite form of する "do"',
           '- 日本語 にほんご nihongo "Japanese language"; 学校 がっこう gakkō "school"; 東京 とうきょう Tōkyō; 電車 でんしゃ densha "train"',
           '- 漢字 kanji, ひらがな hiragana, カタカナ katakana, かな kana; 文法 bunpō "grammar"; 語彙 goi "vocabulary"; 文脈 bunmyaku "context"; '
           '秘密 himitsu "secret"',
           '- パソコン pasokon "computer" (from "personal computer"); ラージ rāji, Raj written in katakana; スゴイ！ sugoi "amazing!" '
-          '(すごい, written in katakana for emphasis); コーヒー kōhī "coffee"',
+          '(すごい, written in katakana for emphasis); コーヒー kōhī "coffee" (spoken by the Japanese voice)',
           '- 毎朝コーヒーを飲みます。 (maiasa kōhī o nomimasu) "I drink coffee every morning."; '
           '東京の学校まで電車で行きます。 (Tōkyō no gakkō made densha de ikimasu) "I go to school in Tokyo by train."',
           '- 一歩ずつ (ippo zutsu) "one step at a time"',
@@ -100,8 +99,7 @@ def main():
     os.makedirs(out, exist_ok=True)
     open(os.path.join(out, 'narration_script_timestamps.md'), 'w').write('\n'.join(L) + '\n')
     t = lambda s: f'{int(s // 3600):02d}:{int(s % 3600 // 60):02d}:{int(s % 60):02d},{int(round((s % 1) * 1000)) % 1000:03d}'
-    cues = [(JA_HOOK['start'], JA_HOOK['end'], 'こんなに長い日本語の文章をどうやって読むの？')]
-    cues += [(c['start'], c['end'], ' '.join(w for w, _ in c['words'])) for c in subtitles.CUES]
+    cues = [(c['start'], c['end'], ' '.join(w for w, _ in c['words'])) for c in subtitles.CUES]
     cues.append((JA['start'], T.DURATION - 0.2, '最後まで見てくれてありがとう。またね！\n(Thanks for watching till the end. See you next time!)'))
     srt = []
     for i, (a, b, txt) in enumerate(cues, 1):

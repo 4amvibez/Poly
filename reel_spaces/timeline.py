@@ -10,7 +10,6 @@ VO_OFFSET = 0.4          # narration starts just after the first brush contact
 _W = json.load(open(os.path.join(HERE, 'audio', 'words.json'), encoding='utf8'))
 _words = _W['words']
 JA = {k: (v + VO_OFFSET if isinstance(v, (int, float)) else v) for k, v in _W['ja'].items()}   # Japanese sign-off
-JA_HOOK = {k: (v + VO_OFFSET if isinstance(v, (int, float)) else v) for k, v in _W['ja_hook'].items()}
 JA_SENT = {k: (v + VO_OFFSET if isinstance(v, (int, float)) else v) for k, v in _W['ja_sentence'].items() if k != 'chunks'}
 JA_SENT['chunks'] = [(a + VO_OFFSET, b + VO_OFFSET) for a, b in _W['ja_sentence']['chunks']]   # 私は | 日本語を | 勉強します
 WORDS = [dict(text=w['text'], start=w['start'] + VO_OFFSET, end=w['end'] + VO_OFFSET)
@@ -37,7 +36,7 @@ def at(phrase, nth=0):
 # the first word of its section, and the outgoing scene overlaps it for the transition.
 _CUTS = [
     ('hook', None, 0.0, 0.0),
-    ('spaces', 'In English', 0.3, 0.8),
+    ('spaces', 'In English', 0.1, 0.8),
     ('kanji', 'The first clue', 0.3, 0.8),
     ('hiragana', 'Next comes', 0.25, 0.7),
     ('katakana', 'And katakana', 0.25, 0.7),

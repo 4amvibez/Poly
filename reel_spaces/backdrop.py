@@ -35,7 +35,7 @@ def backdrop(seed=0, branch='right', pagoda_x=None, reader=False, ground=1330):
 
 
 def draw_backdrop(scene, fr, cam, B, op=1.0):
-    from engine import INK, SAKURA
+    from engine import SAKURA
     scene.layer(fr, cam, B['land'], opacity=op, depth=0.92)
     scene.layer(fr, cam, B['deco'], opacity=op * 0.9)
     scene.layer(fr, cam, B['bl'], color=SAKURA, opacity=op * 0.9)

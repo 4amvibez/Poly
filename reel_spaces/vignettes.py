@@ -2,7 +2,7 @@
 a cup of coffee with steam.  Each returns a density patch (painted with poly_ink strokes and washes)."""
 import numpy as np
 
-from engine import StrokeSet, blur, spline, stroke
+from engine import StrokeSet, spline, stroke
 from poly_ink.brush import BLUNT, PRESS_DOWN, SWEEP, wash as pwash
 
 

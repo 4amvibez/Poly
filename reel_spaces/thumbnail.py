@@ -21,7 +21,6 @@ from backdrop import backdrop  # noqa: E402
 from engine import (FONT_BRUSH_EN, FONT_EN_BOLD, FONT_EN_ITALIC, FONT_HEAD, FONT_JP, GREY, H, INK, SAKURA, SEA, VERM, W,  # noqa: E402
                     Frame, StrokeSet, blur, cached, make_paper, noise, spline, stroke, text_layer)
 from glyphs import text_glyphs  # noqa: E402
-from poly_ink.brush import PRESS_DOWN  # noqa: E402
 from sentence import BLUE, CHUNK_COL, GOLD, PINK, Sentence  # noqa: E402
 
 OUT = os.path.join(HERE, 'output')

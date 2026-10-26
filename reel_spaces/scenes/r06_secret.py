@@ -14,7 +14,7 @@ from clues import Clue, seal
 from engine import (FONT_EN, FONT_EN_ITALIC, FONT_JP, GREY, H, VERM, W, Cam, StrokeSet, blur, ease_io, ease_out, keyframes,
                     lerp, smooth, spline, stroke, text_layer)
 from glyphs import text_glyphs
-from poly_ink.brush import PRESS_DOWN, SWEEP
+from poly_ink.brush import PRESS_DOWN
 from scenes.base import SceneBase
 from sentence import CHUNK_COL, GOLD, PINK, BLUE, Sentence
 from timeline import WORDS, at, quiet_gap

@@ -8,8 +8,8 @@ import numpy as np
 
 from art import figure
 from backdrop import backdrop, draw_backdrop
-from engine import (FONT_EN_BOLD, FONT_EN_ITALIC, FONT_JP, GREY, H, INK, PAPER, SEA, VERM, W, Cam, StrokeSet, blur,
-                    cached, ease_io, ease_out, keyframes, lerp, noise, smooth, spline, stroke, text_layer)
+from engine import (FONT_EN_BOLD, FONT_EN_ITALIC, FONT_JP, H, SEA, VERM, W, Cam, StrokeSet, blur,
+                    cached, ease_io, keyframes, lerp, noise, smooth, spline, stroke, text_layer)
 from poly_ink.brush import BLUNT, PRESS_DOWN, SWEEP, wash as pwash
 from scenes.base import SceneBase
 from sentence import Sentence
@@ -109,7 +109,6 @@ class Scene(SceneBase):
         self.splits = [(i, self.t_how + 0.25 + 0.32 * k) for k, i in enumerate([3, 7, 1, 9, 5, 2, 10, 6])]
         self.dash = self._dash()
         q = StrokeSet(W, H)
-        from art import sun_disc  # noqa: F401
         P = lambda pts: [(540 + (x - 548) * 0.62, 470 + (y - 880) * 0.62) for x, y in pts]
         q.add(stroke(W, H, spline(P([(392, 720), (420, 612), (535, 548), (668, 592), (700, 706), (628, 800), (560, 868), (544, 965),
                                        (548, 1048)]), 14), 46, ink=0.95, dry=0.42, profile=((0, 0.55), (0.08, 1.0), (0.7, 0.9), (1, 0.45)),
@@ -146,7 +145,6 @@ class Scene(SceneBase):
             self.layer(fr, cam, A['stream_rip'], color=SEA * 0.6, opacity=0.6 * oe)
             ink, txt = self.tag_en
             self.place(fr, cam, ink, 250, 440, opacity=oe)
-            M = cam.matrix()
             self._ivory(fr, cam, txt, 250, 440, oe)
             for k, (a_, x, y) in enumerate(self.words):
                 f = smooth((t - self.t_stone[k]) / 0.35)

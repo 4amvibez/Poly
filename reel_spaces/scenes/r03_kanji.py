@@ -9,7 +9,7 @@ import numpy as np
 import vignettes
 from backdrop import backdrop, draw_backdrop
 from clues import Clue
-from engine import (FONT_EN, FONT_EN_ITALIC, FONT_JP, GREY, H, INK, PAPER, VERM, W, Cam, StrokeSet, blur, cached, ease_io,
+from engine import (FONT_EN, FONT_EN_ITALIC, FONT_JP, GREY, H, INK, VERM, W, Cam, StrokeSet, blur, cached, ease_io,
                     ease_out, keyframes, lerp, smooth, stroke, text_layer)
 from glyphs import text_glyphs
 from scenes.base import SceneBase
@@ -76,7 +76,6 @@ class Scene(SceneBase):
         draw_backdrop(self, fr, cam, self.B, smooth((t - self.t0) / 0.8))
         self.clue.draw(self, fr, cam, t)
         lift = ease_io((t - self.t_lift) / 0.7)
-        cards_on = smooth((t - self.t_cards[0] + 0.3) / 0.4)
         # gold swashes behind the kanji
         for k, (D, ts) in enumerate(self.gold):
             f = (t - ts) / 0.35
@@ -117,9 +116,7 @@ class Scene(SceneBase):
             e = ease_out(f)
             x, y = CX[k], CY + 40 * (1 - e)
             self.place(fr, cam, blur(self.box, 8), x + 6, y + 10, opacity=0.25 * e)
-            self.place(fr, cam, self.box, x, y, color=np.asarray(PAPER) * 1.03, opacity=0.0)
             fr_op = smooth(f * 1.5)
-            from engine import Frame  # noqa: F401
             self._paper_card(fr, cam, x, y, fr_op)
             self.place(fr, cam, self.rim, x, y, color=np.array([0.55, 0.42, 0.3], np.float32), opacity=0.6 * fr_op)
             self.place(fr, cam, C['kana'], x, y - 140, color=GREY, opacity=fr_op)

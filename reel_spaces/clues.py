@@ -3,7 +3,7 @@ number, the script's name brushed in Japanese, and its romaji.  It stamps in lar
 top of the page while the clue is explained."""
 import numpy as np
 
-from engine import FONT_BRUSH_JP, FONT_EN_BOLD, FONT_EN_ITALIC, GREY, INK, VERM, blur, ease_io, lerp, noise, smooth, text_layer
+from engine import FONT_BRUSH_JP, FONT_EN_BOLD, FONT_EN_ITALIC, GREY, VERM, blur, ease_io, lerp, noise, smooth, text_layer
 from glyphs import typeset
 
 

@@ -8,7 +8,7 @@ import numpy as np
 from art import figure, sun_disc
 from backdrop import backdrop, draw_backdrop
 from engine import (FONT_BRUSH_EN, FONT_BRUSH_JP, FONT_EN_BOLD, FONT_EN_ITALIC, GREY, H, INK, SEA, VERM, W, Cam, StrokeSet, blur,
-                    cached, ease_io, ease_out, keyframes, lerp, noise, smooth, stroke, text_layer)
+                    cached, ease_io, keyframes, lerp, noise, smooth, stroke, text_layer)
 from glyphs import typeset
 from poly_ink.brush import PRESS_DOWN, SWEEP, wash as pwash
 from scenes.base import SceneBase

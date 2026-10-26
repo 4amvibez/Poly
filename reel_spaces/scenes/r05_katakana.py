@@ -57,7 +57,6 @@ class Scene(SceneBase):
         back = np.clip((1 - dia) * 30, 0, 1) * 0.85
         qh, qw = q.shape
         back[BH // 2 - qh // 2:BH // 2 - qh // 2 + qh, BW // 2 - qw // 2:BW // 2 - qw // 2 + qw] *= 1 - q
-        frame_ = np.clip(blur(rim, 0.7) - blur(inner, 0.7), 0, 1)
         inner2, inner3 = np.zeros_like(box), np.zeros_like(box)
         inner2[22:-22, 22:-22] = 1
         inner3[25:-25, 25:-25] = 1

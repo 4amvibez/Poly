@@ -23,7 +23,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 SR = 48000
 
-from timeline import DURATION, JA, SCENES, VO_OFFSET, at  # noqa: E402
+from timeline import DURATION, JA, SCENES, VO_OFFSET
 
 N = int(DURATION * SR)
 rng = np.random.default_rng(7)
@@ -385,6 +385,7 @@ def build(out_dir=os.path.join(HERE, 'audio')):
     place(music, taiko(2.4, 52), H_['hook_flick'], 0.9)
     place(music, bowl(note('A', 4)), H_['question'], 0.75, pan=0.2)
     place(music, bowl(note('D', 5)), H_['nihongo'], 0.6, pan=-0.2)
+    place(music, koto(note('A', 4)), H_['nihongo'], 0.6, pan=-0.2)          # a short breath: give the strike a sharp edge
     place(music, bowl(note('A', 5), 4.0), H_['cup'], 0.3, pan=0.1)
     place(music, taiko(2.2, 60), H_['secret'], 0.7)
     place(music, bowl(note('D', 5), 5.0), H_['brain'], 0.75)
@@ -400,8 +401,8 @@ def build(out_dir=os.path.join(HERE, 'audio')):
     dips = np.ones(N)
     for _, th in hit_times():
         n = int(0.025 * SR)
-        place(music, hp(rng.normal(0, 1, n), 2500) * np.exp(-np.arange(n) / SR * 180) * 0.5, th, 0.8)
-        i0, i1, i2 = int((th - 0.2) * SR), int((th - 0.015) * SR), int((th + 0.25) * SR)
+        place(music, hp(rng.normal(0, 1, n), 2500) * np.exp(-np.arange(n) / SR * 180) * 0.5, th, 2.0)
+        i0, i1, i2 = int((th - 0.2) * SR), int((th - 0.015) * SR), int((th + 0.6) * SR)   # slow recovery: no swell right after
         gg = np.ones(i2 - i0)
         gg[:i1 - i0] = 1 - 0.7 * np.sin(np.linspace(0, np.pi / 2, i1 - i0)) ** 2
         gg[i1 - i0:] = np.minimum(1, 0.3 + 0.7 * np.linspace(0, 1, i2 - i1) ** 0.5)

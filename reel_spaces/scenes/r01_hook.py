@@ -8,8 +8,8 @@ import cv2
 import numpy as np
 
 from art import blossom_cluster, cherry_branch, figure_back, pagoda, sun_disc
-from engine import (FONT_JP, FONT_JP_FALLBACK, H, INK, SAKURA, SEPIA, VERM, W, Cam, StrokeSet, blur, bloom, cached,
-                    ease_io, ease_out, keyframes, noise, reveal_time, smooth, stroke, text_layer)
+from engine import (FONT_JP, FONT_JP_FALLBACK, H, INK, SAKURA, VERM, W, Cam, StrokeSet, blur, bloom, cached,
+                    ease_io, keyframes, noise, reveal_time, smooth, stroke, text_layer)
 from glyphs import text_glyphs
 from scenes.base import SceneBase, dof
 from timeline import JA_HOOK, at, quiet_gap

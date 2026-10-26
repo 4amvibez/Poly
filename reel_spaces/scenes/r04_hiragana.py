@@ -11,7 +11,7 @@ import numpy as np
 import train as TR
 from backdrop import backdrop, draw_backdrop
 from clues import Clue
-from engine import (FONT_EN, FONT_EN_ITALIC, FONT_JP, GREY, H, INK, VERM, W, Cam, StrokeSet, ease_in, ease_io, ease_out,
+from engine import (FONT_EN, FONT_EN_ITALIC, FONT_JP, GREY, H, VERM, W, Cam, StrokeSet, ease_in, ease_io, ease_out,
                     keyframes, lerp, smooth, stroke, text_layer)
 from glyphs import typeset
 from poly_ink.brush import PRESS_DOWN
@@ -29,7 +29,7 @@ class Scene(SceneBase):
     paper_seed = 66
 
     def build(self):
-        self.clue = Clue(2, 'ひらがな', 'hiragana', at('Next comes')[0] + 0.2, at('Characters like')[0] - 0.1)
+        self.clue = Clue(2, 'ひらがな', 'hiragana', at('Next comes')[0] + 0.2, at('hiragana')[0] + 0.3)
         self.B = backdrop(seed=90, branch='right', ground=1340)
         self.T = TR.build()
         self.track = TR.track(W, H, TY + 96, TY - 94, seed=3)
@@ -37,7 +37,7 @@ class Scene(SceneBase):
         self.badge = TR.badge(31, seed=4)
         self.sent = Sentence(size=74)
         S = self.sent
-        self.t_write = at('Characters like')[0] - 0.6
+        self.t_write = self.clue.t_settle + 0.55                        # once the clue has moved up out of the way
         self.t_mark = [at('wa')[0], at('o')[0], at('shimasu')[0]]
         self.marks = [([1], PINK, 'topic marker'), ([5], PINK, 'object marker'), ([8, 9, 10], BLUE, 'polite verb ending')]
         self.sw = [S.swash(idx, color_seed=60 + k) for k, (idx, _, _) in enumerate(self.marks)]

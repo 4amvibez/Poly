@@ -7,7 +7,7 @@ import numpy as np
 from scipy.io import wavfile
 
 import subtitles
-from timeline import DURATION, SCENES, at
+from timeline import DURATION, SCENES
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 

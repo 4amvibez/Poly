@@ -1,0 +1,184 @@
+1
+00:00:00,400 --> 00:00:03,650
+こんなに長い日本語の文章をどうやって読むの？
+
+2
+00:00:04,640 --> 00:00:06,580
+How do Japanese people read such
+
+3
+00:00:06,600 --> 00:00:09,350
+a long sentence, without spaces?
+
+4
+00:00:09,440 --> 00:00:11,500
+In English, spaces tell us where
+
+5
+00:00:11,520 --> 00:00:14,060
+one word ends, and the next begins.
+
+6
+00:00:14,080 --> 00:00:15,270
+But Japanese?
+
+7
+00:00:15,360 --> 00:00:17,220
+Words often run together,
+
+8
+00:00:17,240 --> 00:00:18,390
+without spaces.
+
+9
+00:00:18,480 --> 00:00:20,380
+So how do readers know where one
+
+10
+00:00:20,400 --> 00:00:22,550
+word ends, and another begins?
+
+11
+00:00:22,720 --> 00:00:24,780
+The first clue is kanji.
+
+12
+00:00:24,800 --> 00:00:26,150
+Look at this sentence.
+
+13
+00:00:26,300 --> 00:00:28,790
+Watashi wa nihongo o benkyō shimasu.
+
+14
+00:00:29,190 --> 00:00:31,410
+Kanji carries important meaning.
+
+15
+00:00:31,430 --> 00:00:33,370
+When readers see "nihongo",
+
+16
+00:00:33,390 --> 00:00:34,290
+they can recognize the
+
+17
+00:00:34,310 --> 00:00:36,290
+word for Japanese language.
+
+18
+00:00:36,310 --> 00:00:38,130
+Next comes hiragana.
+
+19
+00:00:38,150 --> 00:00:40,770
+Characters like "wa", "o", and
+
+20
+00:00:40,790 --> 00:00:42,930
+"shimasu" help readers understand
+
+21
+00:00:42,950 --> 00:00:44,690
+how the sentence is structured.
+
+22
+00:00:44,710 --> 00:00:46,650
+They show grammatical relationships,
+
+23
+00:00:46,670 --> 00:00:48,530
+and how words work together.
+
+24
+00:00:48,550 --> 00:00:49,740
+And katakana?
+
+25
+00:00:49,830 --> 00:00:51,490
+It often helps readers recognize
+
+26
+00:00:51,510 --> 00:00:53,690
+foreign-origin words, names,
+
+27
+00:00:53,710 --> 00:00:55,890
+and certain emphasized expressions.
+
+28
+00:00:55,910 --> 00:00:58,700
+For example, "kōhī" means coffee.
+
+29
+00:00:58,870 --> 00:01:00,770
+But here's the real secret.
+
+30
+00:01:00,790 --> 00:01:01,970
+Japanese readers don't
+
+31
+00:01:01,990 --> 00:01:03,730
+rely on just one clue.
+
+32
+00:01:03,750 --> 00:01:06,210
+They combine kanji, kana,
+
+33
+00:01:06,230 --> 00:01:07,770
+grammar, vocabulary,
+
+34
+00:01:07,790 --> 00:01:09,490
+and context, to recognize
+
+35
+00:01:09,510 --> 00:01:11,490
+meaningful chunks of a sentence.
+
+36
+00:01:11,510 --> 00:01:12,610
+Their brains learn to see
+
+37
+00:01:12,630 --> 00:01:14,250
+the boundaries, even when
+
+38
+00:01:14,270 --> 00:01:15,730
+spaces aren't written.
+
+39
+00:01:15,750 --> 00:01:17,250
+At first, Japanese can
+
+40
+00:01:17,270 --> 00:01:19,330
+look like one endless line.
+
+41
+00:01:19,350 --> 00:01:20,210
+But once you understand
+
+42
+00:01:20,230 --> 00:01:21,730
+the patterns, the sentence
+
+43
+00:01:21,750 --> 00:01:23,370
+starts to make sense.
+
+44
+00:01:23,390 --> 00:01:25,090
+Follow me to learn Japanese,
+
+45
+00:01:25,110 --> 00:01:26,780
+one step at a time.
+
+46
+00:01:27,430 --> 00:01:31,630
+最後まで見てくれてありがとう。またね！
+(Thanks for watching till the end. See you next time!)

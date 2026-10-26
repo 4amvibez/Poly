@@ -15,3 +15,9 @@ reel_kanji/audio/stems_f32/
 reel_kanji/audio/*.wav
 reel_kanji/audio/take_a.mp3
 reel_kanji/output/master_crf14.mp4
+reel_spaces/cache/
+reel_spaces/audio/stems/
+reel_spaces/audio/stems_f32/
+reel_spaces/audio/*.wav
+reel_spaces/audio/take_*_alt.mp3
+reel_spaces/output/master_crf14.mp4

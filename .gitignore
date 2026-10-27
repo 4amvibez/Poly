@@ -21,3 +21,8 @@ reel_spaces/audio/stems_f32/
 reel_spaces/audio/*.wav
 reel_spaces/audio/take_*_alt.mp3
 reel_spaces/output/master_crf14.mp4
+reel_need/cache/
+reel_need/audio/stems/
+reel_need/audio/stems_f32/
+reel_need/audio/*.wav
+reel_need/output/master_crf14.mp4

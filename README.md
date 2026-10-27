@@ -9,13 +9,13 @@ skill (a git submodule in `.claude/skills/claude-drawing`). The same seed always
 ## Setup
 
 ```bash
-git clone --recurse-submodules https://github.com/4amvibez/Poly.git
-cd Poly
+git clone --recurse-submodules https://github.com/4amvibez/chinese-ink-wash.git
+cd chinese-ink-wash
 pip install -r requirements.txt
 # already cloned without the submodule?  git submodule update --init
 ```
 
-Titles and seals need a Chinese font. `poly_ink` finds Kaiti/Songti on macOS, KaiTi/SimSun on Windows, and
+Titles and seals need a Chinese font. `chinese ink wash` finds Kaiti/Songti on macOS, KaiTi/SimSun on Windows, and
 WenQuanYi or Noto CJK on Linux (`sudo apt install fonts-wqy-zenhei`). To use another font, set
 `INKPAINT_FONT=/path/to/font.ttf`. Without a font the painting still renders, just without the title and seal.
 

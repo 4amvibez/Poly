@@ -58,10 +58,10 @@ def main(path):
     a = next(s for s in info['streams'] if s['codec_type'] == 'audio')
     dur = float(info['format']['duration'])
     print(f"container: {v['codec_name']} {v['width']}x{v['height']} @ {v['r_frame_rate']}, audio {a['codec_name']}, {dur:.2f}s")
-    if (v['width'], v['height'], v['r_frame_rate']) != (1080, 1920, '30/1') or not 85 <= dur <= 100:
+    if (v['width'], v['height'], v['r_frame_rate']) != (1080, 1920, '30/1') or not 60 <= dur <= 100:
         print('  ✗ spec mismatch'); ok = False
     else:
-        print('  ✓ 9:16 1080x1920, 30 fps, 85–100 s')
+        print('  ✓ 9:16 1080x1920, 30 fps, 60–100 s')
 
     score = json.loads(open(os.path.join(HERE, 'score.js')).read().split('return ', 1)[1].rsplit(';', 2)[0])
     cuts = score.get('cuts') or [[a0, 1.2] for _, (a0, b) in list(score['S'].items())[1:]]

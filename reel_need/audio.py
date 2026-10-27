@@ -345,6 +345,10 @@ def build(out_dir=os.path.join(HERE, 'audio')):
             place(music, koto(note(n, o)), t0 + k * gap, gain, pan=pan + 0.1 * np.sin(k))
 
     place(music, taiko(2.4, 50), 0.0, 1.0)                              # the opening slam
+    hk0 = g('hook')
+    place(sfx, whoosh(0.25, 800, 5000), hk0.T_STAMP - 0.05, 0.6)         # the ensō swept round 漢字
+    place(sfx, stamp(), hk0.T_STAMP + 0.14, 1.4)                        # and the slash stamped across it
+    place(music, taiko(1.8, 64), hk0.T_STAMP + 0.14, 0.6)
     phrase(0.05, [('D', 4), ('A', 4), ('D', 5)], gap=0.12, gain=0.7)
     hk = g('hook')
     phrase(hk.t_what, [('A', 4), ('Bb', 4), ('D', 5), ('Eb', 5), ('D', 5)], gap=0.14, gain=0.4, pan=-0.3)

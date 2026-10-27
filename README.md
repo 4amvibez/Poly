@@ -1,4 +1,4 @@
-# Poly
+# chinese ink wash
 
 Chinese ink wash (水墨) paintings drawn entirely in code — no image model. Every wash, brush stroke and
 mist band is computed with numpy + Pillow, using the [claude-drawing](https://github.com/cloveric/claude-drawing-skill)

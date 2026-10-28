@@ -374,7 +374,7 @@ def build(out_dir=os.path.join(HERE, 'audio')):
         phrase(hs.t_pres + 0.35 + 0.25 * k, [[('A', 4), ('Bb', 4), ('D', 5), ('Eb', 5)][k]], gain=0.35, pan=0.3)
     phrase(hs.t_split + 0.7, [('D', 4), ('A', 4)], gap=0.15, gain=0.5)
     # the four kanji scenes: a koto note on each reading as Raj says it
-    for key, n in (('yama', ('A', 4)), ('fujisan', ('D', 5)), ('san', ('Eb', 5)), ('hi', ('A', 4)), ('nichiyoubi', ('D', 5)),
+    for key, n in (('yama', ('A', 4)), ('fujisan', ('D', 5)), ('hi', ('A', 4)), ('nichiyoubi', ('D', 5)),
                    ('nichi', ('Eb', 5)), ('mizu', ('G', 4)), ('suiyoubi', ('Bb', 4)), ('sui', ('D', 5)), ('hito', ('A', 4)),
                    ('nihonjin', ('D', 5)), ('jin', ('Eb', 5)), ('onyomi', ('D', 5)), ('kunyomi', ('A', 4))):
         phrase(JA[key]['end'] + 0.02, [n], gain=0.28, pan=0.25)

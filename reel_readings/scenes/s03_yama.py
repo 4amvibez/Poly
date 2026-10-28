@@ -30,7 +30,7 @@ class Scene(KanjiScene):
         self.t_fuji = JA['fujisan']['start']
         self.t_san = JA['san']['start']
         c, n = quiet_gap(JA['san']['end'] - 0.05, at('Next')[0] + 0.05)
-        self.t_hit = c - n / 2 + 0.04                                  # sync: さん and the sun pulse (+ bowl, koto)
+        self.t_hit = c - min(n / 2, 0.1)                               # sync: さん and the sun pulse (+ bowl, koto), mid-breath
         self.T_rise = self.wipe_map((540, 1150), seed=3)
         self.T_sweep = self.wipe_map((-200, 300), seed=4)
 

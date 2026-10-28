@@ -2,7 +2,7 @@
   return {
  "FPS": 30,
  "FORMAT": "9:16",
- "DURATION": 75.61,
+ "DURATION": 78.54,
  "S": {
   "hook": [
    0.0,
@@ -14,23 +14,23 @@
   ],
   "yama": [
    22.5,
-   30.24
+   31.08
   ],
   "hi": [
-   29.44,
-   38.84
+   30.28,
+   40.47
   ],
   "mizu": [
-   38.04,
-   49.75
+   39.67,
+   51.92
   ],
   "hito": [
-   48.95,
-   58.06
+   51.12,
+   60.95
   ],
   "takeaway": [
-   57.26,
-   75.61
+   60.15,
+   78.54
   ]
  },
  "markers": {
@@ -43,23 +43,23 @@
    "sync": "av"
   },
   "san": {
-   "t": 29.63,
+   "t": 30.15,
    "sync": "av"
   },
   "sunday": {
-   "t": 37.08,
+   "t": 38.27,
    "sync": "av"
   },
   "wednesday": {
-   "t": 44.42,
+   "t": 46.34,
    "sync": "av"
   },
   "nihon": {
-   "t": 56.02,
+   "t": 58.52,
    "sync": "av"
   },
   "seal": {
-   "t": 70.56,
+   "t": 73.49,
    "sync": "av"
   }
  },
@@ -85,19 +85,19 @@
    0.9
   ],
   [
-   29.44,
+   30.28,
    0.9
   ],
   [
-   38.04,
+   39.67,
    0.9
   ],
   [
-   48.95,
+   51.12,
    0.9
   ],
   [
-   57.26,
+   60.15,
    0.9
   ]
  ],
@@ -179,127 +179,127 @@
   },
   {
    "start": 25.46,
-   "end": 27.4,
+   "end": 27.65,
    "text": "On its own, we say yama."
   },
   {
-   "start": 27.42,
-   "end": 29.66,
+   "start": 27.69,
+   "end": 30.24,
    "text": "But in Fujisan, we say san."
   },
   {
-   "start": 29.68,
-   "end": 31.18,
+   "start": 30.52,
+   "end": 32.02,
    "text": "Next, this kanji can"
   },
   {
-   "start": 31.2,
-   "end": 33.34,
+   "start": 32.04,
+   "end": 34.18,
    "text": "mean the sun, or a day."
   },
   {
-   "start": 33.36,
-   "end": 35.01,
+   "start": 34.2,
+   "end": 36.07,
    "text": "On its own, it's hi."
   },
   {
-   "start": 35.03,
-   "end": 36.39,
+   "start": 36.2,
+   "end": 37.58,
    "text": "But in nichiyōbi,"
   },
   {
-   "start": 36.41,
-   "end": 38.26,
+   "start": 37.6,
+   "end": 39.7,
    "text": "Sunday, it's nichi."
   },
   {
-   "start": 38.28,
-   "end": 40.5,
+   "start": 39.91,
+   "end": 42.13,
    "text": "Now, this kanji means water."
   },
   {
-   "start": 40.52,
-   "end": 42.38,
+   "start": 42.15,
+   "end": 44.27,
    "text": "On its own, it's mizu."
   },
   {
-   "start": 42.4,
-   "end": 43.87,
+   "start": 44.31,
+   "end": 45.78,
    "text": "But in suiyōbi,"
   },
   {
-   "start": 43.95,
-   "end": 45.49,
+   "start": 45.87,
+   "end": 47.64,
    "text": "Wednesday, it's sui."
   },
   {
-   "start": 45.51,
-   "end": 47.17,
+   "start": 47.68,
+   "end": 49.34,
    "text": "The character stays the same;"
   },
   {
-   "start": 47.19,
-   "end": 49.1,
+   "start": 49.36,
+   "end": 51.27,
    "text": "the word decides the reading."
   },
   {
-   "start": 49.19,
-   "end": 51.73,
+   "start": 51.36,
+   "end": 53.9,
    "text": "Finally, this kanji means person."
   },
   {
-   "start": 51.75,
-   "end": 53.44,
+   "start": 53.92,
+   "end": 55.9,
    "text": "Alone, it's often hito."
   },
   {
-   "start": 53.46,
-   "end": 55.41,
+   "start": 55.94,
+   "end": 57.91,
    "text": "But in nihonjin, a Japanese"
   },
   {
-   "start": 55.43,
-   "end": 57.48,
+   "start": 57.93,
+   "end": 60.19,
    "text": "person, it becomes jin."
   },
   {
-   "start": 57.5,
-   "end": 59.04,
+   "start": 60.39,
+   "end": 61.93,
    "text": "So don't memorize kanji"
   },
   {
-   "start": 59.06,
-   "end": 60.76,
+   "start": 61.95,
+   "end": 63.65,
    "text": "as isolated symbols."
   },
   {
-   "start": 60.78,
-   "end": 62.78,
+   "start": 63.67,
+   "end": 65.7,
    "text": "Learn them through real words."
   },
   {
-   "start": 62.8,
-   "end": 65.0,
+   "start": 65.72,
+   "end": 67.93,
    "text": "On'yomi and kun'yomi reflect"
   },
   {
-   "start": 65.02,
-   "end": 66.68,
+   "start": 67.95,
+   "end": 69.61,
    "text": "different histories, and the word"
   },
   {
-   "start": 66.7,
-   "end": 68.57,
+   "start": 69.63,
+   "end": 71.5,
    "text": "tells you which reading to use."
   },
   {
-   "start": 68.59,
-   "end": 70.73,
+   "start": 71.52,
+   "end": 73.66,
    "text": "Every kanji has a story."
   },
   {
-   "start": 70.75,
-   "end": 72.26,
+   "start": 73.68,
+   "end": 75.19,
    "text": "Follow me for more."
   }
  ]

@@ -69,6 +69,16 @@ def quietest(e, t0, t1):
     return (a + int(np.argmin(e[a:b]))) / 100
 
 
+def silent_edge(e, t0, t1, side, thresh=-55):
+    """the cut nearest the word on its `side` ('before' / 'after') that is already silent, so the pause between it and
+    its neighbour stays in the English audio; falls back to the quietest point"""
+    a, b = int(t0 * 100), max(int(t0 * 100) + 1, int(t1 * 100))
+    q = np.where(e[a:b] < thresh)[0]
+    if len(q) == 0:
+        return quietest(e, t0, t1)
+    return (a + (q[-1] if side == 'before' else q[0])) / 100
+
+
 def main():
     en = load('take_en_a.mp3')
     e = env(en)
@@ -88,8 +98,8 @@ def main():
         i = next(i for i, w in enumerate(words) if w['text'] == STAND_IN[k] and i not in used)
         used.add(i)
         prev_end, nxt = words[i - 1]['end'], words[i + 1]['start'] if i + 1 < len(words) else words[i]['end'] + 0.3
-        a = quietest(e, prev_end - 0.04, words[i]['start'] + 0.06)
-        b = quietest(e, words[i]['end'] - 0.06, nxt + 0.04)
+        a = silent_edge(e, prev_end - 0.04, words[i]['start'] + 0.06, 'before')
+        b = silent_edge(e, words[i]['end'] - 0.06, nxt + 0.04, 'after')
         pad = np.zeros(int(PAD * SR), np.float32)
         edits.append([a, b, np.concatenate([pad, clips[k], pad]), k, i])
     # the sign-off: the take is replaced from "Every kanji has a story." on by SIGNOFF ("... Follow me for more.")

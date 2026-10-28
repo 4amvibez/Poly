@@ -23,7 +23,7 @@ class Scene(KanjiScene):
         self.big = self.big_kanji('水', size=420, seed=71)
         self.R = cached('s05_river_v1', r5art.river_scene)
         self.c_mizu = self.card('水', ['みず'], ['kun'], 'mizu', 'water', seed=80)
-        self.c_q = self.card('水曜日', ['？', '？', '？'], [None, None, None], 'suiyōbi?', 'how do you read it?', seed=84)
+        self.c_q = self.card('水曜日', ['？', '？', '？'], [None, None, None], '?', 'how do you read it?', seed=84)
         self.c_sui = self.card('水曜日', ['すい', 'よう', 'び'], ['on', None, 'kun'], 'suiyōbi', 'Wednesday', focus=0, seed=84)
         self.turn, _ = text_layer('YOUR TURN!', FONT_BRUSH_EN, 150)
         self.turn = self.turn * (0.85 + 0.15 * noise(*self.turn.shape, 6, 2, 5))

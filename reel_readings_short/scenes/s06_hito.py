@@ -20,7 +20,7 @@ class Scene(KanjiScene):
         self.P = cached('s06_person_v1', r5art.person_scene)
         self.G = cached('s06_group_v1', r5art.group_scene)
         self.c_hito = self.card('人', ['ひと'], ['kun'], 'hito', 'person', seed=110)
-        self.c_q = self.card('日本人', ['？', '？', '？'], [None, None, None], 'nihonjin?', 'how do you read it?', seed=114)
+        self.c_q = self.card('日本人', ['？', '？', '？'], [None, None, None], '?', 'how do you read it?', seed=114)
         self.c_jin = self.card('日本人', ['に', 'ほん', 'じん'], [None, None, 'on'], 'nihonjin', 'Japanese person', focus=2, seed=114)
         self.q, _ = text_layer('？', FONT_JP, 240)
         self.t_fin = at('Person is')[0] - 0.1

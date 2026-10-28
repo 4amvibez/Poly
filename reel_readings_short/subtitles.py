@@ -15,7 +15,7 @@ from timeline import WORDS
 
 MAX_CHARS = 28
 SIZE = 58
-CX, CY = 520, 1444                 # slightly left of centre: clear of the like/comment/share column
+CX, CY = 520, 1436                 # slightly left of centre: clear of the like/comment/share column
 INK_RGB = np.array([24, 22, 21], np.float32) / 255
 PLATE_RGB = np.array([244, 238, 224], np.float32) / 255
 INDIGO = np.array([40, 62, 118], np.float32) / 255

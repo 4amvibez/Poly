@@ -1,6 +1,6 @@
 """assemble — the merged reel: the short's hook, the full reel's body, the short's tip + comment question, the ending.
 
-    A  reel_readings_short   0.00 ->  6.40   ink-burst hook (日曜日 puzzle, WHY?)
+    A  reel_readings_short   0.00 ->  6.40   hook on the page (日曜日 puzzle, WHY?)
     B  reel_readings         8.50 -> 90.35   history map, 山 日, on'yomi / kun'yomi, kokuji ... "Every kanji has a story."
     C  reel_readings_short  42.95 -> 57.00   QUICK TIP, 今日？ COMMENT BELOW, FOLLOW
     D  ending (make_ending.py)  6.20 s       THANK YOU FOR WATCHING TILL THE END!  またね！

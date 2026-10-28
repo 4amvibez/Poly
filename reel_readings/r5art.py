@@ -448,7 +448,7 @@ def east_asia_chart():
     ink = np.maximum(ink, wv.render(9) * 0.6)
     img *= (1 - ink[..., None] * (1 - INK))
     # names
-    for en, jp, lo, la, sz in (('CHINA', '中国', 115.8, 34.0, 56), ('KOREA', '朝鮮半島', 127.6, 38.6, 46), ('JAPAN', '日本', 136.2, 37.3, 50)):
+    for en, jp, lo, la, sz in (('CHINA', '中国', 118.0, 33.8, 84), ('KOREA', '朝鮮半島', 127.6, 38.6, 46), ('JAPAN', '日本', 136.2, 37.3, 50)):
         cx, cy = chart_xy(lo, la)
         for txt, font, size, dy, op in ((en, FONT_EN_BOLD, sz, 0, 0.8), (jp, FONT_JP, int(sz * 0.62), sz * 0.95, 0.7)):
             g, _ = text_layer(txt, font, size, tracking=8 if font == FONT_EN_BOLD else 0)

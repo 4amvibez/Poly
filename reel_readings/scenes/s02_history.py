@@ -52,7 +52,7 @@ class Scene(SceneBase):
     paper_seed = 92
 
     def build(self):
-        C = cached('s02_chart_v2', r5art.east_asia_chart)
+        C = cached('s02_chart_v4', r5art.east_asia_chart)
         self.chart = C['rgb'].astype(np.float32)
         self.J = cached('s02_junk_v1', lambda: dict(zip(('ink', 'red'), r5art.junk())))
         self.B = cached('s02_book_v1', lambda: dict(zip(('fill', 'ink'), r5art.manuscript())))
@@ -79,7 +79,7 @@ class Scene(SceneBase):
         self.route_s = seg / seg[-1]
         self.dots = np.array([self.route_at(u) for u in np.linspace(0, 1, int(seg[-1] / 20))])
         self.puff_xy = [r5art.chart_xy(lo, la) for lo, la in PUFF]
-        wide = (1487.0, 1761.0, 0.69)                                  # Korea and Japan filling the frame, Taiwan in the corner
+        wide = (1280.0, 1520.0, 0.63)                                  # China, Korea and Japan: the whole voyage in one frame
         start = self.route[0]
         dock = self.route[-1]
         hold = (dock[0] + 290, dock[1] + 330, 1.0)                     # Japan in the top half once the book is up
@@ -137,7 +137,7 @@ class Scene(SceneBase):
             x, y = proj(self.route_at(u))
             bob = 3 * np.sin(t * 4) + 7 * np.exp(-max(t - self.t_dock, 0) * 6) * np.sin(max(t - self.t_dock, 0) * 20) * (t > self.t_dock)
             o = smooth((t - self.t_ship + 0.3) / 0.4) * mp
-            sc = 0.6 * mc.zoom
+            sc = 0.72 * mc.zoom
             kit.put(fr, scr, self.J['ink'], x, y - 60 * sc + bob, INK, o, sc)
             kit.put(fr, scr, self.J['red'], x, y - 60 * sc + bob, VERM, 0.9 * o, sc)
             if t > self.t_dock:                                       # a ripple ring as it docks

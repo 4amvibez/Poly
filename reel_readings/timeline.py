@@ -45,7 +45,7 @@ _CUTS = [
     ('hito', 'Finally', 0.3, 0.8),
     ('takeaway', 'So dont memorize', 0.3, 0.8),
 ]
-DURATION = round(WORDS[-1]['end'] + 2.6, 2)                 # hold the final frame so the handle can be read
+DURATION = round(WORDS[-1]['end'] + 3.6, 2)                 # hold the final frame so the handle can be read
 _starts = [0.0 if w is None else at(w)[0] - lead for _, w, lead, _ in _CUTS]
 SCENES = []
 for i, (name, _, _, _) in enumerate(_CUTS):

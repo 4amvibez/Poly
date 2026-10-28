@@ -408,637 +408,619 @@
 {
 "text": "Next,",
 "type": "word",
-"start": 36.49,
-"end": 37.13
+"start": 29.34,
+"end": 29.98
 },
 {
 "text": "this",
 "type": "word",
-"start": 37.21,
-"end": 37.37
+"start": 30.06,
+"end": 30.22
 },
 {
 "text": "kanji",
 "type": "word",
-"start": 37.45,
-"end": 37.77
+"start": 30.3,
+"end": 30.62
 },
 {
 "text": "can",
 "type": "word",
-"start": 37.85,
-"end": 37.93
+"start": 30.7,
+"end": 30.78
 },
 {
 "text": "mean",
 "type": "word",
-"start": 38.01,
-"end": 38.17
+"start": 30.86,
+"end": 31.02
 },
 {
 "text": "the",
 "type": "word",
-"start": 38.21,
-"end": 38.25
+"start": 31.06,
+"end": 31.1
 },
 {
 "text": "sun,",
 "type": "word",
-"start": 38.41,
-"end": 38.97
+"start": 31.26,
+"end": 31.82
 },
 {
 "text": "or",
 "type": "word",
-"start": 39.09,
-"end": 39.21
+"start": 31.94,
+"end": 32.06
 },
 {
 "text": "a",
 "type": "word",
-"start": 39.29,
-"end": 39.37
+"start": 32.14,
+"end": 32.22
 },
 {
 "text": "day.",
 "type": "word",
-"start": 39.45,
-"end": 40.09
+"start": 32.3,
+"end": 32.94
 },
 {
 "text": "On",
 "type": "word",
-"start": 40.17,
-"end": 40.25
+"start": 33.02,
+"end": 33.1
 },
 {
 "text": "its",
 "type": "word",
-"start": 40.33,
-"end": 40.41
+"start": 33.18,
+"end": 33.26
 },
 {
 "text": "own,",
 "type": "word",
-"start": 40.49,
-"end": 40.89
+"start": 33.34,
+"end": 33.74
 },
 {
 "text": "it's",
 "type": "word",
-"start": 40.97,
-"end": 41.21
+"start": 33.82,
+"end": 34.06
 },
 {
 "text": "hi.",
 "type": "word",
 "ja": "hi",
-"start": 41.42,
-"end": 41.7
+"start": 34.27,
+"end": 34.55
 },
 {
 "text": "But",
 "type": "word",
-"start": 41.84,
-"end": 41.92
+"start": 34.69,
+"end": 34.77
 },
 {
 "text": "in",
 "type": "word",
-"start": 42.0,
-"end": 42.16
+"start": 34.85,
+"end": 35.01
 },
 {
 "text": "nichiyōbi,",
 "type": "word",
 "ja": "nichiyoubi",
-"start": 42.31,
-"end": 43.04
+"start": 35.16,
+"end": 35.89
 },
 {
 "text": "Sunday,",
 "type": "word",
-"start": 43.22,
-"end": 43.94
+"start": 36.07,
+"end": 36.79
 },
 {
 "text": "it's",
 "type": "word",
-"start": 44.02,
-"end": 44.26
+"start": 36.87,
+"end": 37.11
 },
 {
 "text": "nichi.",
 "type": "word",
 "ja": "nichi",
-"start": 44.48,
-"end": 44.99
+"start": 37.33,
+"end": 37.84
 },
 {
 "text": "Now,",
 "type": "word",
-"start": 45.09,
-"end": 45.45
+"start": 37.94,
+"end": 38.3
 },
 {
 "text": "this",
 "type": "word",
-"start": 45.57,
-"end": 45.73
+"start": 38.42,
+"end": 38.58
 },
 {
 "text": "kanji",
 "type": "word",
-"start": 45.81,
-"end": 46.13
+"start": 38.66,
+"end": 38.98
 },
 {
 "text": "means",
 "type": "word",
-"start": 46.21,
-"end": 46.45
+"start": 39.06,
+"end": 39.3
 },
 {
 "text": "water.",
 "type": "word",
-"start": 46.61,
-"end": 47.09
+"start": 39.46,
+"end": 39.94
 },
 {
 "text": "On",
 "type": "word",
-"start": 47.33,
-"end": 47.49
+"start": 40.18,
+"end": 40.34
 },
 {
 "text": "its",
 "type": "word",
-"start": 47.57,
-"end": 47.65
+"start": 40.42,
+"end": 40.5
 },
 {
 "text": "own,",
 "type": "word",
-"start": 47.73,
-"end": 48.13
+"start": 40.58,
+"end": 40.98
 },
 {
 "text": "it's",
 "type": "word",
-"start": 48.21,
-"end": 48.45
+"start": 41.06,
+"end": 41.3
 },
 {
 "text": "mizu.",
 "type": "word",
 "ja": "mizu",
-"start": 48.63,
-"end": 49.09
+"start": 41.48,
+"end": 41.94
 },
 {
 "text": "But",
 "type": "word",
-"start": 49.21,
-"end": 49.37
+"start": 42.06,
+"end": 42.22
 },
 {
 "text": "in",
 "type": "word",
-"start": 49.45,
-"end": 49.53
+"start": 42.3,
+"end": 42.38
 },
 {
 "text": "suiyōbi,",
 "type": "word",
 "ja": "suiyoubi",
-"start": 49.6,
-"end": 50.37
+"start": 42.45,
+"end": 43.22
 },
 {
 "text": "Wednesday,",
 "type": "word",
-"start": 50.76,
-"end": 51.28
+"start": 43.61,
+"end": 44.13
 },
 {
 "text": "it's",
 "type": "word",
-"start": 51.36,
-"end": 51.6
+"start": 44.21,
+"end": 44.45
 },
 {
 "text": "sui.",
 "type": "word",
 "ja": "sui",
-"start": 51.77,
-"end": 52.2
+"start": 44.62,
+"end": 45.05
 },
 {
 "text": "The",
 "type": "word",
-"start": 52.32,
-"end": 52.4
+"start": 45.17,
+"end": 45.25
 },
 {
 "text": "character",
 "type": "word",
-"start": 52.48,
-"end": 52.8
+"start": 45.33,
+"end": 45.65
 },
 {
 "text": "stays",
 "type": "word",
-"start": 52.88,
-"end": 53.12
+"start": 45.73,
+"end": 45.97
 },
 {
 "text": "the",
 "type": "word",
-"start": 53.2,
-"end": 53.28
+"start": 46.05,
+"end": 46.13
 },
 {
 "text": "same;",
 "type": "word",
-"start": 53.36,
-"end": 53.92
+"start": 46.21,
+"end": 46.77
 },
 {
 "text": "the",
 "type": "word",
-"start": 54.0,
-"end": 54.08
+"start": 46.85,
+"end": 46.93
 },
 {
 "text": "word",
 "type": "word",
-"start": 54.16,
-"end": 54.48
+"start": 47.01,
+"end": 47.33
 },
 {
 "text": "decides",
 "type": "word",
-"start": 54.56,
-"end": 54.96
+"start": 47.41,
+"end": 47.81
 },
 {
 "text": "the",
 "type": "word",
-"start": 55.0,
-"end": 55.04
+"start": 47.85,
+"end": 47.89
 },
 {
 "text": "reading.",
 "type": "word",
-"start": 55.12,
-"end": 55.6
+"start": 47.97,
+"end": 48.45
 },
 {
 "text": "Finally,",
 "type": "word",
-"start": 56.0,
-"end": 56.64
+"start": 48.85,
+"end": 49.49
 },
 {
 "text": "this",
 "type": "word",
-"start": 56.72,
-"end": 56.88
+"start": 49.57,
+"end": 49.73
 },
 {
 "text": "kanji",
 "type": "word",
-"start": 56.96,
-"end": 57.28
+"start": 49.81,
+"end": 50.13
 },
 {
 "text": "means",
 "type": "word",
-"start": 57.36,
-"end": 57.6
+"start": 50.21,
+"end": 50.45
 },
 {
 "text": "person.",
 "type": "word",
-"start": 57.68,
-"end": 58.24
+"start": 50.53,
+"end": 51.09
 },
 {
 "text": "Alone,",
 "type": "word",
-"start": 58.56,
-"end": 59.12
+"start": 51.41,
+"end": 51.97
 },
 {
 "text": "it's",
 "type": "word",
-"start": 59.2,
-"end": 59.36
+"start": 52.05,
+"end": 52.21
 },
 {
 "text": "often",
 "type": "word",
-"start": 59.52,
-"end": 59.68
+"start": 52.37,
+"end": 52.53
 },
 {
 "text": "hito.",
 "type": "word",
 "ja": "hito",
-"start": 59.83,
-"end": 60.2
+"start": 52.68,
+"end": 53.05
 },
 {
 "text": "But",
 "type": "word",
-"start": 60.27,
-"end": 60.43
+"start": 53.12,
+"end": 53.28
 },
 {
 "text": "in",
 "type": "word",
-"start": 60.51,
-"end": 60.59
+"start": 53.36,
+"end": 53.44
 },
 {
 "text": "nihonjin,",
 "type": "word",
 "ja": "nihonjin",
-"start": 60.74,
-"end": 61.49
+"start": 53.59,
+"end": 54.34
 },
 {
 "text": "a",
 "type": "word",
-"start": 61.64,
-"end": 61.68
+"start": 54.49,
+"end": 54.53
 },
 {
 "text": "Japanese",
 "type": "word",
-"start": 61.76,
-"end": 62.16
+"start": 54.61,
+"end": 55.01
 },
 {
 "text": "person,",
 "type": "word",
-"start": 62.24,
-"end": 62.88
+"start": 55.09,
+"end": 55.73
 },
 {
 "text": "it",
 "type": "word",
-"start": 62.96,
-"end": 63.04
+"start": 55.81,
+"end": 55.89
 },
 {
 "text": "becomes",
 "type": "word",
-"start": 63.12,
-"end": 63.52
+"start": 55.97,
+"end": 56.37
 },
 {
 "text": "jin.",
 "type": "word",
 "ja": "jin",
-"start": 63.72,
-"end": 64.16
+"start": 56.57,
+"end": 57.01
 },
 {
 "text": "So",
 "type": "word",
-"start": 64.31,
-"end": 64.47
+"start": 57.16,
+"end": 57.32
 },
 {
 "text": "don't",
 "type": "word",
-"start": 64.63,
-"end": 64.87
+"start": 57.48,
+"end": 57.72
 },
 {
 "text": "memorize",
 "type": "word",
-"start": 64.95,
-"end": 65.27
+"start": 57.8,
+"end": 58.12
 },
 {
 "text": "kanji",
 "type": "word",
-"start": 65.35,
-"end": 65.75
+"start": 58.2,
+"end": 58.6
 },
 {
 "text": "as",
 "type": "word",
-"start": 65.87,
-"end": 65.99
+"start": 58.72,
+"end": 58.84
 },
 {
 "text": "isolated",
 "type": "word",
-"start": 66.19,
-"end": 66.63
+"start": 59.04,
+"end": 59.48
 },
 {
 "text": "symbols.",
 "type": "word",
-"start": 66.71,
-"end": 67.51
+"start": 59.56,
+"end": 60.36
 },
 {
 "text": "Learn",
 "type": "word",
-"start": 67.59,
-"end": 67.83
+"start": 60.44,
+"end": 60.68
 },
 {
 "text": "them",
 "type": "word",
-"start": 67.95,
-"end": 68.07
+"start": 60.8,
+"end": 60.92
 },
 {
 "text": "through",
 "type": "word",
-"start": 68.19,
-"end": 68.31
+"start": 61.04,
+"end": 61.16
 },
 {
 "text": "real",
 "type": "word",
-"start": 68.39,
-"end": 68.63
+"start": 61.24,
+"end": 61.48
 },
 {
 "text": "words.",
 "type": "word",
-"start": 68.71,
-"end": 69.7
+"start": 61.56,
+"end": 62.55
 },
 {
 "text": "On'yomi",
 "type": "word",
 "ja": "onyomi",
-"start": 69.61,
-"end": 70.24
+"start": 62.46,
+"end": 63.09
 },
 {
 "text": "and",
 "type": "word",
-"start": 70.34,
-"end": 70.42
+"start": 63.19,
+"end": 63.27
 },
 {
 "text": "kun'yomi",
 "type": "word",
 "ja": "kunyomi",
-"start": 70.56,
-"end": 71.15
+"start": 63.41,
+"end": 64.0
 },
 {
 "text": "reflect",
 "type": "word",
-"start": 71.27,
-"end": 71.67
+"start": 64.12,
+"end": 64.52
 },
 {
 "text": "different",
 "type": "word",
-"start": 71.83,
-"end": 71.99
+"start": 64.68,
+"end": 64.84
 },
 {
 "text": "histories,",
 "type": "word",
-"start": 72.07,
-"end": 72.87
+"start": 64.92,
+"end": 65.72
 },
 {
 "text": "and",
 "type": "word",
-"start": 72.91,
-"end": 72.95
+"start": 65.76,
+"end": 65.8
 },
 {
 "text": "the",
 "type": "word",
-"start": 73.03,
-"end": 73.11
+"start": 65.88,
+"end": 65.96
 },
 {
 "text": "word",
 "type": "word",
-"start": 73.27,
-"end": 73.43
+"start": 66.12,
+"end": 66.28
 },
 {
 "text": "tells",
 "type": "word",
-"start": 73.51,
-"end": 73.75
+"start": 66.36,
+"end": 66.6
 },
 {
 "text": "you",
 "type": "word",
-"start": 73.83,
-"end": 73.91
+"start": 66.68,
+"end": 66.76
 },
 {
 "text": "which",
 "type": "word",
-"start": 74.03,
-"end": 74.15
+"start": 66.88,
+"end": 67.0
 },
 {
 "text": "reading",
 "type": "word",
-"start": 74.31,
-"end": 74.47
+"start": 67.16,
+"end": 67.32
 },
 {
 "text": "to",
 "type": "word",
-"start": 74.55,
-"end": 74.63
+"start": 67.4,
+"end": 67.48
 },
 {
 "text": "use.",
 "type": "word",
-"start": 74.71,
-"end": 75.43
+"start": 67.56,
+"end": 68.28
 },
 {
 "text": "Every",
 "type": "word",
-"start": 75.59,
-"end": 75.75
+"start": 68.25,
+"end": 68.57
 },
 {
 "text": "kanji",
 "type": "word",
-"start": 75.83,
-"end": 76.23
+"start": 68.65,
+"end": 69.05
 },
 {
 "text": "has",
 "type": "word",
-"start": 76.31,
-"end": 76.39
+"start": 69.13,
+"end": 69.29
 },
 {
 "text": "a",
 "type": "word",
-"start": 76.443,
-"end": 76.497
+"start": 69.33,
+"end": 69.37
 },
 {
 "text": "story.",
 "type": "word",
-"start": 76.55,
-"end": 77.35
+"start": 69.45,
+"end": 70.33
 },
 {
 "text": "Follow",
 "type": "word",
-"start": 77.47,
-"end": 77.59
+"start": 70.41,
+"end": 70.65
 },
 {
-"text": "Raj",
+"text": "me",
 "type": "word",
-"start": 77.67,
-"end": 77.99
+"start": 70.73,
+"end": 70.89
 },
 {
-"text": "in",
+"text": "for",
 "type": "word",
-"start": 78.07,
-"end": 78.23
-},
-{
-"text": "JP",
-"type": "word",
-"start": 78.31,
-"end": 78.79
-},
-{
-"text": "to",
-"type": "word",
-"start": 78.83,
-"end": 78.87
-},
-{
-"text": "discover",
-"type": "word",
-"start": 78.95,
-"end": 79.35
+"start": 70.97,
+"end": 71.05
 },
 {
 "text": "more.",
 "type": "word",
-"start": 79.43,
-"end": 79.91
+"start": 71.21,
+"end": 71.61
 }
 ],
 "ja": {
@@ -1063,74 +1045,68 @@
 "hi": {
 "text": "ひ",
 "romaji": "hi",
-"start": 41.42,
-"end": 41.7
+"start": 34.27,
+"end": 34.55
 },
 "nichiyoubi": {
 "text": "にちようび",
 "romaji": "nichiyōbi",
-"start": 42.31,
-"end": 43.04
+"start": 35.16,
+"end": 35.89
 },
 "nichi": {
 "text": "にち",
 "romaji": "nichi",
-"start": 44.48,
-"end": 44.99
+"start": 37.33,
+"end": 37.84
 },
 "mizu": {
 "text": "みず",
 "romaji": "mizu",
-"start": 48.63,
-"end": 49.09
+"start": 41.48,
+"end": 41.94
 },
 "suiyoubi": {
 "text": "すいようび",
 "romaji": "suiyōbi",
-"start": 49.6,
-"end": 50.37
+"start": 42.45,
+"end": 43.22
 },
 "sui": {
 "text": "すい",
 "romaji": "sui",
-"start": 51.77,
-"end": 52.2
+"start": 44.62,
+"end": 45.05
 },
 "hito": {
 "text": "ひと",
 "romaji": "hito",
-"start": 59.83,
-"end": 60.2
+"start": 52.68,
+"end": 53.05
 },
 "nihonjin": {
 "text": "にほんじん",
 "romaji": "nihonjin",
-"start": 60.74,
-"end": 61.49
+"start": 53.59,
+"end": 54.34
 },
 "jin": {
 "text": "じん",
 "romaji": "jin",
-"start": 63.72,
-"end": 64.16
+"start": 56.57,
+"end": 57.01
 },
 "onyomi": {
 "text": "おんよみ",
 "romaji": "on'yomi",
-"start": 69.61,
-"end": 70.24
+"start": 62.46,
+"end": 63.09
 },
 "kunyomi": {
 "text": "くんよみ",
 "romaji": "kun'yomi",
-"start": 70.56,
-"end": 71.15
-},
-"yama_line": {
-"text": "山は「やま」とも読みます。でも、富士山は「ふじさん」と読みます。",
-"romaji": "Yama wa \"yama\" tomo yomimasu. Demo, Fujisan wa \"Fujisan\" to yomimasu.",
-"start": 29.72,
-"end": 35.82
+"start": 63.41,
+"end": 64.0
 }
 }
 }

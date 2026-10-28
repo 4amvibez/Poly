@@ -2,9 +2,9 @@
 
 The English take was recorded with romaji stand-ins (yama, Fujisan, san, hi, nichiyoubi, ...), so its rhythm has a
 natural slot for each word.  Each stand-in is cut out at the quietest point either side of it and replaced by the
-same word from the Japanese take (words_ja_a.mp3: a calm list of the 14 words, split on its silences).  The
-Japanese line 「山は『やま』とも読みます。でも、富士山は『ふじさん』と読みます。」 is set into the breath after
-"...we say san."  Both Japanese takes were checked with Scribe (exact match) before use.
+same word from the Japanese take (words_ja_a.mp3: a calm list of the 14 words, split on its silences, checked with
+Scribe: exact match).  The take's sign-off is replaced from "Every kanji has a story." on by signoff_a.mp3
+("Every kanji has a story. Follow me for more.", Scribe: exact match).
 Writes audio/narration.wav + .mp3 and audio/words.json: the English words shifted into place (each replaced word
 keeps its romaji, flagged ja) plus the Japanese segments {key: text, romaji, start, end}."""
 import json
@@ -26,11 +26,8 @@ JA_WORDS = [('yama', 'やま', 'yama'), ('fujisan', 'ふじさん', 'Fujisan'), 
 STAND_IN = {'yama': 'yama.', 'fujisan': 'Fujisan,', 'san': 'san.', 'hi': 'hi.', 'nichiyoubi': 'nichiyoubi,', 'nichi': 'nichi.',
             'mizu': 'mizu.', 'suiyoubi': 'suiyoubi,', 'sui': 'sui.', 'hito': 'hito.', 'nihonjin': 'nihonjin,', 'jin': 'jin.',
             'onyomi': 'Onyomi', 'kunyomi': 'kunyomi'}
-LINE = ('yama_line', 'yama_line_a.mp3', '山は「やま」とも読みます。でも、富士山は「ふじさん」と読みます。',
-        'Yama wa "yama" tomo yomimasu. Demo, Fujisan wa "Fujisan" to yomimasu.')
-LINE_AFTER = 'san'                     # the line follows the word that replaced "san."
+SIGNOFF = 'signoff_a.mp3'                # "Every kanji has a story. Follow me for more." (Scribe: exact)
 PAD = 0.05                             # air either side of a spliced word
-LINE_GAP = (0.45, 0.6)                 # breaths before / after the Japanese line
 
 
 def load(name):
@@ -84,10 +81,6 @@ def main():
     clips = {k: faded(jw[int(a * SR):int(b * SR)]) for (k, _, _), (a, b) in zip(JA_WORDS, segs)}
     for k in clips:
         clips[k] *= 0.95 * level / rms(clips[k])
-    line = load(LINE[1])
-    ls = segments(line, hold=40)
-    line = faded(line[int(ls[0][0] * SR):int(ls[-1][1] * SR)])
-    line *= 0.95 * level / rms(line)
     # where each stand-in is cut: the quietest 10 ms on either side, inside the pauses round it
     edits = []                                     # (cut_a, cut_b, audio, key)
     used = set()
@@ -99,9 +92,14 @@ def main():
         b = quietest(e, words[i]['end'] - 0.06, nxt + 0.04)
         pad = np.zeros(int(PAD * SR), np.float32)
         edits.append([a, b, np.concatenate([pad, clips[k], pad]), k, i])
-    # the Japanese line goes into the pause after "san."
-    k_san = next(x for x in edits if x[3] == LINE_AFTER)
-    t_line = k_san[1]
+    # the sign-off: the take is replaced from "Every kanji has a story." on by SIGNOFF ("... Follow me for more.")
+    i_every = next(i for i, w in enumerate(words) if w['text'] == 'Every')
+    cut_end = quietest(e, words[i_every - 1]['end'] - 0.04, words[i_every]['start'] + 0.04)
+    so = load(SIGNOFF)
+    ss = segments(so, hold=40)
+    so0 = ss[0][0]
+    so = faded(so[int(so0 * SR):int(ss[-1][1] * SR)])
+    so *= level / rms(so)
     out, segs_out, cursor, t = [], {}, 0.0, 0.0
     shifts = []                                    # (en_time, delta) for mapping English words
     for a, b, audio, k, i in sorted(edits):
@@ -112,13 +110,10 @@ def main():
         t += len(audio) / SR
         shifts.append((a, b, t))
         cursor = b
-        if k == LINE_AFTER:
-            g0, g1 = np.zeros(int(LINE_GAP[0] * SR), np.float32), np.zeros(int(LINE_GAP[1] * SR), np.float32)
-            segs_out[LINE[0]] = dict(start=round(t + LINE_GAP[0], 3), end=round(t + LINE_GAP[0] + len(line) / SR, 3))
-            out += [g0, line, g1]
-            t += (len(g0) + len(line) + len(g1)) / SR
-            shifts[-1] = (a, b, t)
-    out.append(en[int(cursor * SR):])
+    out.append(en[int(cursor * SR):int(cut_end * SR)])
+    t += cut_end - cursor
+    t_so = t + 0.05
+    out += [np.zeros(int(0.05 * SR), np.float32), so]
     nar = np.concatenate(out)
 
     def sh(x):
@@ -132,7 +127,7 @@ def main():
 
     replaced = {x[4]: x[3] for x in edits}
     ws = []
-    for i, w in enumerate(words):
+    for i, w in enumerate(words[:i_every]):
         if i in replaced:
             k = replaced[i]
             rom = next(r for kk, _, r in JA_WORDS if kk == k)
@@ -141,8 +136,9 @@ def main():
             ws.append(dict(text=rom + punct, type='word', ja=k, start=segs_out[k]['start'], end=segs_out[k]['end']))
         else:
             ws.append(dict(text=w['text'], type='word', start=round(sh(w['start']), 3), end=round(sh(w['end']), 3)))
+    so_words = [w for w in json.load(open(os.path.join(A, 'words_signoff_a.json')))['words'] if w.get('type', 'word') == 'word']
+    ws += [dict(text=w['text'], type='word', start=round(t_so + w['start'] - so0, 3), end=round(t_so + w['end'] - so0, 3)) for w in so_words]
     ja = {k: dict(text=kana, romaji=rom, **segs_out[k]) for k, kana, rom in JA_WORDS}
-    ja[LINE[0]] = dict(text=LINE[2], romaji=LINE[3], **segs_out[LINE[0]])
     wavfile.write(os.path.join(A, 'narration.wav'), SR, (np.clip(nar, -1, 1) * 32767).astype(np.int16))
     subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', os.path.join(A, 'narration.wav'), '-b:a', '192k',
                     os.path.join(A, 'narration.mp3')], check=True)

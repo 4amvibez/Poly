@@ -4,7 +4,7 @@ Score: a quiet drone in the miyako-bushi scale (D Eb G A Bb) with Karplus-Strong
 (each reading as Raj says it, the readings rows of the hook, the words on the book), a taiko under each kanji that
 slams in at the start and on the WHY? stamp, a breathy flute while the junk sails and over the final landscape,
 singing-bowl chimes on the reveals.  Every sync hit sits in a measured breath of the narration, never on a word:
-WHY? stamped, the junk docking, the two cards parting before the Japanese line, the circle closing round 日 and
+WHY? stamped, the junk docking, さん and the sun pulsing after "we say san.", the circle closing round 日 and
 round 水 on the calendar, the red circle swelling behind the travellers, the seal.
 Sound design: brush-on-paper texture from every stroke and glyph the scenes write, sea and river water, a wood knock
 as the junk docks, paper flicks as the calendars swing in, paper whooshes at the transitions.
@@ -261,7 +261,7 @@ def thud():
 
 # ------------------------------------------------------------------ events from the scenes
 NAMES = ['hook', 'history', 'yama', 'hi', 'mizu', 'hito', 'takeaway']
-HIT_NAMES = {'hook': 'why', 'history': 'dock', 'yama': 'cards', 'hi': 'sunday', 'mizu': 'wednesday', 'hito': 'nihon',
+HIT_NAMES = {'hook': 'why', 'history': 'dock', 'yama': 'san', 'hi': 'sunday', 'mizu': 'wednesday', 'hito': 'nihon',
              'takeaway': 'seal'}
 
 
@@ -390,8 +390,8 @@ def build(out_dir=os.path.join(HERE, 'audio')):
     place(sfx, stamp(), H_['why'], 1.0)
     place(sfx, clack(0.9), H_['dock'], 1.0)
     place(music, bowl(note('A', 4)), H_['dock'], 0.6, pan=0.1)
-    place(music, bowl(note('D', 5), 5.0), H_['cards'], 0.6, pan=-0.2)
-    place(music, koto(note('A', 5)), H_['cards'], 0.45)
+    place(music, bowl(note('D', 5), 5.0), H_['san'], 0.6, pan=-0.2)
+    place(music, koto(note('A', 5)), H_['san'], 0.45)
     place(music, bowl(note('A', 5), 4.0), H_['sunday'], 0.6)
     place(sfx, brush(0.12, 1.0), H_['sunday'] - 0.1, 0.8)
     place(music, bowl(note('G', 5), 4.0), H_['wednesday'], 0.6)

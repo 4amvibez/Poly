@@ -2,7 +2,7 @@
   return {
  "FPS": 30,
  "FORMAT": "9:16",
- "DURATION": 82.91,
+ "DURATION": 75.61,
  "S": {
   "hook": [
    0.0,
@@ -14,23 +14,23 @@
   ],
   "yama": [
    22.5,
-   37.39
+   30.24
   ],
   "hi": [
-   36.59,
-   45.99
+   29.44,
+   38.84
   ],
   "mizu": [
-   45.19,
-   56.9
+   38.04,
+   49.75
   ],
   "hito": [
-   56.1,
-   65.21
+   48.95,
+   58.06
   ],
   "takeaway": [
-   64.41,
-   82.91
+   57.26,
+   75.61
   ]
  },
  "markers": {
@@ -42,24 +42,24 @@
    "t": 12.76,
    "sync": "av"
   },
-  "cards": {
+  "san": {
    "t": 29.63,
    "sync": "av"
   },
   "sunday": {
-   "t": 44.23,
+   "t": 37.08,
    "sync": "av"
   },
   "wednesday": {
-   "t": 51.57,
+   "t": 44.42,
    "sync": "av"
   },
   "nihon": {
-   "t": 63.17,
+   "t": 56.02,
    "sync": "av"
   },
   "seal": {
-   "t": 77.58,
+   "t": 70.56,
    "sync": "av"
   }
  },
@@ -85,19 +85,19 @@
    0.9
   ],
   [
-   36.59,
+   29.44,
    0.9
   ],
   [
-   45.19,
+   38.04,
    0.9
   ],
   [
-   56.1,
+   48.95,
    0.9
   ],
   [
-   64.41,
+   57.26,
    0.9
   ]
  ],
@@ -184,133 +184,123 @@
   },
   {
    "start": 27.42,
-   "end": 29.87,
+   "end": 29.66,
    "text": "But in Fujisan, we say san."
   },
   {
-   "start": 30.06,
-   "end": 32.77,
-   "text": "山は「やま」とも読みます。"
-  },
-  {
-   "start": 32.77,
-   "end": 36.57,
-   "text": "でも、富士山は「ふじさん」と読みます。"
-  },
-  {
-   "start": 36.83,
-   "end": 38.33,
+   "start": 29.68,
+   "end": 31.18,
    "text": "Next, this kanji can"
   },
   {
-   "start": 38.35,
-   "end": 40.49,
+   "start": 31.2,
+   "end": 33.34,
    "text": "mean the sun, or a day."
   },
   {
-   "start": 40.51,
-   "end": 42.16,
+   "start": 33.36,
+   "end": 35.01,
    "text": "On its own, it's hi."
   },
   {
-   "start": 42.18,
-   "end": 43.54,
+   "start": 35.03,
+   "end": 36.39,
    "text": "But in nichiyōbi,"
   },
   {
-   "start": 43.56,
-   "end": 45.41,
+   "start": 36.41,
+   "end": 38.26,
    "text": "Sunday, it's nichi."
   },
   {
-   "start": 45.43,
-   "end": 47.65,
+   "start": 38.28,
+   "end": 40.5,
    "text": "Now, this kanji means water."
   },
   {
-   "start": 47.67,
-   "end": 49.53,
+   "start": 40.52,
+   "end": 42.38,
    "text": "On its own, it's mizu."
   },
   {
-   "start": 49.55,
-   "end": 51.02,
+   "start": 42.4,
+   "end": 43.87,
    "text": "But in suiyōbi,"
   },
   {
-   "start": 51.1,
-   "end": 52.64,
+   "start": 43.95,
+   "end": 45.49,
    "text": "Wednesday, it's sui."
   },
   {
-   "start": 52.66,
-   "end": 54.32,
+   "start": 45.51,
+   "end": 47.17,
    "text": "The character stays the same;"
   },
   {
-   "start": 54.34,
-   "end": 56.25,
+   "start": 47.19,
+   "end": 49.1,
    "text": "the word decides the reading."
   },
   {
-   "start": 56.34,
-   "end": 58.88,
+   "start": 49.19,
+   "end": 51.73,
    "text": "Finally, this kanji means person."
   },
   {
-   "start": 58.9,
-   "end": 60.59,
+   "start": 51.75,
+   "end": 53.44,
    "text": "Alone, it's often hito."
   },
   {
-   "start": 60.61,
-   "end": 62.56,
+   "start": 53.46,
+   "end": 55.41,
    "text": "But in nihonjin, a Japanese"
   },
   {
-   "start": 62.58,
-   "end": 64.63,
+   "start": 55.43,
+   "end": 57.48,
    "text": "person, it becomes jin."
   },
   {
-   "start": 64.65,
-   "end": 66.19,
+   "start": 57.5,
+   "end": 59.04,
    "text": "So don't memorize kanji"
   },
   {
-   "start": 66.21,
-   "end": 67.91,
+   "start": 59.06,
+   "end": 60.76,
    "text": "as isolated symbols."
   },
   {
-   "start": 67.93,
-   "end": 69.93,
+   "start": 60.78,
+   "end": 62.78,
    "text": "Learn them through real words."
   },
   {
-   "start": 69.95,
-   "end": 72.15,
+   "start": 62.8,
+   "end": 65.0,
    "text": "On'yomi and kun'yomi reflect"
   },
   {
-   "start": 72.17,
-   "end": 73.83,
+   "start": 65.02,
+   "end": 66.68,
    "text": "different histories, and the word"
   },
   {
-   "start": 73.85,
-   "end": 75.91,
+   "start": 66.7,
+   "end": 68.57,
    "text": "tells you which reading to use."
   },
   {
-   "start": 75.93,
-   "end": 77.79,
+   "start": 68.59,
+   "end": 70.73,
    "text": "Every kanji has a story."
   },
   {
-   "start": 77.81,
-   "end": 80.56,
-   "text": "Follow @raj_in_jp to discover more."
+   "start": 70.75,
+   "end": 72.26,
+   "text": "Follow me for more."
   }
  ]
 };

@@ -3,17 +3,15 @@
 English cues are short (<= ~34 characters, breaking after punctuation), shown from the first word to the last, on
 a feathered paper plate inside the Reels safe area (clear of the right-hand buttons and the caption area).  The
 Japanese words Raj says inside the English (spoken by Raj in Japanese) are set in italic and coloured the way the
-reel colours readings: kun'yomi indigo, on'yomi vermilion, whole words ink.
-The Japanese line gets a three-tier plate, split at でも: the Japanese largest, the romaji smaller, the English
-meaning smallest."""
+reel colours readings: kun'yomi indigo, on'yomi vermilion, whole words ink."""
 import functools
 import re
 
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
-from engine import FONT_EN, FONT_EN_ITALIC, FONT_JP, H, VERM, W, blur
-from timeline import JA, WORDS, quiet_gap
+from engine import FONT_EN, FONT_EN_ITALIC, VERM, blur
+from timeline import WORDS
 
 MAX_CHARS = 34
 SIZE = 50
@@ -24,12 +22,6 @@ INDIGO = np.array([40, 62, 118], np.float32) / 255
 KUN = {'yama', 'hi', 'mizu', 'hito', 'kunyomi'}
 ON = {'san', 'nichi', 'sui', 'jin', 'onyomi'}
 COLOR = {'ink': INK_RGB, 'kun': INDIGO, 'on': VERM}
-# the Japanese line, in two halves: (Japanese, romaji, English)
-LINE = [('山は「やま」とも読みます。', 'Yama wa "yama" tomo yomimasu.', 'This kanji can also be read "yama".'),
-        ('でも、富士山は「ふじさん」と読みます。', 'Demo, Fujisan wa "Fujisan" to yomimasu.', 'But Mount Fuji is read "Fujisan".')]
-LINE_CY = 1392
-
-
 def _style(w):
     """(italic, colour key) for a word"""
     k = w.get('ja')
@@ -98,27 +90,13 @@ def _handle(cues):
     return cues
 
 
-def _line_cues(cues):
-    a, b = JA['yama_line']['start'], JA['yama_line']['end']
-    mid, _ = quiet_gap(a + 1.2, b - 1.5)
-    k = next((i for i, c in enumerate(cues) if c['start'] > a - 0.3), len(cues))
-    if k > 0:
-        cues[k - 1]['end'] = min(cues[k - 1]['end'], a - 0.1)
-    for j, (s0, s1) in enumerate(((a - 0.06, mid), (mid, b + 0.35))):
-        cues.insert(k + j, dict(start=s0, end=s1, words=[(LINE[j][0], (False, 'ink'))], tiers=LINE[j], cy=LINE_CY))
-    return cues
-
-
-CUES = _line_cues(build_cues())
+CUES = build_cues()
 
 
 @functools.lru_cache(maxsize=128)
 def _render(k):
     """(alpha of all the text, plate); the per-colour alphas are kept in _COLOURED"""
-    c = CUES[k]
-    if 'tiers' in c:
-        return _render_tiers(k)
-    words = c['words']
+    words = CUES[k]['words']
     fr, fi = ImageFont.truetype(FONT_EN, SIZE), ImageFont.truetype(FONT_EN_ITALIC, SIZE + 2)
     space = fr.getlength(' ')
     widths = [(fi if it else fr).getlength(w) for w, (it, _) in words]
@@ -135,23 +113,6 @@ def _render(k):
     plate = np.zeros((h, w), np.float32)
     plate[6:-6, 10:-10] = 1
     return sum(al.values()), blur(plate, 7) * 0.80
-
-
-def _render_tiers(k):
-    ja, rom, en = CUES[k]['tiers']
-    fj, fr, fe = ImageFont.truetype(FONT_JP, 42), ImageFont.truetype(FONT_EN_ITALIC, 36), ImageFont.truetype(FONT_EN, 31)
-    tw = int(max(fj.getlength(ja), fr.getlength(rom), fe.getlength(en)))
-    padx, pady = 34, 18
-    w, h = tw + 2 * padx, 62 + 46 + 38 + 2 * pady
-    layers = {key: Image.new('L', (w, h), 0) for key in COLOR}
-    ImageDraw.Draw(layers['ink']).text((w / 2, pady + 30), ja, font=fj, fill=255, anchor='mm')
-    ImageDraw.Draw(layers['ink']).text((w / 2, pady + 62 + 21), rom, font=fr, fill=255, anchor='mm')
-    ImageDraw.Draw(layers['ink']).text((w / 2, pady + 62 + 46 + 18), en, font=fe, fill=200, anchor='mm')
-    al = {key: np.asarray(im, np.float32) / 255 for key, im in layers.items()}
-    _COLOURED[k] = al
-    plate = np.zeros((h, w), np.float32)
-    plate[6:-6, 10:-10] = 1
-    return sum(al.values()), blur(plate, 7) * 0.84
 
 
 _COLOURED = {}

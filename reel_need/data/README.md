@@ -2,8 +2,8 @@
 
 - Narration: your ElevenLabs voices, **Raj** (English) and **Raj in Japanese** (母は花が好き / ははははながすき,
   にわにはにわにわとりがいる / 庭には二羽鶏がいる, またね！), spliced by `../build_vo.py` into the breaths of the English take.
-  The Japanese voice was given the spoken reading so the particle は is pronounced "wa"; each take, and the finished
-  narration, was checked with ElevenLabs Scribe.
+  母は花が好き is read naturally from the kanji; the kana-only line is read literally, kana by kana (ha ha ha ha na ga
+  su ki). Each take was checked with ElevenLabs Scribe.
 - The storyboard you supplied was used as a guide for the beats; it is not shown in the film.
 - Every illustration (sun and landscapes, the reader, the scroll, mother / flower / heart, the head, the hashi cards,
   the eye, the garden and hens, the signboards, the picture book, the wall of kanji, the cherry tree, the traveller)

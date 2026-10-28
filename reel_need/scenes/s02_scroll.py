@@ -21,8 +21,10 @@ OLD, NEW = '母は花が好き。', 'ははははながすき。'
 MOVE = {1: 2, 3: 5, 5: 7, 6: 8}            # old index -> new index for the kana that stay
 FILL = [0, 1, 3, 4, 6]                     # new kana written into the gaps the kanji left
 SIZE = 90
-# where the speech falls inside the Japanese take: はは は | はな が | すき (s from the take's start)
-CH = [(0.02, 0.62), (0.98, 1.50), (1.50, 1.79)]
+# where the speech falls inside the Japanese takes (s from the take's start): 母は | 花が | 好き, and the kana-only line
+# read literally, one syllable at a time: は は は は な が す き
+CH = [(0.0, 0.53), (0.63, 1.15), (1.16, 1.48)]
+SYL = [0.0, 0.37, 0.78, 1.08, 1.55, 2.12, 2.67, 3.64]
 
 
 class Scene(SceneBase):
@@ -35,7 +37,9 @@ class Scene(SceneBase):
         a = JA['haha_kanji']['start']
         self.sp_old = [(a + p, a + q) for p, q in CH]
         b = JA['haha_kana']['start']
-        self.sp_new = [(b + p, b + q) for p, q in CH]
+        self.t_syl = [b + s for s in SYL]                          # when each kana of ははははながすき is read
+        self.sp_new = [(self.t_syl[0], self.t_syl[2]), (self.t_syl[3], self.t_syl[5]), (self.t_syl[6], self.t_syl[7])]
+        self.dot = kit.blur(np.pad(np.ones((10, 46), np.float32), 4), 2)
         self.t_unroll = at('Look at this')[0] - 0.1
         self.t_mean = [at('Mother')[0], at('likes')[0], at('flowers')[0]]
         c, n = quiet_gap(at('everything in hiragana')[1] - 0.2, JA['haha_kana']['start'])
@@ -106,8 +110,13 @@ class Scene(SceneBase):
         tw = {0: tk[0], 4: tk[1], 2: tk[2]}
         col = lambda i: lerp(INK, tint[i] * 0.8, tw[i]) if i in tint else INK
         self.old.draw(fr, cam, 540 + shake[0], SY, rv_old, op=op_old, offset=off_old, color=col)
-        rv_new = kit.chunk_reveal(t, self.sp_new, [[0, 1], [3, 4], [6]])
+        # the kana-only line is read one kana at a time: each is written (or lit) as it is said
+        rv_new = lambda i: float(np.clip((t - self.t_syl[i] + 0.05) / 0.2, 0, 1.2)) if i < 8 else 0.0
         self.new.draw(fr, cam, 540 + shake[0], SY, lambda i: rv_new(i) if i in FILL else 0.0)
+        for i, ts in enumerate(self.t_syl):
+            p = (t - ts) / 0.35
+            if 0 < p < 1.6:
+                kit.put(fr, cam, self.dot, 540 + shake[0] + self.new.x[i], SY + 70, VERM, smooth(p * 3) * (1 - smooth(p - 0.6)))
         # ink puff where the kanji were
         db = t - self.t_hit
         if 0 < db < 1.2:

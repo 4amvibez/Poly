@@ -42,10 +42,9 @@ BEATS = {
 
 def main():
     L = ['# Is kanji really necessary? — narration script & timeline', '',
-         'Voices: **Raj** (English) and **Raj in Japanese** (every Japanese line). The Japanese voice was given the spoken '
-         'reading (ははわ、はなが すき / にわにわ、にわ、にわとりが いる) so that は is said "wa", and every take was checked with '
-         'ElevenLabs Scribe before use; the finished narration was transcribed again end to end: "Haha wa hana ga suki", '
-         '"Niwa ni wa niwa niwatori ga iru", "Mata ne".', '',
+         'Voices: **Raj** (English) and **Raj in Japanese** (every Japanese line). 母は花が好き。 is read naturally from the '
+         'kanji (haha wa hana ga suki); once the kanji are removed, ははははながすき。 is read literally, kana by kana '
+         '(ha・ha・ha・ha・na・ga・su・ki), the way it looks without kanji. Every take was checked with ElevenLabs Scribe.', '',
          f'Film length {fmt(T.DURATION)} ({T.DURATION:.1f} s), 1080×1920, 30 fps.', '',
          '## Full narration', '', open(os.path.join(HERE, 'script.txt')).read().strip(), '',
          '## Scenes and beats', '', '| Scene | Start–end | Beat time | Visual beat |', '|---|---|---|---|']
@@ -64,7 +63,8 @@ def main():
         L.append(f"| {fmt(c['start'])} | {fmt(c['end'])} | {' '.join(w for w, _ in c['words'])} |")
     L += ['', '## Japanese on screen (checked)', '',
           '- 母は花が好き。 (haha wa hana ga suki) "Mother likes flowers." — 母 haha mother, 花 hana flower, 好き suki like; '
-          'は is the topic particle, read "wa". In hiragana: ははははながすき。',
+          'は is the topic particle, written は and read "wa". In hiragana only: ははははながすき。, read here kana by kana '
+          '(ha ha ha ha na ga su ki) to show how it looks without kanji.',
           '- The guesses: 母 haha mother, 歯 ha teeth, 花 hana flower, 鼻 hana nose, 葉 ha leaf, 羽 ha/hane feather; '
           '母は鼻が好き = "Mother likes noses".',
           '- はし hashi: 橋 bridge, 箸 chopsticks, 端 edge (written the same in kana; the pitch accent differs in speech).',

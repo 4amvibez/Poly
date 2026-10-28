@@ -99,1007 +99,1007 @@
 {
 "text": "It",
 "type": "word",
-"start": 9.21,
-"end": 9.37
+"start": 8.85,
+"end": 9.01
 },
 {
 "text": "means,",
 "type": "word",
-"start": 9.45,
-"end": 9.85
+"start": 9.09,
+"end": 9.49
 },
 {
 "text": "\"Mother",
 "type": "word",
-"start": 10.17,
-"end": 10.49
+"start": 9.81,
+"end": 10.13
 },
 {
 "text": "likes",
 "type": "word",
-"start": 10.57,
-"end": 10.89
+"start": 10.21,
+"end": 10.53
 },
 {
 "text": "flowers.\"",
 "type": "word",
-"start": 10.97,
-"end": 11.53
+"start": 10.61,
+"end": 11.17
 },
 {
 "text": "Now,",
 "type": "word",
-"start": 11.93,
-"end": 12.17
+"start": 11.57,
+"end": 11.81
 },
 {
 "text": "let's",
 "type": "word",
-"start": 12.41,
-"end": 12.61
+"start": 12.05,
+"end": 12.25
 },
 {
 "text": "remove",
 "type": "word",
-"start": 12.65,
-"end": 12.89
+"start": 12.29,
+"end": 12.53
 },
 {
 "text": "the",
 "type": "word",
-"start": 12.93,
-"end": 12.97
+"start": 12.57,
+"end": 12.61
 },
 {
 "text": "kanji,",
 "type": "word",
-"start": 13.05,
-"end": 13.61
+"start": 12.69,
+"end": 13.25
 },
 {
 "text": "and",
 "type": "word",
-"start": 13.65,
-"end": 13.69
+"start": 13.29,
+"end": 13.33
 },
 {
 "text": "write",
 "type": "word",
-"start": 13.77,
-"end": 14.01
+"start": 13.41,
+"end": 13.65
 },
 {
 "text": "everything",
 "type": "word",
-"start": 14.09,
-"end": 14.57
+"start": 13.73,
+"end": 14.21
 },
 {
 "text": "in",
 "type": "word",
-"start": 14.65,
-"end": 14.73
+"start": 14.29,
+"end": 14.37
 },
 {
 "text": "hiragana.",
 "type": "word",
-"start": 14.81,
-"end": 15.37
+"start": 14.45,
+"end": 15.01
 },
 {
 "text": "Wait...",
 "type": "word",
-"start": 18.64,
-"end": 19.6
+"start": 20.43,
+"end": 21.39
 },
 {
 "text": "why",
 "type": "word",
-"start": 19.68,
-"end": 19.84
+"start": 21.47,
+"end": 21.63
 },
 {
 "text": "does",
 "type": "word",
-"start": 19.92,
-"end": 20.0
+"start": 21.71,
+"end": 21.79
 },
 {
 "text": "this",
 "type": "word",
-"start": 20.08,
-"end": 20.24
+"start": 21.87,
+"end": 22.03
 },
 {
 "text": "suddenly",
 "type": "word",
-"start": 20.32,
-"end": 20.64
+"start": 22.11,
+"end": 22.43
 },
 {
 "text": "look",
 "type": "word",
-"start": 20.72,
-"end": 20.88
+"start": 22.51,
+"end": 22.67
 },
 {
 "text": "so",
 "type": "word",
-"start": 20.96,
-"end": 21.12
+"start": 22.75,
+"end": 22.91
 },
 {
 "text": "confusing?",
 "type": "word",
-"start": 21.2,
-"end": 22.0
+"start": 22.99,
+"end": 23.79
 },
 {
 "text": "Japanese",
 "type": "word",
-"start": 22.48,
-"end": 22.96
+"start": 24.27,
+"end": 24.75
 },
 {
 "text": "has",
 "type": "word",
-"start": 23.04,
-"end": 23.2
+"start": 24.83,
+"end": 24.99
 },
 {
 "text": "many",
 "type": "word",
-"start": 23.36,
-"end": 23.6
+"start": 25.15,
+"end": 25.39
 },
 {
 "text": "words",
 "type": "word",
-"start": 23.68,
-"end": 24.0
+"start": 25.47,
+"end": 25.79
 },
 {
 "text": "that",
 "type": "word",
-"start": 24.08,
-"end": 24.16
+"start": 25.87,
+"end": 25.95
 },
 {
 "text": "sound",
 "type": "word",
-"start": 24.24,
-"end": 24.48
+"start": 26.03,
+"end": 26.27
 },
 {
 "text": "alike.",
 "type": "word",
-"start": 24.56,
-"end": 24.96
+"start": 26.35,
+"end": 26.75
 },
 {
 "text": "Without",
 "type": "word",
-"start": 25.28,
-"end": 25.6
+"start": 27.07,
+"end": 27.39
 },
 {
 "text": "kanji,",
 "type": "word",
-"start": 25.72,
-"end": 26.24
+"start": 27.51,
+"end": 28.03
 },
 {
 "text": "readers",
 "type": "word",
-"start": 26.32,
-"end": 26.64
+"start": 28.11,
+"end": 28.43
 },
 {
 "text": "may",
 "type": "word",
-"start": 26.72,
-"end": 26.8
+"start": 28.51,
+"end": 28.59
 },
 {
 "text": "need",
 "type": "word",
-"start": 26.88,
-"end": 27.04
+"start": 28.67,
+"end": 28.83
 },
 {
 "text": "more",
 "type": "word",
-"start": 27.2,
-"end": 27.36
+"start": 28.99,
+"end": 29.15
 },
 {
 "text": "context",
 "type": "word",
-"start": 27.44,
-"end": 27.92
+"start": 29.23,
+"end": 29.71
 },
 {
 "text": "to",
 "type": "word",
-"start": 27.96,
-"end": 28.0
+"start": 29.75,
+"end": 29.79
 },
 {
 "text": "figure",
 "type": "word",
-"start": 28.08,
-"end": 28.24
+"start": 29.87,
+"end": 30.03
 },
 {
 "text": "out",
 "type": "word",
-"start": 28.32,
-"end": 28.48
+"start": 30.11,
+"end": 30.27
 },
 {
 "text": "which",
 "type": "word",
-"start": 28.56,
-"end": 28.8
+"start": 30.35,
+"end": 30.59
 },
 {
 "text": "words",
 "type": "word",
-"start": 28.96,
-"end": 29.12
+"start": 30.75,
+"end": 30.91
 },
 {
 "text": "and",
 "type": "word",
-"start": 29.2,
-"end": 29.28
+"start": 30.99,
+"end": 31.07
 },
 {
 "text": "meanings",
 "type": "word",
-"start": 29.36,
-"end": 29.68
+"start": 31.15,
+"end": 31.47
 },
 {
 "text": "are",
 "type": "word",
-"start": 29.76,
-"end": 29.84
+"start": 31.55,
+"end": 31.63
 },
 {
 "text": "intended.",
 "type": "word",
-"start": 29.92,
-"end": 30.6
+"start": 31.71,
+"end": 32.39
 },
 {
 "text": "Kanji",
 "type": "word",
-"start": 30.8,
-"end": 31.2
+"start": 32.59,
+"end": 32.99
 },
 {
 "text": "gives",
 "type": "word",
-"start": 31.24,
-"end": 31.44
+"start": 33.03,
+"end": 33.23
 },
 {
 "text": "your",
 "type": "word",
-"start": 31.52,
-"end": 31.6
+"start": 33.31,
+"end": 33.39
 },
 {
 "text": "eyes",
 "type": "word",
-"start": 31.76,
-"end": 31.92
+"start": 33.55,
+"end": 33.71
 },
 {
 "text": "an",
 "type": "word",
-"start": 31.96,
-"end": 32.0
+"start": 33.75,
+"end": 33.79
 },
 {
 "text": "important",
 "type": "word",
-"start": 32.08,
-"end": 32.64
+"start": 33.87,
+"end": 34.43
 },
 {
 "text": "clue,",
 "type": "word",
-"start": 32.72,
-"end": 33.28
+"start": 34.51,
+"end": 35.07
 },
 {
 "text": "helping",
 "type": "word",
-"start": 33.4,
-"end": 33.6
+"start": 35.19,
+"end": 35.39
 },
 {
 "text": "you",
 "type": "word",
-"start": 33.64,
-"end": 33.68
+"start": 35.43,
+"end": 35.47
 },
 {
 "text": "recognize",
 "type": "word",
-"start": 33.76,
-"end": 34.32
+"start": 35.55,
+"end": 36.11
 },
 {
 "text": "meaningful",
 "type": "word",
-"start": 34.4,
-"end": 34.8
+"start": 36.19,
+"end": 36.59
 },
 {
 "text": "words",
 "type": "word",
-"start": 34.88,
-"end": 35.2
+"start": 36.67,
+"end": 36.99
 },
 {
 "text": "more",
 "type": "word",
-"start": 35.28,
-"end": 35.44
+"start": 37.07,
+"end": 37.23
 },
 {
 "text": "easily.",
 "type": "word",
-"start": 35.52,
-"end": 36.0
+"start": 37.31,
+"end": 37.79
 },
 {
 "text": "Here's",
 "type": "word",
-"start": 36.4,
-"end": 36.6
+"start": 38.19,
+"end": 38.39
 },
 {
 "text": "another",
 "type": "word",
-"start": 36.64,
-"end": 36.88
+"start": 38.43,
+"end": 38.67
 },
 {
 "text": "example.",
 "type": "word",
-"start": 37.12,
-"end": 37.44
+"start": 38.91,
+"end": 39.23
 },
 {
 "text": "Now",
 "type": "word",
-"start": 41.16,
-"end": 41.32
+"start": 42.95,
+"end": 43.11
 },
 {
 "text": "look",
 "type": "word",
-"start": 41.4,
-"end": 41.48
+"start": 43.19,
+"end": 43.27
 },
 {
 "text": "at",
 "type": "word",
-"start": 41.56,
-"end": 41.64
+"start": 43.35,
+"end": 43.43
 },
 {
 "text": "it",
 "type": "word",
-"start": 41.72,
-"end": 41.8
+"start": 43.51,
+"end": 43.59
 },
 {
 "text": "with",
 "type": "word",
-"start": 41.88,
-"end": 42.04
+"start": 43.67,
+"end": 43.83
 },
 {
 "text": "kanji.",
 "type": "word",
-"start": 42.12,
-"end": 42.6
+"start": 43.91,
+"end": 44.39
 },
 {
 "text": "\"There",
 "type": "word",
-"start": 46.4,
-"end": 46.56
+"start": 48.19,
+"end": 48.35
 },
 {
 "text": "are",
 "type": "word",
-"start": 46.64,
-"end": 46.72
+"start": 48.43,
+"end": 48.51
 },
 {
 "text": "two",
 "type": "word",
-"start": 46.8,
-"end": 46.88
+"start": 48.59,
+"end": 48.67
 },
 {
 "text": "chickens",
 "type": "word",
-"start": 47.04,
-"end": 47.44
+"start": 48.83,
+"end": 49.23
 },
 {
 "text": "in",
 "type": "word",
-"start": 47.52,
-"end": 47.6
+"start": 49.31,
+"end": 49.39
 },
 {
 "text": "the",
 "type": "word",
-"start": 47.68,
-"end": 47.72
+"start": 49.47,
+"end": 49.51
 },
 {
 "text": "garden.\"",
 "type": "word",
-"start": 47.76,
-"end": 48.24
+"start": 49.55,
+"end": 50.03
 },
 {
 "text": "See",
 "type": "word",
-"start": 48.64,
-"end": 48.8
+"start": 50.43,
+"end": 50.59
 },
 {
 "text": "how",
 "type": "word",
-"start": 48.88,
-"end": 48.96
+"start": 50.67,
+"end": 50.75
 },
 {
 "text": "the",
 "type": "word",
-"start": 49.0,
-"end": 49.04
+"start": 50.79,
+"end": 50.83
 },
 {
 "text": "kanji",
 "type": "word",
-"start": 49.12,
-"end": 49.44
+"start": 50.91,
+"end": 51.23
 },
 {
 "text": "helps",
 "type": "word",
-"start": 49.56,
-"end": 49.72
+"start": 51.35,
+"end": 51.51
 },
 {
 "text": "make",
 "type": "word",
-"start": 49.76,
-"end": 49.92
+"start": 51.55,
+"end": 51.71
 },
 {
 "text": "the",
 "type": "word",
-"start": 49.96,
-"end": 50.0
+"start": 51.75,
+"end": 51.79
 },
 {
 "text": "meaning",
 "type": "word",
-"start": 50.12,
-"end": 50.24
+"start": 51.91,
+"end": 52.03
 },
 {
 "text": "clearer?",
 "type": "word",
-"start": 50.32,
-"end": 51.0
+"start": 52.11,
+"end": 52.79
 },
 {
 "text": "So,",
 "type": "word",
-"start": 51.28,
-"end": 51.6
+"start": 53.07,
+"end": 53.39
 },
 {
 "text": "is",
 "type": "word",
-"start": 51.84,
-"end": 52.0
+"start": 53.63,
+"end": 53.79
 },
 {
 "text": "kanji",
 "type": "word",
-"start": 52.08,
-"end": 52.48
+"start": 53.87,
+"end": 54.27
 },
 {
 "text": "really",
 "type": "word",
-"start": 52.64,
-"end": 52.88
+"start": 54.43,
+"end": 54.67
 },
 {
 "text": "necessary?",
 "type": "word",
-"start": 52.96,
-"end": 53.52
+"start": 54.75,
+"end": 55.31
 },
 {
 "text": "Japanese",
 "type": "word",
-"start": 53.92,
-"end": 54.4
+"start": 55.71,
+"end": 56.19
 },
 {
 "text": "can",
 "type": "word",
-"start": 54.48,
-"end": 54.64
+"start": 56.27,
+"end": 56.43
 },
 {
 "text": "be",
 "type": "word",
-"start": 54.72,
-"end": 54.8
+"start": 56.51,
+"end": 56.59
 },
 {
 "text": "written",
 "type": "word",
-"start": 54.88,
-"end": 55.12
+"start": 56.67,
+"end": 56.91
 },
 {
 "text": "without",
 "type": "word",
-"start": 55.2,
-"end": 55.52
+"start": 56.99,
+"end": 57.31
 },
 {
 "text": "kanji",
 "type": "word",
-"start": 55.64,
-"end": 55.92
+"start": 57.43,
+"end": 57.71
 },
 {
 "text": "in",
 "type": "word",
-"start": 56.0,
-"end": 56.08
+"start": 57.79,
+"end": 57.87
 },
 {
 "text": "some",
 "type": "word",
-"start": 56.16,
-"end": 56.24
+"start": 57.95,
+"end": 58.03
 },
 {
 "text": "situations.",
 "type": "word",
-"start": 56.32,
-"end": 57.24
+"start": 58.11,
+"end": 59.03
 },
 {
 "text": "But",
 "type": "word",
-"start": 57.36,
-"end": 57.52
+"start": 59.15,
+"end": 59.31
 },
 {
 "text": "kanji",
 "type": "word",
-"start": 57.6,
-"end": 57.92
+"start": 59.39,
+"end": 59.71
 },
 {
 "text": "helps",
 "type": "word",
-"start": 58.0,
-"end": 58.24
+"start": 59.79,
+"end": 60.03
 },
 {
 "text": "make",
 "type": "word",
-"start": 58.32,
-"end": 58.48
+"start": 60.11,
+"end": 60.27
 },
 {
 "text": "many",
 "type": "word",
-"start": 58.64,
-"end": 58.88
+"start": 60.43,
+"end": 60.67
 },
 {
 "text": "everyday",
 "type": "word",
-"start": 59.04,
-"end": 59.36
+"start": 60.83,
+"end": 61.15
 },
 {
 "text": "sentences",
 "type": "word",
-"start": 59.44,
-"end": 60.08
+"start": 61.23,
+"end": 61.87
 },
 {
 "text": "easier",
 "type": "word",
-"start": 60.16,
-"end": 60.56
+"start": 61.95,
+"end": 62.35
 },
 {
 "text": "to",
 "type": "word",
-"start": 60.6,
-"end": 60.64
+"start": 62.39,
+"end": 62.43
 },
 {
 "text": "distinguish",
 "type": "word",
-"start": 60.72,
-"end": 61.36
+"start": 62.51,
+"end": 63.15
 },
 {
 "text": "and",
 "type": "word",
-"start": 61.44,
-"end": 61.52
+"start": 63.23,
+"end": 63.31
 },
 {
 "text": "read.",
 "type": "word",
-"start": 61.6,
-"end": 62.24
+"start": 63.39,
+"end": 64.03
 },
 {
 "text": "Hiragana,",
 "type": "word",
-"start": 62.28,
-"end": 63.04
+"start": 64.07,
+"end": 64.83
 },
 {
 "text": "katakana,",
 "type": "word",
-"start": 63.12,
-"end": 63.76
+"start": 64.91,
+"end": 65.55
 },
 {
 "text": "and",
 "type": "word",
-"start": 63.84,
-"end": 63.92
+"start": 65.63,
+"end": 65.71
 },
 {
 "text": "kanji",
 "type": "word",
-"start": 64.0,
-"end": 64.64
+"start": 65.79,
+"end": 66.43
 },
 {
 "text": "each",
 "type": "word",
-"start": 64.76,
-"end": 64.88
+"start": 66.55,
+"end": 66.67
 },
 {
 "text": "have",
 "type": "word",
-"start": 64.96,
-"end": 65.04
+"start": 66.75,
+"end": 66.83
 },
 {
 "text": "their",
 "type": "word",
-"start": 65.12,
-"end": 65.36
+"start": 66.91,
+"end": 67.15
 },
 {
 "text": "own",
 "type": "word",
-"start": 65.44,
-"end": 65.6
+"start": 67.23,
+"end": 67.39
 },
 {
 "text": "important",
 "type": "word",
-"start": 65.84,
-"end": 66.08
+"start": 67.63,
+"end": 67.87
 },
 {
 "text": "role.",
 "type": "word",
-"start": 66.16,
-"end": 66.8
+"start": 67.95,
+"end": 68.59
 },
 {
 "text": "So,",
 "type": "word",
-"start": 66.88,
-"end": 67.28
+"start": 68.67,
+"end": 69.07
 },
 {
 "text": "don't",
 "type": "word",
-"start": 67.32,
-"end": 67.52
+"start": 69.11,
+"end": 69.31
 },
 {
 "text": "look",
 "type": "word",
-"start": 67.56,
-"end": 67.6
+"start": 69.35,
+"end": 69.39
 },
 {
 "text": "at",
 "type": "word",
-"start": 67.68,
-"end": 67.76
+"start": 69.47,
+"end": 69.55
 },
 {
 "text": "kanji",
 "type": "word",
-"start": 67.84,
-"end": 68.16
+"start": 69.63,
+"end": 69.95
 },
 {
 "text": "as",
 "type": "word",
-"start": 68.28,
-"end": 68.4
+"start": 70.07,
+"end": 70.19
 },
 {
 "text": "just",
 "type": "word",
-"start": 68.52,
-"end": 68.64
+"start": 70.31,
+"end": 70.43
 },
 {
 "text": "another",
 "type": "word",
-"start": 68.8,
-"end": 68.96
+"start": 70.59,
+"end": 70.75
 },
 {
 "text": "obstacle",
 "type": "word",
-"start": 69.04,
-"end": 69.44
+"start": 70.83,
+"end": 71.23
 },
 {
 "text": "to",
 "type": "word",
-"start": 69.52,
-"end": 69.6
+"start": 71.31,
+"end": 71.39
 },
 {
 "text": "overcome.",
 "type": "word",
-"start": 69.68,
-"end": 70.48
+"start": 71.47,
+"end": 72.27
 },
 {
 "text": "Every",
 "type": "word",
-"start": 70.64,
-"end": 70.8
+"start": 72.43,
+"end": 72.59
 },
 {
 "text": "character",
 "type": "word",
-"start": 70.88,
-"end": 71.28
+"start": 72.67,
+"end": 73.07
 },
 {
 "text": "you",
 "type": "word",
-"start": 71.36,
-"end": 71.44
+"start": 73.15,
+"end": 73.23
 },
 {
 "text": "learn",
 "type": "word",
-"start": 71.6,
-"end": 71.76
+"start": 73.39,
+"end": 73.55
 },
 {
 "text": "helps",
 "type": "word",
-"start": 71.88,
-"end": 72.08
+"start": 73.67,
+"end": 73.87
 },
 {
 "text": "you",
 "type": "word",
-"start": 72.12,
-"end": 72.16
+"start": 73.91,
+"end": 73.95
 },
 {
 "text": "understand",
 "type": "word",
-"start": 72.24,
-"end": 72.72
+"start": 74.03,
+"end": 74.51
 },
 {
 "text": "a",
 "type": "word",
-"start": 72.8,
-"end": 72.96
+"start": 74.59,
+"end": 74.75
 },
 {
 "text": "little",
 "type": "word",
-"start": 73.12,
-"end": 73.28
+"start": 74.91,
+"end": 75.07
 },
 {
 "text": "more",
 "type": "word",
-"start": 73.4,
-"end": 73.52
+"start": 75.19,
+"end": 75.31
 },
 {
 "text": "of",
 "type": "word",
-"start": 73.56,
-"end": 73.6
+"start": 75.35,
+"end": 75.39
 },
 {
 "text": "the",
 "type": "word",
-"start": 73.68,
-"end": 73.72
+"start": 75.47,
+"end": 75.51
 },
 {
 "text": "Japanese",
 "type": "word",
-"start": 73.76,
-"end": 74.16
+"start": 75.55,
+"end": 75.95
 },
 {
 "text": "language.",
 "type": "word",
-"start": 74.24,
-"end": 75.12
+"start": 76.03,
+"end": 76.91
 },
 {
 "text": "Don't",
 "type": "word",
-"start": 75.2,
-"end": 75.44
+"start": 76.99,
+"end": 77.23
 },
 {
 "text": "fear",
 "type": "word",
-"start": 75.52,
-"end": 75.76
+"start": 77.31,
+"end": 77.55
 },
 {
 "text": "kanji.",
 "type": "word",
-"start": 75.84,
-"end": 76.56
+"start": 77.63,
+"end": 78.35
 },
 {
 "text": "Learn",
 "type": "word",
-"start": 76.68,
-"end": 76.8
+"start": 78.47,
+"end": 78.59
 },
 {
 "text": "to",
 "type": "word",
-"start": 76.88,
-"end": 76.96
+"start": 78.67,
+"end": 78.75
 },
 {
 "text": "see",
 "type": "word",
-"start": 77.04,
-"end": 77.12
+"start": 78.83,
+"end": 78.91
 },
 {
 "text": "the",
 "type": "word",
-"start": 77.2,
-"end": 77.28
+"start": 78.99,
+"end": 79.07
 },
 {
 "text": "meaning",
 "type": "word",
-"start": 77.44,
-"end": 77.6
+"start": 79.23,
+"end": 79.39
 },
 {
 "text": "behind",
 "type": "word",
-"start": 77.68,
-"end": 78.0
+"start": 79.47,
+"end": 79.79
 },
 {
 "text": "it.",
 "type": "word",
-"start": 78.08,
-"end": 78.48
+"start": 79.87,
+"end": 80.27
 },
 {
 "text": "Follow",
 "type": "word",
-"start": 78.6,
-"end": 78.72
+"start": 80.39,
+"end": 80.51
 },
 {
 "text": "me,",
 "type": "word",
-"start": 78.8,
-"end": 79.2
+"start": 80.59,
+"end": 80.99
 },
 {
 "text": "and",
 "type": "word",
-"start": 79.28,
-"end": 79.36
+"start": 81.07,
+"end": 81.15
 },
 {
 "text": "let's",
 "type": "word",
-"start": 79.44,
-"end": 79.76
+"start": 81.23,
+"end": 81.55
 },
 {
 "text": "master",
 "type": "word",
-"start": 79.96,
-"end": 80.16
+"start": 81.75,
+"end": 81.95
 },
 {
 "text": "Japanese",
 "type": "word",
-"start": 80.24,
-"end": 80.72
+"start": 82.03,
+"end": 82.51
 },
 {
 "text": "together!",
 "type": "word",
-"start": 80.8,
-"end": 81.36
+"start": 82.59,
+"end": 83.15
 }
 ],
 "ja": {
 "haha_kanji": {
 "text": "母は花が好き。",
 "start": 6.89,
-"end": 8.68
+"end": 8.32
 },
 "haha_kana": {
 "text": "ははははながすき。",
-"start": 15.84,
-"end": 17.63
+"start": 15.48,
+"end": 19.42
 },
 "niwa_kana": {
 "text": "にわにはにわにわとりがいる。",
-"start": 37.83,
-"end": 40.53
+"start": 39.62,
+"end": 42.32
 },
 "niwa_kanji": {
 "text": "庭には二羽鶏がいる。",
-"start": 43.03,
-"end": 45.73
+"start": 44.82,
+"end": 47.52
 },
 "matane": {
 "text": "またね！",
-"start": 81.81,
-"end": 82.41
+"start": 83.6,
+"end": 84.2
 }
 }
 }

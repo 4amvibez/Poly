@@ -1,8 +1,8 @@
 # Is kanji really necessary? — narration script & timeline
 
-Voices: **Raj** (English) and **Raj in Japanese** (every Japanese line). The Japanese voice was given the spoken reading (ははわ、はなが すき / にわにわ、にわ、にわとりが いる) so that は is said "wa", and every take was checked with ElevenLabs Scribe before use; the finished narration was transcribed again end to end: "Haha wa hana ga suki", "Niwa ni wa niwa niwatori ga iru", "Mata ne".
+Voices: **Raj** (English) and **Raj in Japanese** (every Japanese line). 母は花が好き。 is read naturally from the kanji (haha wa hana ga suki); once the kanji are removed, ははははながすき。 is read literally, kana by kana (ha・ha・ha・ha・na・ga・su・ki), the way it looks without kanji. Every take was checked with ElevenLabs Scribe.
 
-Film length 1:24.71 (84.7 s), 1080×1920, 30 fps.
+Film length 1:26.50 (86.5 s), 1080×1920, 30 fps.
 
 ## Full narration
 
@@ -43,43 +43,43 @@ Follow me, and let's master Japanese together!
 | hook | 0:00.00–0:06.39 | 0:00.00 | Frame 1 slams in: "Is KANJI really necessary?" over a red sun with 漢字 inside, a reader below (taiko) |
 |  |  | 0:02.64 | 漢字 bursts into ink droplets in the breath before "What if…" (bowl); hiragana and katakana swirl into the sun |
 |  |  | 0:04.08 | A thought cloud over the reader: あいうえお / カタカナ？ |
-| scroll | 0:05.59–0:19.44 | 0:05.84 | A hanging scroll unrolls; 母は花が好き。 is written as the Japanese voice says it |
-|  |  | 0:10.57 | Arrows to a mother, a heart (likes), a flower; 母 / 好 / 花 take their colours |
-|  |  | 0:13.05 | In the breath after "hiragana" the kanji are wiped away in a puff of ink (bowl); the kana slide apart |
-|  |  | 0:19.04 | ははははながすき。 is written in as it is read again; then it jolts and a red ？ pops (wood knock) |
-| confusion | 0:18.74–0:23.43 | 0:19.04 | A reader's head, a confusion spiral, a sweat drop; guesses pop up: 母? 花? 歯? 鼻? 葉? 羽? |
-|  |  | 0:21.60 | "Mother likes… noses?!" (母は鼻が好き) |
-| alike | 0:22.63–0:37.35 | 0:22.88 | Three cards: はし hashi, はし, はし; sound waves on "sound alike"; "one sound…" |
-|  |  | 0:25.68 | Each card's picture is lost in mist, flickering between bridge / chopsticks / edge; "…three meanings?" |
-|  |  | 0:31.20 | A big ink eye opens over the cards (bowl), sight lines to each |
-|  |  | 0:34.16 | The cards turn over: 橋 bridge, 箸 chopsticks, 端 edge |
-| niwa | 0:36.55–0:52.18 | 0:36.80 | "another example…"; にわにはにわにわとりがいる。 written as it is read; clouds: にわ? (garden) にわ? (feathers) にわとり? (chicken) |
-|  |  | 0:41.56 | 庭には二羽鶏がいる。 colour-coded as it is read: 庭 garden, 二羽 two (birds), 鶏 chicken; a garden is painted below |
-|  |  | 0:46.80 | Two hens pop into the garden in the breath before (knock + clucks), counted 一羽, 二羽 |
-|  |  | 0:49.04 | Split screen: without kanji (grey, ？) vs with kanji (bright, a lit bulb) |
-| answer | 0:51.38–1:07.83 | 0:51.68 | Calm view: mountains, sun, pagoda, the reader; "So, is kanji really necessary?" |
-|  |  | 0:54.88 | An open picture book in hiragana (むかしむかし、あるところに…): picture books for little children |
-|  |  | 0:59.44 | Signboards swing in: 駅 station, 出口 exit, 病院 hospital; they knock in the breath after "read." (wood) |
-|  |  | 1:02.68 | ひらがな grammar & endings, カタカナ borrowed words, 漢字 meaning; one vermilion stroke joins them |
-| obstacle | 1:07.03–1:19.60 | 1:07.28 | A wall of kanji blocks drops in front of a small traveller; it rumbles on "obstacle" (？！) |
-|  |  | 1:11.04 | The blocks rebuild as a staircase; the traveller climbs, each step turning gold; a red sun rises |
-|  |  | 1:15.60 | "Don't fear kanji." stamps in the breath before (taiko) |
-|  |  | 1:17.08 | 花 brushed large as a cherry tree blooms behind it: "Learn to see the meaning behind it." |
-| endcard | 1:18.80–1:24.71 | 1:19.00 | Sunrise; the traveller with a pack; FOLLOW @raj_in_jp; "Let's master Japanese together!"; 一歩ずつ |
-|  |  | 1:22.21 | またね！ stamped in vermilion (bowl); hold |
+| scroll | 0:05.59–0:21.23 | 0:05.84 | A hanging scroll unrolls; 母は花が好き。 is written as the Japanese voice says it |
+|  |  | 0:10.21 | Arrows to a mother, a heart (likes), a flower; 母 / 好 / 花 take their colours |
+|  |  | 0:12.69 | In the breath after "hiragana" the kanji are wiped away in a puff of ink (bowl); the kana slide apart |
+|  |  | 0:20.83 | ははははながすき。 is written in as it is read again; then it jolts and a red ？ pops (wood knock) |
+| confusion | 0:20.53–0:25.22 | 0:20.83 | A reader's head, a confusion spiral, a sweat drop; guesses pop up: 母? 花? 歯? 鼻? 葉? 羽? |
+|  |  | 0:23.39 | "Mother likes… noses?!" (母は鼻が好き) |
+| alike | 0:24.42–0:39.14 | 0:24.67 | Three cards: はし hashi, はし, はし; sound waves on "sound alike"; "one sound…" |
+|  |  | 0:27.47 | Each card's picture is lost in mist, flickering between bridge / chopsticks / edge; "…three meanings?" |
+|  |  | 0:32.99 | A big ink eye opens over the cards (bowl), sight lines to each |
+|  |  | 0:35.95 | The cards turn over: 橋 bridge, 箸 chopsticks, 端 edge |
+| niwa | 0:38.34–0:53.97 | 0:38.59 | "another example…"; にわにはにわにわとりがいる。 written as it is read; clouds: にわ? (garden) にわ? (feathers) にわとり? (chicken) |
+|  |  | 0:43.35 | 庭には二羽鶏がいる。 colour-coded as it is read: 庭 garden, 二羽 two (birds), 鶏 chicken; a garden is painted below |
+|  |  | 0:48.59 | Two hens pop into the garden in the breath before (knock + clucks), counted 一羽, 二羽 |
+|  |  | 0:50.83 | Split screen: without kanji (grey, ？) vs with kanji (bright, a lit bulb) |
+| answer | 0:53.17–1:09.62 | 0:53.47 | Calm view: mountains, sun, pagoda, the reader; "So, is kanji really necessary?" |
+|  |  | 0:56.67 | An open picture book in hiragana (むかしむかし、あるところに…): picture books for little children |
+|  |  | 1:01.23 | Signboards swing in: 駅 station, 出口 exit, 病院 hospital; they knock in the breath after "read." (wood) |
+|  |  | 1:04.47 | ひらがな grammar & endings, カタカナ borrowed words, 漢字 meaning; one vermilion stroke joins them |
+| obstacle | 1:08.82–1:21.39 | 1:09.07 | A wall of kanji blocks drops in front of a small traveller; it rumbles on "obstacle" (？！) |
+|  |  | 1:12.83 | The blocks rebuild as a staircase; the traveller climbs, each step turning gold; a red sun rises |
+|  |  | 1:17.39 | "Don't fear kanji." stamps in the breath before (taiko) |
+|  |  | 1:18.87 | 花 brushed large as a cherry tree blooms behind it: "Learn to see the meaning behind it." |
+| endcard | 1:20.59–1:26.50 | 1:20.79 | Sunrise; the traveller with a pack; FOLLOW @raj_in_jp; "Let's master Japanese together!"; 一歩ずつ |
+|  |  | 1:24.00 | またね！ stamped in vermilion (bowl); hold |
 
 ## Sync hits (picture event + sound, each in a breath of the narration)
 
 | Time | Hit |
 |---|---|
 | 0:02.44 | burst |
-| 0:15.78 | erase |
-| 0:18.19 | huh |
-| 0:30.88 | eye |
-| 0:46.18 | hens |
-| 1:02.50 | signs |
-| 1:15.28 | fear |
-| 1:22.21 | matane |
+| 0:15.42 | erase |
+| 0:20.02 | huh |
+| 0:32.67 | eye |
+| 0:47.97 | hens |
+| 1:04.29 | signs |
+| 1:17.07 | fear |
+| 1:24.00 | matane |
 
 ## Captions (video time)
 
@@ -89,53 +89,53 @@ Follow me, and let's master Japanese together!
 | 0:02.58 | 0:04.00 | What if Japanese used only |
 | 0:04.02 | 0:05.76 | hiragana and katakana? |
 | 0:05.78 | 0:07.19 | Look at this sentence. |
-| 0:07.23 | 0:09.38 | Haha wa hana ga suki. |
-| 0:09.55 | 0:12.18 | It means, "Mother likes flowers." |
-| 0:12.27 | 0:13.97 | Now, let's remove the kanji, |
-| 0:13.99 | 0:16.02 | and write everything in hiragana. |
-| 0:16.18 | 0:18.33 | Haha wa hana ga suki. |
-| 0:18.98 | 0:20.00 | Wait... |
-| 0:20.02 | 0:21.04 | why does this suddenly |
-| 0:21.06 | 0:22.65 | look so confusing? |
-| 0:22.82 | 0:24.00 | Japanese has many |
-| 0:24.02 | 0:25.60 | words that sound alike. |
-| 0:25.62 | 0:27.52 | Without kanji, readers may need |
-| 0:27.54 | 0:29.28 | more context to figure out which |
-| 0:29.30 | 0:31.12 | words and meanings are intended. |
-| 0:31.14 | 0:33.04 | Kanji gives your eyes an important |
-| 0:33.06 | 0:34.72 | clue, helping you recognize |
-| 0:34.74 | 0:36.65 | meaningful words more easily. |
-| 0:36.74 | 0:38.09 | Here's another example. |
-| 0:38.17 | 0:41.23 | Niwa ni wa niwa niwatori ga iru. |
-| 0:41.50 | 0:43.25 | Now look at it with kanji. |
-| 0:43.37 | 0:46.43 | Niwa ni wa niwa niwatori ga iru. |
-| 0:46.74 | 0:47.84 | "There are two chickens |
-| 0:47.86 | 0:48.89 | in the garden." |
-| 0:48.98 | 0:50.08 | See how the kanji helps |
-| 0:50.10 | 0:51.60 | make the meaning clearer? |
-| 0:51.62 | 0:54.17 | So, is kanji really necessary? |
-| 0:54.26 | 0:55.96 | Japanese can be written without |
-| 0:55.98 | 0:57.68 | kanji in some situations. |
-| 0:57.70 | 0:59.36 | But kanji helps make many |
-| 0:59.38 | 1:00.92 | everyday sentences easier |
-| 1:00.94 | 1:02.60 | to distinguish and read. |
-| 1:02.62 | 1:05.28 | Hiragana, katakana, and kanji each |
-| 1:05.30 | 1:07.20 | have their own important role. |
-| 1:07.22 | 1:09.12 | So, don't look at kanji as just |
-| 1:09.14 | 1:10.96 | another obstacle to overcome. |
-| 1:10.98 | 1:12.20 | Every character you learn |
-| 1:12.22 | 1:13.72 | helps you understand a little |
-| 1:13.74 | 1:15.52 | more of the Japanese language. |
-| 1:15.54 | 1:17.00 | Don't fear kanji. |
-| 1:17.02 | 1:17.76 | Learn to see the |
-| 1:17.78 | 1:18.92 | meaning behind it. |
-| 1:18.94 | 1:20.28 | Follow me, and let's |
-| 1:20.30 | 1:22.01 | master Japanese together! |
-| 1:22.15 | 1:23.11 | Mata ne! |
+| 0:07.23 | 0:09.02 | Haha wa hana ga suki. |
+| 0:09.19 | 0:11.82 | It means, "Mother likes flowers." |
+| 0:11.91 | 0:13.61 | Now, let's remove the kanji, |
+| 0:13.63 | 0:15.66 | and write everything in hiragana. |
+| 0:15.82 | 0:20.12 | Ha ha ha ha na ga su ki…? |
+| 0:20.77 | 0:21.79 | Wait... |
+| 0:21.81 | 0:22.83 | why does this suddenly |
+| 0:22.85 | 0:24.44 | look so confusing? |
+| 0:24.61 | 0:25.79 | Japanese has many |
+| 0:25.81 | 0:27.39 | words that sound alike. |
+| 0:27.41 | 0:29.31 | Without kanji, readers may need |
+| 0:29.33 | 0:31.07 | more context to figure out which |
+| 0:31.09 | 0:32.91 | words and meanings are intended. |
+| 0:32.93 | 0:34.83 | Kanji gives your eyes an important |
+| 0:34.85 | 0:36.51 | clue, helping you recognize |
+| 0:36.53 | 0:38.44 | meaningful words more easily. |
+| 0:38.53 | 0:39.88 | Here's another example. |
+| 0:39.96 | 0:43.02 | Niwa ni wa niwa niwatori ga iru. |
+| 0:43.29 | 0:45.04 | Now look at it with kanji. |
+| 0:45.16 | 0:48.22 | Niwa ni wa niwa niwatori ga iru. |
+| 0:48.53 | 0:49.63 | "There are two chickens |
+| 0:49.65 | 0:50.68 | in the garden." |
+| 0:50.77 | 0:51.87 | See how the kanji helps |
+| 0:51.89 | 0:53.39 | make the meaning clearer? |
+| 0:53.41 | 0:55.96 | So, is kanji really necessary? |
+| 0:56.05 | 0:57.75 | Japanese can be written without |
+| 0:57.77 | 0:59.47 | kanji in some situations. |
+| 0:59.49 | 1:01.15 | But kanji helps make many |
+| 1:01.17 | 1:02.71 | everyday sentences easier |
+| 1:02.73 | 1:04.39 | to distinguish and read. |
+| 1:04.41 | 1:07.07 | Hiragana, katakana, and kanji each |
+| 1:07.09 | 1:08.99 | have their own important role. |
+| 1:09.01 | 1:10.91 | So, don't look at kanji as just |
+| 1:10.93 | 1:12.75 | another obstacle to overcome. |
+| 1:12.77 | 1:13.99 | Every character you learn |
+| 1:14.01 | 1:15.51 | helps you understand a little |
+| 1:15.53 | 1:17.31 | more of the Japanese language. |
+| 1:17.33 | 1:18.79 | Don't fear kanji. |
+| 1:18.81 | 1:19.55 | Learn to see the |
+| 1:19.57 | 1:20.71 | meaning behind it. |
+| 1:20.73 | 1:22.07 | Follow me, and let's |
+| 1:22.09 | 1:23.80 | master Japanese together! |
+| 1:23.94 | 1:24.90 | Mata ne! |
 
 ## Japanese on screen (checked)
 
-- 母は花が好き。 (haha wa hana ga suki) "Mother likes flowers." — 母 haha mother, 花 hana flower, 好き suki like; は is the topic particle, read "wa". In hiragana: ははははながすき。
+- 母は花が好き。 (haha wa hana ga suki) "Mother likes flowers." — 母 haha mother, 花 hana flower, 好き suki like; は is the topic particle, written は and read "wa". In hiragana only: ははははながすき。, read here kana by kana (ha ha ha ha na ga su ki) to show how it looks without kanji.
 - The guesses: 母 haha mother, 歯 ha teeth, 花 hana flower, 鼻 hana nose, 葉 ha leaf, 羽 ha/hane feather; 母は鼻が好き = "Mother likes noses".
 - はし hashi: 橋 bridge, 箸 chopsticks, 端 edge (written the same in kana; the pitch accent differs in speech).
 - にわにはにわにわとりがいる。 = 庭には二羽鶏がいる。 (niwa ni wa niwa niwatori ga iru) "There are two chickens in the garden": 庭 niwa garden, 二羽 niwa two (birds; 羽 is the counter for birds), 鶏 niwatori chicken. 一羽 ichiwa one bird.

@@ -1,12 +1,13 @@
 """build_vo — assemble the narration: Raj's English take B with the Japanese lines (Raj in Japanese) spliced into
 its breaths:
-  after "Look at this sentence."                  母は花が好き。      (haha wa hana ga suki)
-  after "...write everything in hiragana."        ははははながすき。  (the same sentence, the same sound)
+  after "Look at this sentence."                  母は花が好き。      (haha wa hana ga suki, read naturally from the kanji)
+  after "...write everything in hiragana."        ははははながすき。  read literally, kana by kana: ha・ha・ha・ha・na・ga・su・ki
   after "Here's another example."                 にわにはにわにわとりがいる。 (niwa ni wa, niwa, niwatori ga iru)
   after "Now look at it with kanji."              庭には二羽鶏がいる。 (the same sentence, the same sound)
   after "...master Japanese together!"            またね！
-The Japanese voice was given the spoken reading (ははわ、はなが すき / にわにわ、にわ、にわとりが いる) so the particle
-は is said "wa"; each take was checked with Scribe before use.  Writes audio/narration.wav + .mp3 and audio/words.json
+The Japanese voice reads 母は花が好き from the kanji (a natural sentence, haha wa); the kana-only line is given as
+は、は、は、は、な、が、す、き so it is read the way a learner without kanji would see it; にわにわ、にわ、にわとりが いる
+is the spoken reading of the niwa line.  Each take was checked with Scribe before use.  Writes audio/narration.wav + .mp3 and audio/words.json
 (English words shifted into place, plus the Japanese segments)."""
 import json
 import os
@@ -18,8 +19,8 @@ from scipy.io import wavfile
 A = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'audio')
 SR = 48000
 # (cut point in take_en_b, clip, key, breath before, breath after)
-SPLICES = [(6.64, 'haha_a.mp3', 'haha_kanji', 0.25, 0.45),
-           (13.05, 'haha_a.mp3', 'haha_kana', 0.3, 0.7),
+SPLICES = [(6.64, 'haha_kanji_b.mp3', 'haha_kanji', 0.25, 0.45),
+           (13.05, 'haha_literal_b.mp3', 'haha_kana', 0.3, 0.7),
            (32.3, 'niwa_a.mp3', 'niwa_kana', 0.25, 0.45),
            (34.1, 'niwa_a.mp3', 'niwa_kanji', 0.25, 0.45)]
 MATANE_GAP = 0.45

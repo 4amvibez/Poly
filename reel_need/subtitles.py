@@ -79,7 +79,7 @@ def build_cues():
 def _fix(cues):
     """the Japanese lines (spoken by the Japanese voice) are captioned with their reading, in italic"""
     from timeline import JA
-    READ = {'haha_kanji': 'Haha wa hana ga suki.', 'haha_kana': 'Haha wa hana ga suki.',
+    READ = {'haha_kanji': 'Haha wa hana ga suki.', 'haha_kana': 'Ha ha ha ha na ga su ki…?',
             'niwa_kana': 'Niwa ni wa niwa niwatori ga iru.', 'niwa_kanji': 'Niwa ni wa niwa niwatori ga iru.', 'matane': 'Mata ne!'}
     for key, txt in READ.items():
         a, b = JA[key]['start'], JA[key]['end']

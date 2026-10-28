@@ -9,8 +9,8 @@ route trailing behind as it sails past the Korean peninsula and across the strai
 Kyushu in the breath after "arrived." (sync).  Four characters (山 日 水 人) lift off it and settle onto an open book
 that slides up over the sea; on "their own words" each takes its Japanese word above it (indigo), on "Chinese-
 derived pronunciations" its Chinese-derived sound below it (vermilion), each traced back to the ship by a fine
-vermilion line.  On "That's why..." the chart dissolves into paper and one brushstroke comes down and splits:
-音読み ON'YOMI (vermilion, left) and 訓読み KUN'YOMI (indigo, right)."""
+vermilion line.  On "That's why..." two frosted paper panels settle over Japan, one under the other:
+音読み ON'YOMI (vermilion) and 訓読み KUN'YOMI (indigo), the chart staying under them."""
 import cv2
 import numpy as np
 
@@ -32,6 +32,20 @@ ROUTE = [(120.9, 36.0), (122.6, 36.4), (124.6, 36.2), (125.7, 35.0), (126.1, 34.
          (129.3, 34.1), (129.9, 33.75), (130.25, 33.68)]      # Shandong coast, past the Korean peninsula, to Hakata
 PUFF = [(136.0, 35.3), (132.2, 34.6), (139.6, 37.2), (130.8, 32.4)]   # where each word rises from, on the islands
 CARD = np.array([0.97, 0.95, 0.89], np.float32)
+PANEL_Y = [330, 560]                  # the 音読み / 訓読み panels, over Japan
+_PX0, _PX1, _PH = 170, 910, 200
+_yy, _xx = np.mgrid[0:H, 0:W].astype(np.float32)
+
+
+def frost(fr, y, o):
+    """a soft-edged frosted-paper panel at screen height y: the chart blurred and washed towards paper"""
+    y0, y1 = int(y - _PH / 2 - 40), int(y + _PH / 2 + 40)
+    crop = fr.img[y0:y1]
+    soft = cv2.GaussianBlur(crop, (0, 0), 14)
+    dx = np.clip(np.minimum(_xx[y0:y1] - _PX0, _PX1 - _xx[y0:y1]) / 40, 0, 1)
+    dy = np.clip(np.minimum(_yy[y0:y1] - (y - _PH / 2), (y + _PH / 2) - _yy[y0:y1]) / 40, 0, 1)
+    m = (dx * dx * (3 - 2 * dx) * dy * dy * (3 - 2 * dy) * o)[..., None]
+    fr.img[y0:y1] = crop * (1 - m) + (soft * 0.25 + CARD * 0.75) * m
 
 
 class Scene(SceneBase):
@@ -65,7 +79,7 @@ class Scene(SceneBase):
         self.route_s = seg / seg[-1]
         self.dots = np.array([self.route_at(u) for u in np.linspace(0, 1, int(seg[-1] / 20))])
         self.puff_xy = [r5art.chart_xy(lo, la) for lo, la in PUFF]
-        wide = (r5art.chart_xy(129.0, 31.5)[0], r5art.chart_xy(129.0, 31.5)[1], 0.6)
+        wide = (1487.0, 1761.0, 0.69)                                  # Korea and Japan filling the frame, Taiwan in the corner
         start = self.route[0]
         dock = self.route[-1]
         hold = (dock[0] + 290, dock[1] + 330, 1.0)                     # Japan in the top half once the book is up
@@ -79,14 +93,6 @@ class Scene(SceneBase):
             ss.add(stroke(W, H, spline([(ds[0], ds[1] + 20), (lerp(ds[0], x, 0.5) + 30, 880), (x, ON_Y - 40)], 14), 2.4,
                           ink=0.75, dry=0.6, profile=((0, 0.3), (0.2, 1), (1, 0.6)), seed=300 + k, red=True), self.t_pres + 0.25 * k, 0.45)
         self.lines = ss
-        sp = StrokeSet(W, H)
-        sp.add(stroke(W, H, spline([(540, 250), (536, 340), (540, 420)], 8), 30, ink=0.92, dry=0.5,
-                      profile=((0, 0.5), (0.1, 1), (1, 0.9)), seed=310), self.t_split, 0.35)
-        sp.add(stroke(W, H, spline([(540, 410), (470, 470), (330, 520), (230, 560)], 14), 24, ink=0.95, dry=0.55,
-                      profile=((0, 1), (0.9, 0.8), (1, 0.2)), seed=311, red=True), self.t_split + 0.3, 0.45)
-        sp.add(stroke(W, H, spline([(540, 410), (610, 470), (750, 520), (850, 560)], 14), 24, ink=0.95, dry=0.55,
-                      profile=((0, 1), (0.9, 0.8), (1, 0.2)), seed=312), self.t_split + 0.3, 0.45)
-        self.split = sp
         tick = StrokeSet(W, H)
         for k, x in enumerate(SLOTS):
             tick.add(stroke(W, H, [(x - 40, KUN_Y + 34), (x + 40, KUN_Y + 33)], 4, ink=0.9, dry=0.4, profile=((0, 0.3), (0.2, 1), (1, 0.4)),
@@ -107,11 +113,9 @@ class Scene(SceneBase):
     def render(self, t):
         mc = self.mcam(t)
         scr = self.scr
-        paper = self.frame(scr).img
         chart = warp(self.chart, mc.matrix(), border='reflect')
-        fade = smooth((t - self.t_split + 0.1) / 0.6)
-        fr = Frame(chart * (1 - fade) + paper * fade)
-        mp = 1 - fade
+        fr = Frame(chart)
+        mp = 1.0
         M = mc.matrix()
         proj = lambda p: M @ np.array([p[0], p[1], 1.0])
         # the words people already said, rising off the islands
@@ -168,13 +172,14 @@ class Scene(SceneBase):
                 kit.put(fr, scr, self.on[k], SLOTS[k], ON_Y, VERM, smooth(fo), 1 + 0.3 * np.exp(-fo * 2.5))
         self.layer(fr, scr, self.tick.render(t), color=INDIGO, opacity=0.9)
         self.layer(fr, scr, self.lines.render(t, red=True), color=VERM, opacity=0.85 * mp)
-        # one brushstroke, two paths
-        self.layer(fr, scr, self.split.render(t, red=True), color=VERM)
-        self.layer(fr, scr, self.split.render(t, red=False), color=INDIGO)
-        for x, big, en, de, col, dl in ((230, self.on_big, self.on_en, self.on_def, VERM, 0.0), (850, self.kun_big, self.kun_en, self.kun_def, INDIGO, 0.15)):
-            f = (t - self.t_split - 0.7 - dl) / 0.3
-            if f > 0:
-                kit.put(fr, scr, big, x, 660, col, smooth(f), 1 + 0.2 * np.exp(-f * 2.5))
-                kit.put(fr, scr, en, x, 745, col, smooth(f - 0.5))
-                kit.put(fr, scr, de, x, 795, INK, smooth(f - 0.9))
+        # the two names, set on frosted paper panels over the chart
+        for k, (big, en, de, col) in enumerate(((self.on_big, self.on_en, self.on_def, VERM), (self.kun_big, self.kun_en, self.kun_def, INDIGO))):
+            f = (t - self.t_split - 0.35 * k) / 0.35
+            if f <= 0:
+                continue
+            y = PANEL_Y[k] + 30 * (1 - ease_out(min(f, 1)))
+            frost(fr, y, smooth(f))
+            kit.put(fr, scr, big, 400, y, col, smooth(f), 1 + 0.2 * np.exp(-f * 2.5))
+            kit.put(fr, scr, en, 690, y - 26, col, smooth(f - 0.3))
+            kit.put(fr, scr, de, 690, y + 26, INK, smooth(f - 0.6))
         return fr.img

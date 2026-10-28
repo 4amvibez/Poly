@@ -24,8 +24,9 @@ def worker(f0, f1, path):
            '-i', '-', '-c:v', 'libx264', '-preset', 'medium', '-crf', '14', '-pix_fmt', 'yuv420p', path]
     p = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     t0 = time.time()
+    only, until = os.environ.get('ONLY'), float(os.environ.get('ONLY_UNTIL', 0))   # one scene alone, before a splice point
     for k in range(f0, f1):
-        p.stdin.write(compose.frame_at(k / FPS).tobytes())
+        p.stdin.write(compose.frame_at(k / FPS, only=only if k / FPS < until else None).tobytes())
         if (k - f0) % 60 == 0:
             done = k - f0 + 1
             print(f'[{os.path.basename(path)}] {done}/{f1 - f0} frames, {(time.time() - t0) / done:.2f}s/frame', flush=True)

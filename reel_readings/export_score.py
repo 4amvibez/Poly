@@ -28,7 +28,7 @@ def _write_f32(path, sr, x):
 
 def main():
     S = {n: [a, b] for n, a, b in SCENES}
-    subs = [{'start': round(c['start'], 3), 'end': round(c['end'], 3), 'text': ' '.join(w for w, _ in c['words'])}
+    subs = [{'start': round(c['start'], 3), 'end': round(c['end'], 3), 'text': ' '.join(w[0] for w in c['words'])}
             for c in subtitles.CUES]
     cuts = [[a, round(b_ - a + 0.1, 3)] for (_, a, _), (_, _, b_) in zip(SCENES[1:], SCENES[:-1])]   # each transition window
     import scenes

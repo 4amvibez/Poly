@@ -1,7 +1,7 @@
 """subtitles — captions cut from the narration's word timestamps.
 
 English cues are short (<= ~34 characters, breaking after punctuation), shown from the first word to the last, on
-a feathered paper plate inside the Reels safe area (clear of the right-hand buttons and the caption area).  The
+a feathered paper plate, each word lighting up as it is spoken, inside the Reels safe area (clear of the right-hand buttons and the caption area).  The
 Japanese words Raj says inside the English (spoken by Raj in Japanese) are set in italic and coloured the way the
 reel colours readings: kun'yomi indigo, on'yomi vermilion, whole words ink."""
 import functools
@@ -13,9 +13,9 @@ from PIL import Image, ImageDraw, ImageFont
 from engine import FONT_EN, FONT_EN_ITALIC, VERM, blur
 from timeline import WORDS
 
-MAX_CHARS = 34
-SIZE = 50
-CX, CY = 520, 1444                 # slightly left of centre: clear of the like/comment/share column
+MAX_CHARS = 28
+SIZE = 58
+CX, CY = 520, 1436                 # slightly left of centre: clear of the like/comment/share column
 INK_RGB = np.array([24, 22, 21], np.float32) / 255
 PLATE_RGB = np.array([244, 238, 224], np.float32) / 255
 INDIGO = np.array([40, 62, 118], np.float32) / 255
@@ -55,7 +55,32 @@ def _split(sent):
                 best, bc = parts, cost
         if best:
             return best
-    return [sent]
+    # a very long sentence: break at the punctuation (or greedily) and balance each piece
+    out, cur = [], []
+    for x in sent:
+        cur.append(x)
+        if x[0]['text'][-1] in ',:;' and L(cur) > MAX_CHARS // 2:
+            out.append(cur)
+            cur = []
+    if cur:
+        out.append(cur)
+    res = []
+    for p in out:
+        if L(p) <= MAX_CHARS + 2:
+            res.append(p)
+            continue
+        sub = _split(p) if len(p) < len(sent) else None
+        if sub and all(L(q) <= MAX_CHARS + 2 for q in sub):
+            res += sub
+            continue
+        line = []
+        for x in p:
+            if line and L(line + [x]) > MAX_CHARS:
+                res.append(line)
+                line = []
+            line.append(x)
+        res.append(line)
+    return res
 
 
 def build_cues():
@@ -74,20 +99,9 @@ def build_cues():
         end = c[-1][0]['end'] + 0.25
         if k + 1 < len(cues):
             end = min(end, cues[k + 1][0][0]['start'] - 0.08)
-        words = [(w['text'].replace('JP', '@raj_in_jp') if w['text'] == 'JP' else w['text'], _style(w)) for w, i in c]
+        words = [(w['text'], _style(w), w['start']) for w, i in c]
         out.append(dict(start=start, end=max(end, start + 0.6), words=words))
-    return _handle(out)
-
-
-def _handle(cues):
-    """"Follow Raj in JP" is captioned with the handle itself"""
-    for c in cues:
-        txt = [w for w, _ in c['words']]
-        for i in range(len(txt) - 2):
-            if txt[i] == 'Raj' and txt[i + 1] == 'in' and txt[i + 2].startswith('@raj_in_jp'):
-                c['words'] = c['words'][:i] + [('@raj_in_jp', (False, 'ink'))] + c['words'][i + 3:]
-                break
-    return cues
+    return out
 
 
 CUES = build_cues()
@@ -99,17 +113,19 @@ def _render(k):
     words = CUES[k]['words']
     fr, fi = ImageFont.truetype(FONT_EN, SIZE), ImageFont.truetype(FONT_EN_ITALIC, SIZE + 2)
     space = fr.getlength(' ')
-    widths = [(fi if it else fr).getlength(w) for w, (it, _) in words]
+    widths = [(fi if it else fr).getlength(w) for w, (it, _), _ in words]
     tw = int(sum(widths) + space * (len(words) - 1))
     padx, pady = 34, 20
     w, h = tw + 2 * padx, int(SIZE * 1.25) + 2 * pady
-    layers = {key: Image.new('L', (w, h), 0) for key in COLOR}
+    per = []
     x = padx
-    for (word, (it, col)), ww in zip(words, widths):
-        ImageDraw.Draw(layers[col]).text((x, h / 2 + 2), word, font=fi if it else fr, fill=255, anchor='lm')
+    for (word, (it, col), t0), ww in zip(words, widths):
+        im = Image.new('L', (w, h), 0)
+        ImageDraw.Draw(im).text((x, h / 2 + 2), word, font=fi if it else fr, fill=255, anchor='lm')
+        per.append((np.asarray(im, np.float32) / 255, col, t0))
         x += ww + space
-    al = {key: np.asarray(im, np.float32) / 255 for key, im in layers.items()}
-    _COLOURED[k] = al
+    _COLOURED[k] = per
+    al = {'all': sum(a for a, _, _ in per)}
     plate = np.zeros((h, w), np.float32)
     plate[6:-6, 10:-10] = 1
     return sum(al.values()), blur(plate, 7) * 0.80
@@ -132,6 +148,7 @@ def draw(fr, t):
             img = fr.img[sl]
             pa = plate[..., None] * fade
             img[:] = img * (1 - pa) + PLATE_RGB * pa
-            for key, a in _COLOURED[k].items():
-                ta = a[..., None] * fade
+            for a, key, t0 in _COLOURED[k]:                              # each word lights up as Raj says it
+                lit = 0.3 + 0.7 * float(np.clip((t - t0 + 0.06) / 0.12, 0, 1))
+                ta = a[..., None] * (fade * lit)
                 img[:] = img * (1 - ta) + COLOR[key] * ta

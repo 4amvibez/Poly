@@ -104,7 +104,7 @@ def main(path):
         x0, x1 = subtitles.CX - w / 2, subtitles.CX + w / 2
         y0, y1 = c.get('cy', subtitles.CY) - h / 2, c.get('cy', subtitles.CY) + h / 2
         if x0 < SAFE_LEFT or x1 > SAFE_RIGHT or y0 < SAFE_TOP or y1 > SAFE_BOTTOM:
-            bad_subs.append(' '.join(wd for wd, _ in c['words']))
+            bad_subs.append(' '.join(w[0] for w in c['words']))
     if bad_subs:
         ok = False
         print('  ✗ captions outside the safe area:', bad_subs)

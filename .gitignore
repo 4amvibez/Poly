@@ -36,3 +36,5 @@ reel_readings_short/audio/stems/
 reel_readings_short/audio/stems_f32/
 reel_readings_short/audio/*.wav
 reel_readings_short/output/master_crf14.mp4
+reel_readings_final/segments/
+reel_readings_final/audio/*.wav

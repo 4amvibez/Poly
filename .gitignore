@@ -26,3 +26,8 @@ reel_need/audio/stems/
 reel_need/audio/stems_f32/
 reel_need/audio/*.wav
 reel_need/output/master_crf14.mp4
+reel_readings/cache/
+reel_readings/audio/stems/
+reel_readings/audio/stems_f32/
+reel_readings/audio/*.wav
+reel_readings/output/master_crf14.mp4

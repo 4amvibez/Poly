@@ -2,7 +2,7 @@
   return {
  "FPS": 30,
  "FORMAT": "9:16",
- "DURATION": 84.27,
+ "DURATION": 84.85,
  "S": {
   "hook": [
    0.0,
@@ -10,31 +10,31 @@
   ],
   "scroll": [
    5.59,
-   19.0
+   19.58
   ],
   "confusion": [
-   18.3,
-   22.99
+   18.88,
+   23.57
   ],
   "alike": [
-   22.19,
-   36.91
+   22.77,
+   37.49
   ],
   "niwa": [
-   36.11,
-   51.74
+   36.69,
+   52.32
   ],
   "answer": [
-   50.94,
-   67.39
+   51.52,
+   67.97
   ],
   "obstacle": [
-   66.59,
-   79.16
+   67.17,
+   79.74
   ],
   "endcard": [
-   78.36,
-   84.27
+   78.94,
+   84.85
   ]
  },
  "markers": {
@@ -47,27 +47,27 @@
    "sync": "av"
   },
   "huh": {
-   "t": 17.77,
+   "t": 18.35,
    "sync": "av"
   },
   "eye": {
-   "t": 30.44,
+   "t": 31.02,
    "sync": "av"
   },
   "hens": {
-   "t": 45.74,
+   "t": 46.32,
    "sync": "av"
   },
   "signs": {
-   "t": 62.06,
+   "t": 62.64,
    "sync": "av"
   },
   "fear": {
-   "t": 74.84,
+   "t": 75.42,
    "sync": "av"
   },
   "matane": {
-   "t": 81.77,
+   "t": 82.35,
    "sync": "av"
   }
  },
@@ -85,27 +85,27 @@
    0.9
   ],
   [
-   18.3,
+   18.88,
    0.8
   ],
   [
-   22.19,
+   22.77,
    0.9
   ],
   [
-   36.11,
+   36.69,
    0.9
   ],
   [
-   50.94,
+   51.52,
    0.9
   ],
   [
-   66.59,
+   67.17,
    0.9
   ],
   [
-   78.36,
+   78.94,
    0.9
   ]
  ],
@@ -152,197 +152,197 @@
   },
   {
    "start": 15.82,
-   "end": 17.89,
+   "end": 18.47,
    "text": "Ha ha ha ha na ga su ki…?"
   },
   {
-   "start": 18.54,
-   "end": 19.56,
+   "start": 19.12,
+   "end": 20.14,
    "text": "Wait..."
   },
   {
-   "start": 19.58,
-   "end": 20.6,
+   "start": 20.16,
+   "end": 21.18,
    "text": "why does this suddenly"
   },
   {
-   "start": 20.62,
-   "end": 22.21,
+   "start": 21.2,
+   "end": 22.79,
    "text": "look so confusing?"
   },
   {
-   "start": 22.38,
-   "end": 23.56,
+   "start": 22.96,
+   "end": 24.14,
    "text": "Japanese has many"
   },
   {
-   "start": 23.58,
-   "end": 25.16,
+   "start": 24.16,
+   "end": 25.74,
    "text": "words that sound alike."
   },
   {
-   "start": 25.18,
-   "end": 27.08,
+   "start": 25.76,
+   "end": 27.66,
    "text": "Without kanji, readers may need"
   },
   {
-   "start": 27.1,
-   "end": 28.84,
+   "start": 27.68,
+   "end": 29.42,
    "text": "more context to figure out which"
   },
   {
-   "start": 28.86,
-   "end": 30.68,
+   "start": 29.44,
+   "end": 31.26,
    "text": "words and meanings are intended."
   },
   {
-   "start": 30.7,
-   "end": 32.6,
+   "start": 31.28,
+   "end": 33.18,
    "text": "Kanji gives your eyes an important"
   },
   {
-   "start": 32.62,
-   "end": 34.28,
+   "start": 33.2,
+   "end": 34.86,
    "text": "clue, helping you recognize"
   },
   {
-   "start": 34.3,
-   "end": 36.21,
+   "start": 34.88,
+   "end": 36.79,
    "text": "meaningful words more easily."
   },
   {
-   "start": 36.3,
-   "end": 37.65,
+   "start": 36.88,
+   "end": 38.23,
    "text": "Here's another example."
   },
   {
-   "start": 37.73,
-   "end": 40.79,
+   "start": 38.31,
+   "end": 41.37,
    "text": "Niwa ni wa niwa niwatori ga iru."
   },
   {
-   "start": 41.06,
-   "end": 42.81,
+   "start": 41.64,
+   "end": 43.39,
    "text": "Now look at it with kanji."
   },
   {
-   "start": 42.93,
-   "end": 45.99,
+   "start": 43.51,
+   "end": 46.57,
    "text": "Niwa ni wa niwa niwatori ga iru."
   },
   {
-   "start": 46.3,
-   "end": 47.4,
+   "start": 46.88,
+   "end": 47.98,
    "text": "\"There are two chickens"
   },
   {
-   "start": 47.42,
-   "end": 48.45,
+   "start": 48.0,
+   "end": 49.03,
    "text": "in the garden.\""
   },
   {
-   "start": 48.54,
-   "end": 49.64,
+   "start": 49.12,
+   "end": 50.22,
    "text": "See how the kanji helps"
   },
   {
-   "start": 49.66,
-   "end": 51.16,
+   "start": 50.24,
+   "end": 51.74,
    "text": "make the meaning clearer?"
   },
   {
-   "start": 51.18,
-   "end": 53.73,
+   "start": 51.76,
+   "end": 54.31,
    "text": "So, is kanji really necessary?"
   },
   {
-   "start": 53.82,
-   "end": 55.52,
+   "start": 54.4,
+   "end": 56.1,
    "text": "Japanese can be written without"
   },
   {
-   "start": 55.54,
-   "end": 57.24,
+   "start": 56.12,
+   "end": 57.82,
    "text": "kanji in some situations."
   },
   {
-   "start": 57.26,
-   "end": 58.92,
+   "start": 57.84,
+   "end": 59.5,
    "text": "But kanji helps make many"
   },
   {
-   "start": 58.94,
-   "end": 60.48,
+   "start": 59.52,
+   "end": 61.06,
    "text": "everyday sentences easier"
   },
   {
-   "start": 60.5,
-   "end": 62.16,
+   "start": 61.08,
+   "end": 62.74,
    "text": "to distinguish and read."
   },
   {
-   "start": 62.18,
-   "end": 64.84,
+   "start": 62.76,
+   "end": 65.42,
    "text": "Hiragana, katakana, and kanji each"
   },
   {
-   "start": 64.86,
-   "end": 66.76,
+   "start": 65.44,
+   "end": 67.34,
    "text": "have their own important role."
   },
   {
-   "start": 66.78,
-   "end": 68.68,
+   "start": 67.36,
+   "end": 69.26,
    "text": "So, don't look at kanji as just"
   },
   {
-   "start": 68.7,
-   "end": 70.52,
+   "start": 69.28,
+   "end": 71.1,
    "text": "another obstacle to overcome."
   },
   {
-   "start": 70.54,
-   "end": 71.76,
+   "start": 71.12,
+   "end": 72.34,
    "text": "Every character you learn"
   },
   {
-   "start": 71.78,
-   "end": 73.28,
+   "start": 72.36,
+   "end": 73.86,
    "text": "helps you understand a little"
   },
   {
-   "start": 73.3,
-   "end": 75.08,
+   "start": 73.88,
+   "end": 75.66,
    "text": "more of the Japanese language."
   },
   {
-   "start": 75.1,
-   "end": 76.56,
+   "start": 75.68,
+   "end": 77.14,
    "text": "Don't fear kanji."
   },
   {
-   "start": 76.58,
-   "end": 77.32,
+   "start": 77.16,
+   "end": 77.9,
    "text": "Learn to see the"
   },
   {
-   "start": 77.34,
-   "end": 78.48,
+   "start": 77.92,
+   "end": 79.06,
    "text": "meaning behind it."
   },
   {
-   "start": 78.5,
-   "end": 79.84,
+   "start": 79.08,
+   "end": 80.42,
    "text": "Follow me, and let's"
   },
   {
-   "start": 79.86,
-   "end": 81.57,
+   "start": 80.44,
+   "end": 82.15,
    "text": "master Japanese together!"
   },
   {
-   "start": 81.71,
-   "end": 82.67,
+   "start": 82.29,
+   "end": 83.25,
    "text": "Mata ne!"
   }
  ]

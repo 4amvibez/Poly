@@ -1,7 +1,7 @@
 """make_haha_kana — the kana-only line ははははながすき built from Raj's own recordings: one は (ha_user.mp3) said four
 times, then ながすき (nagasuki_user.mp3), at the pace of someone reading it out.  (ElevenLabs turns two or more は in a
-row into laughter, so this line is not generated.)  The は are spaced a little unevenly and each a touch softer than
-the one before, as a person says them, with a short breath before ながすき.  Writes audio/haha_kana.wav."""
+row into laughter, so this line is not generated.)  The rhythm is measured from Raj's reference recording of the line:
+the は quicken a little and each is a touch softer than the one before, then ながすき follows at once.  Writes audio/haha_kana.wav."""
 import os
 import sys
 
@@ -11,9 +11,9 @@ from scipy.io import wavfile
 from build_vo import A, SR, load, speech
 
 HA_CUT = (0.03, 0.40)                 # the syllable inside ha_user.mp3 (s), with its natural tail
-STEPS = [0.40, 0.38, 0.41]            # from one は to the next
+STEPS = [0.45, 0.39, 0.34]            # from one は to the next: Raj's own reading speeds up a little
 GAIN = [1.0, 0.95, 0.93, 0.9]
-GAP = 0.10                            # the breath before ながすき
+GAP = 0.04                            # then straight on into ながすき
 
 
 def main(pace=1.0, out_name='haha_kana.wav'):

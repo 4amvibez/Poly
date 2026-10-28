@@ -98,7 +98,7 @@ class Scene(KanjiScene):
                 if j:
                     kit.put(fr, cam, self.dot, 180 + 240 * j, 420, INK, smooth(f))
         self.reading_seal(fr, cam, t, self.t_hito, '訓', op=1 - smooth((t - self.t_but) / 0.3))
-        self.reading_seal(fr, cam, t, self.t_jin, '音')
+        self.reading_seal(fr, cam, t, self.t_jin, '音', op=1 - smooth((t - self.t_nin) / 0.15))
         self.reading_seal(fr, cam, t, self.t_nin, '音')
         self.header(fr, t)
         return fr.img

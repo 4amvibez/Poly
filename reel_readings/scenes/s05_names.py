@@ -69,7 +69,7 @@ class Scene(KanjiScene):
             if t < t0 + 0.3:
                 continue
             seal = _rest[5]
-            self.reading_seal(fr, cam, t, t0 + 0.35, seal, x=x, y=SEAL_Y)
+            self.reading_seal(fr, cam, t, t0 + 0.35, seal, x=x, y=SEAL_Y, full=False)
             # where it came from: the junk sailing in from China / the sun of Japan
             fo = smooth((t - t0 - 0.55) / 0.3)
             if k == 0:
@@ -102,7 +102,7 @@ class Scene(KanjiScene):
             for j, (g, kind, x) in enumerate(((self.p_kun, '訓', 300), (self.p_on, '音', 780))):
                 f = smooth((t - self.t_each - 0.3 - 0.3 * j) / 0.3)
                 kit.put(fr, cam, g, x, 980, INDIGO if kind == '訓' else VERM, f, 1 + 0.25 * np.exp(-max(t - self.t_each - 0.3 - 0.3 * j, 0) * 5))
-                self.reading_seal(fr, cam, t, self.t_each + 0.3 + 0.3 * j, kind, x=x, y=860)
+                self.reading_seal(fr, cam, t, self.t_each + 0.3 + 0.3 * j, kind, x=x, y=860, full=False)
             kit.put(fr, cam, self.p_many, 540, 1095, INK, smooth((t - self.t_each - 0.9) / 0.3))
         self.header(fr, t)
         return fr.img

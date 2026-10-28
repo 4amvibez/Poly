@@ -9,7 +9,7 @@ import kit
 from cards import WordCard
 from ancient import ancient
 from cards import INDIGO
-from engine import FONT_BRUSH_JP, FONT_EN_BOLD, FONT_HEAD, FONT_JP, GREY, H, INK, VERM, W, Cam, blur, ease_io, lerp, smooth, text_layer, wash_map
+from engine import FONT_BRUSH_JP, FONT_EN_BOLD, FONT_EN_ITALIC, FONT_HEAD, FONT_JP, GREY, H, INK, VERM, W, Cam, blur, ease_io, lerp, smooth, text_layer, wash_map
 from glyphs import typeset
 from scenes.base import SceneBase
 
@@ -55,19 +55,36 @@ class KanjiScene(SceneBase):
         return (t - self.t_modern) / dur
 
     # ---------------------------------------------------------------- 訓 / 音 seals
-    def reading_seal(self, fr, cam, t, t0, kind, x=905, y=1075, op=1.0):
-        """a square seal stamped at t0: 訓 (indigo, kun'yomi) or 音 (vermilion, on'yomi)"""
+    def reading_seal(self, fr, cam, t, t0, kind, x=905, y=1075, op=1.0, full=True):
+        """stamped at t0 for 訓 (indigo, kun'yomi) or 音 (vermilion, on'yomi).  full = a labelled tag centred above
+        the card (the seal, then KUN'YOMI / native Japanese reading spelled out, so a beginner can read it);
+        otherwise just the square seal at (x, y)"""
         f = (t - t0) / 0.12
         if f <= 0 or op <= 0:
             return
         if not hasattr(self, '_seals'):
+            from engine import noise
             self._seals = {k: text_layer(k, FONT_JP, 70)[0] for k in '訓音'}
-            self._sq = kit.box(112, 112, 3.0) * (0.88 + 0.12 * np.asarray(__import__('engine').noise(112, 112, 8, 3, 21)))
+            self._sq = kit.box(112, 112, 3.0) * (0.88 + 0.12 * np.asarray(noise(112, 112, 8, 3, 21)))
+            self._tag = {k: (text_layer(n, FONT_EN_BOLD, 50, tracking=6)[0], text_layer(g, FONT_EN_ITALIC, 36)[0])
+                         for k, n, g in (('訓', "KUN'YOMI", 'native Japanese reading'), ('音', "ON'YOMI", 'Chinese-based reading'))}
         col = INDIGO if kind == '訓' else VERM
         sc = 1 + 0.45 * np.exp(-f * 2.6)
         o = smooth(f) * op
-        kit.put(fr, cam, self._sq, x, y, col, 0.95 * o, sc, rot=-0.06)
-        kit.put(fr, cam, self._seals[kind], x, y + 2, IVORY, o, sc, rot=-0.06, over=True)
+        if not full:
+            kit.put(fr, cam, self._sq, x, y, col, 0.95 * o, sc, rot=-0.06)
+            kit.put(fr, cam, self._seals[kind], x, y + 2, IVORY, o, sc, rot=-0.06, over=True)
+            return
+        name, gloss = self._tag[kind]
+        w = 0.7 * 112 + 24 + max(name.shape[1], gloss.shape[1])
+        x0, y = 540 - w / 2, 1005
+        self.plate(fr, cam, 540, y, int(w + 40), 110, o)
+        sx = x0 + 0.7 * 56
+        kit.put(fr, cam, self._sq, sx, y, col, 0.95 * o, 0.7 * sc, rot=-0.06)
+        kit.put(fr, cam, self._seals[kind], sx, y + 2, IVORY, o, 0.7 * sc, rot=-0.06, over=True)
+        tx = x0 + 0.7 * 112 + 24
+        kit.put(fr, cam, name, tx + name.shape[1] / 2, y - 22, col, smooth(f - 0.5))
+        kit.put(fr, cam, gloss, tx + gloss.shape[1] / 2, y + 27, INK, smooth(f - 1.5))
 
     # ---------------------------------------------------------------- the progress header
     def header(self, fr, t):

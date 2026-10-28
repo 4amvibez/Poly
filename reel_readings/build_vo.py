@@ -1,8 +1,9 @@
 """build_vo — assemble the narration from Raj's English take A, with every Japanese word spoken by Raj in Japanese.
 
-The 水 and 人 sections of take A ("Now, this kanji means water ... it becomes jin.") are replaced by take_mid_a.mp3
-(Raj, Scribe: exact): the names on'yomi / kun'yomi, then kokuji / wasei kanji with 働 and 峠.  Its Japanese words
-come from the same list take and from words_ja_k_a.mp3 (こくじ わせいかんじ はたらく とうげ, Scribe: exact).
+The 水 section of take A ("Now, this kanji means water ... the word decides the reading.") is dropped, and after 人
+take_mid2_a.mp3 is inserted (Raj, Scribe: exact): にん in さんにん, then the names on'yomi / kun'yomi, and that one
+kanji can have more than one of each.  Its Japanese words come from the same list take and from words_ja_n_a.mp3
+(さんにん にん, Scribe: exact).
 
 The English take was recorded with romaji stand-ins (yama, Fujisan, san, hi, nichiyoubi, ...), so its rhythm has a
 natural slot for each word.  Each stand-in is cut out at the quietest point either side of it and replaced by the
@@ -30,14 +31,14 @@ JA_WORDS = [('yama', 'やま', 'yama'), ('fujisan', 'ふじさん', 'Fujisan'), 
 STAND_IN = {'yama': 'yama.', 'fujisan': 'Fujisan,', 'san': 'san.', 'hi': 'hi.', 'nichiyoubi': 'nichiyoubi,', 'nichi': 'nichi.',
             'mizu': 'mizu.', 'suiyoubi': 'suiyoubi,', 'sui': 'sui.', 'hito': 'hito.', 'nihonjin': 'nihonjin,', 'jin': 'jin.',
             'onyomi': 'Onyomi', 'kunyomi': 'kunyomi'}
-JA_K = [('kokuji', 'こくじ', 'kokuji'), ('wasei', 'わせいかんじ', 'wasei kanji'), ('hataraku', 'はたらく', 'hataraku'),
-        ('touge', 'とうげ', 'tōge')]
+JA_N = [('sannin', 'さんにん', 'sannin'), ('nin', 'にん', 'nin')]
 # every stand-in in narration order: (key in words.json, clip, the English word(s) it replaces)
 SEQ = [('yama', 'yama', 'yama.'), ('fujisan', 'fujisan', 'Fujisan,'), ('san', 'san', 'san.'), ('hi', 'hi', 'hi.'),
        ('nichiyoubi', 'nichiyoubi', 'nichiyoubi,'), ('nichi', 'nichi', 'nichi.'),
-       ('san_n', 'san', 'san'), ('nichi_n', 'nichi', 'nichi,'), ('onyomi_n', 'onyomi', 'onyomi.'), ('yama_n', 'yama', 'yama'),
-       ('hi_n', 'hi', 'hi,'), ('kunyomi_n', 'kunyomi', 'kunyomi.'), ('kokuji', 'kokuji', 'kokuji,'),
-       ('wasei', 'wasei', ('wasei', 'kanji.')), ('hataraku', 'hataraku', 'hataraku:'), ('touge', 'touge', 'touge:'),
+       ('hito', 'hito', 'hito.'), ('nihonjin', 'nihonjin', 'nihonjin,'), ('jin', 'jin', 'jin.'),
+       ('sannin', 'sannin', 'sannin,'), ('nin', 'nin', 'nin.'),
+       ('san_n', 'san', 'san,'), ('nichi_n', 'nichi', 'nichi'), ('jin_n', 'jin', 'jin,'), ('onyomi_n', 'onyomi', 'onyomi.'),
+       ('yama_n', 'yama', 'yama,'), ('hi_n', 'hi', 'hi'), ('hito_n', 'hito', 'hito,'), ('kunyomi_n', 'kunyomi', 'kunyomi.'),
        ('onyomi', 'onyomi', 'Onyomi'), ('kunyomi', 'kunyomi', 'kunyomi')]
 SIGNOFF = 'signoff_a.mp3'                # "Every kanji has a story. Follow me for more." (Scribe: exact)
 PAD = 0.05                             # air either side of a spliced word
@@ -93,25 +94,34 @@ def silent_edge(e, t0, t1, side, thresh=-55):
 
 
 def english():
-    """take A with its 水 / 人 sections swapped for the mid take: (audio, words)"""
+    """take A without its 水 section, with the mid take after 人: (audio, words)"""
     en = load('take_en_a.mp3')
     e = env(en)
     words = [w for w in json.load(open(os.path.join(A, 'words_en_a.json')))['words'] if w.get('type', 'word') == 'word']
-    i_now = next(i for i, w in enumerate(words) if w['text'] == 'Now,')
-    i_so = next(i for i, w in enumerate(words) if w['text'] == 'So' and i > i_now)
-    c1 = quietest(e, words[i_now - 1]['end'] + 0.05, words[i_now]['start'] - 0.02)
-    c2 = quietest(e, words[i_so - 1]['end'] + 0.02, words[i_so]['start'] - 0.02)
-    mid = load('take_mid_a.mp3')
-    mw = [w for w in json.load(open(os.path.join(A, 'words_mid_a.json')))['words'] if w.get('type', 'word') == 'word']
+    idx = lambda txt, after=0: next(i for i, w in enumerate(words) if w['text'] == txt and i > after)
+    i_now, i_fin = idx('Now,'), idx('Finally,')
+    i_so = idx('So', i_fin)
+    cut = lambda i: quietest(e, words[i - 1]['end'] + 0.03, words[i]['start'] - 0.02)
+    c_now, c_fin, c_so = cut(i_now), cut(i_fin), cut(i_so)
+    mid = load('take_mid2_a.mp3')
+    mw = [w for w in json.load(open(os.path.join(A, 'words_mid2_a.json')))['words'] if w.get('type', 'word') == 'word']
     m0, m1 = max(mw[0]['start'] - 0.08, 0), mw[-1]['end'] + 0.12
-    gap = np.zeros(int(0.25 * SR), np.float32)                     # a breath either side of the new section
-    pre, sec, post = en[:int(c1 * SR)], faded(mid[int(m0 * SR):int(m1 * SR)]), en[int(c2 * SR):]
-    t_mid = c1 + 0.25
-    t_post = t_mid + (m1 - m0) + 0.25
-    out_words = words[:i_now]
-    out_words += [dict(w, start=round(t_mid + w['start'] - m0, 3), end=round(t_mid + w['end'] - m0, 3)) for w in mw]
-    out_words += [dict(w, start=round(t_post + w['start'] - c2, 3), end=round(t_post + w['end'] - c2, 3)) for w in words[i_so:]]
-    return np.concatenate([pre, gap, sec, gap, post]), out_words
+    gap = np.zeros(int(0.2 * SR), np.float32)
+    parts, out_words, t = [], [], 0.0
+
+    def add(audio, ws, src0):
+        nonlocal t
+        parts.append(audio)
+        out_words.extend(dict(w, start=round(t + w['start'] - src0, 3), end=round(t + w['end'] - src0, 3)) for w in ws)
+        t += len(audio) / SR
+
+    add(en[:int(c_now * SR)], words[:i_now], 0.0)                      # ... 山, 日
+    add(en[int(c_fin * SR):int(c_so * SR)], words[i_fin:i_so], c_fin)  # 人: ひと, じん
+    add(gap, [], 0.0)
+    add(faded(mid[int(m0 * SR):int(m1 * SR)]), mw, m0)                 # にん, then on'yomi / kun'yomi
+    add(gap, [], 0.0)
+    add(en[int(c_so * SR):], words[i_so:], c_so)                       # the takeaway
+    return np.concatenate(parts), out_words
 
 
 def main():
@@ -120,14 +130,14 @@ def main():
     rms = lambda x: np.sqrt(np.mean(x[np.abs(x) > 0.01] ** 2))
     level = rms(en)
     clips = {}
-    for name, keys in (('words_ja_a.mp3', JA_WORDS), ('words_ja_k_a.mp3', JA_K)):
+    for name, keys in (('words_ja_a.mp3', JA_WORDS), ('words_ja_n_a.mp3', JA_N)):
         jw = load(name)
         segs = segments(jw)
         assert len(segs) == len(keys), f'{len(segs)} segments in {name}'
         for (k, _, _), (a, b) in zip(keys, segs):
             clips[k] = faded(jw[int(a * SR):int(b * SR)])
             clips[k] *= 0.95 * level / rms(clips[k])
-    LEX = {k: (kana, rom) for k, kana, rom in JA_WORDS + JA_K}
+    LEX = {k: (kana, rom) for k, kana, rom in JA_WORDS + JA_N}
     # where each stand-in is cut: the silent edge on either side, inside the pauses round it
     edits = []                                     # (cut_a, cut_b, audio, key, first word, last word)
     i0 = 0

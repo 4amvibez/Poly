@@ -1,9 +1,11 @@
 """Scene 6 — 人.  "Finally, this kanji means person.  Alone, it's often ひと.  But in 日本人, a Japanese person, it
-becomes じん."
+becomes じん.  And in 三人, three people, it's にん."
 One 人 in black ink, standing on a ridge.  On "means person" its two strokes settle into the silhouette of a
 traveller in a straw hat (the same traveller as the hook).  Card: 人 / ひと (indigo) / hito / PERSON.  "But in 日本人":
 the mist opens on a small group of travellers on a shore under a large vermilion circle, a pagoda and cherry
-blossom.  Card: 日本人 / に・ほん・じん with じん in vermilion (on'yomi), pulsing on "jin"."""
+blossom.  Card: 日本人 / に・ほん・じん with じん in vermilion (on'yomi), pulsing on "jin".  "And in 三人": the card
+becomes 三人 / さん・にん with にん in vermilion, three of the travellers step forward, and as Raj says にん the three
+readings of 人 are set in a row above them, ひと (indigo) じん にん (vermilion), with a 音 seal by the card."""
 import numpy as np
 
 import kit
@@ -15,7 +17,7 @@ from timeline import JA, at, quiet_gap
 
 class Scene(KanjiScene):
     paper_seed = 96
-    chapter = 3
+    chapter = 2
 
     def build(self):
         self.big = self.big_kanji('人', size=470, seed=101)
@@ -30,6 +32,12 @@ class Scene(KanjiScene):
         self.t_hito = JA['hito']['start']
         self.t_but = at('But in', after=self.t0)[0]
         self.t_jin = JA['jin']['start']
+        self.t_sannin = JA['sannin']['start']
+        self.t_nin = JA['nin']['start']
+        self.c_nin = self.card('三人', ['さん', 'にん'], [None, 'on'], 'sannin', 'three people', focus=1, seed=118)
+        from engine import FONT_JP, text_layer
+        self.three = [text_layer(r, FONT_JP, 72)[0] for r in ('ひと', 'じん', 'にん')]
+        self.dot = text_layer('・', FONT_JP, 72)[0]
         c, n = quiet_gap(at('Japanese person')[1] - 0.15, at('it becomes')[0] + 0.05)
         self.t_hit = c - n / 2 + 0.04                                  # sync: the red circle swells (+ taiko, bowl)
         self.T_in = self.wipe_map((540, 1000), seed=8)
@@ -78,8 +86,19 @@ class Scene(KanjiScene):
         # the cards
         self.draw_card(fr, cam, t, self.c_hito, self.t_alone, op=1 - smooth((t - self.t_but) / 0.3), pulse=self.t_hito)
         if t > self.t_but + 0.2:
-            self.draw_card(fr, cam, t, self.c_jin, self.t_but + 0.3, pulse=self.t_jin)
+            self.draw_card(fr, cam, t, self.c_jin, self.t_but + 0.3, op=1 - smooth((t - self.t_sannin + 0.4) / 0.3), pulse=self.t_jin)
+        if t > self.t_sannin - 0.4:
+            self.draw_card(fr, cam, t, self.c_nin, self.t_sannin - 0.3, pulse=self.t_nin)
+        # one kanji, three readings
+        from cards import INDIGO
+        for j, (g, col) in enumerate(zip(self.three, (INDIGO, VERM, VERM))):
+            f = (t - self.t_nin - 0.15 - 0.15 * j) / 0.25
+            if f > 0:
+                kit.put(fr, cam, g, 300 + 240 * j, 420, col, smooth(f), 1 + 0.3 * np.exp(-f * 2.5))
+                if j:
+                    kit.put(fr, cam, self.dot, 180 + 240 * j, 420, INK, smooth(f))
         self.reading_seal(fr, cam, t, self.t_hito, '訓', op=1 - smooth((t - self.t_but) / 0.3))
         self.reading_seal(fr, cam, t, self.t_jin, '音')
+        self.reading_seal(fr, cam, t, self.t_nin, '音')
         self.header(fr, t)
         return fr.img

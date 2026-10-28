@@ -1,11 +1,13 @@
-"""Scene 5 — the names.  "These two kinds of readings have names.  The Chinese-based reading, like さん and にち, is
-called おんよみ.  The native Japanese reading, like やま and ひ, is called くんよみ."
-Over a faint landscape, TWO READINGS. TWO NAMES. is set under the header.  On "The Chinese-based reading" a hanging
+"""Scene 5 — the names.  "Do you know what these readings are called?  The Chinese-based ones, like さん, にち and じん,
+are called おんよみ.  The native Japanese ones, like やま, ひ and ひと, are called くんよみ.  And one kanji can have more
+than one of each."
+Over a faint landscape, WHAT ARE THEY CALLED? is set under the header.  On "The Chinese-based reading" a hanging
 scroll with a vermilion mount unrolls on the left: a 音 seal is stamped at its head, the little junk from the map
 sails across under it (FROM CHINA), and as Raj says さん and にち the words 富士山 さん and 日曜日 にち drop in, the
-reading in vermilion; on "おんよみ" its name 音読み ON'YOMI is brushed in at the top and pulses.  Then the same on
-the right in indigo: 訓 seal, FROM JAPAN with a small vermilion sun, 山 やま and 日 ひ, and on "くんよみ" 訓読み
-KUN'YOMI."""
+reading in vermilion (and 日本人 じん); on "おんよみ" its name 音読み ON'YOMI is brushed in at the top and pulses.  Then the same on
+the right in indigo: 訓 seal, FROM JAPAN with a small vermilion sun, 山 やま, 日 ひ and 人 ひと, and on "くんよみ" 訓読み
+KUN'YOMI.  "One kanji can have more than one of each": the scrolls dim and a card comes up over them, 人 with ひと
+under a 訓 seal on one side and じん · にん under a 音 seal on the other."""
 import numpy as np
 
 import kit
@@ -17,31 +19,36 @@ from scenes.kscene import KanjiScene
 from timeline import JA, at
 
 XL, XR = 290, 790
-SY, SH, SW = 850, 760, 430                 # the scrolls: centre y, height, width
+SY, SH, SW = 875, 830, 430                 # the scrolls: centre y, height, width
 SIDES = [  # (x, colour, name, romaji, gloss, origin, examples [(word, reading, key)], seal)
-    (XL, VERM, '音読み', "ON'YOMI", 'Chinese-based reading', 'FROM CHINA', [('富士山', 'さん', 'san_n'), ('日曜日', 'にち', 'nichi_n')], '音', 'onyomi_n'),
-    (XR, INDIGO, '訓読み', "KUN'YOMI", 'native Japanese reading', 'FROM JAPAN', [('山', 'やま', 'yama_n'), ('日', 'ひ', 'hi_n')], '訓', 'kunyomi_n'),
+    (XL, VERM, '音読み', "ON'YOMI", 'Chinese-based reading', 'FROM CHINA', [('富士山', 'さん', 'san_n'), ('日曜日', 'にち', 'nichi_n'), ('日本人', 'じん', 'jin_n')], '音', 'onyomi_n'),
+    (XR, INDIGO, '訓読み', "KUN'YOMI", 'native Japanese reading', 'FROM JAPAN', [('山', 'やま', 'yama_n'), ('日', 'ひ', 'hi_n'), ('人', 'ひと', 'hito_n')], '訓', 'kunyomi_n'),
 ]
-ROW_Y = [955, 1065]
-NAME_Y, ROM_Y, SEAL_Y, ICON_Y, ORIGIN_Y, GLOSS_Y = 565, 632, 712, 795, 857, 1170
+ROW_Y = [940, 1035, 1130]
+NAME_Y, ROM_Y, SEAL_Y, ICON_Y, ORIGIN_Y, GLOSS_Y = 545, 612, 690, 770, 830, 1225
 
 
 class Scene(KanjiScene):
     paper_seed = 98
-    chapter = 2
+    chapter = 3
 
     def build(self):
         self.F = cached('s07_final_v1', r5art.final_landscape)
         self.J = cached('s02_junk_v1', lambda: dict(zip(('ink', 'red'), r5art.junk())))
         self.sun = sun_disc(120, 120, 60, 60, 44, seed=61).astype(np.float32)
-        self.title, _ = text_layer('TWO READINGS. TWO NAMES.', FONT_HEAD, 50)
+        self.title, _ = text_layer('WHAT ARE THEY CALLED?', FONT_HEAD, 50)
+        self.p_kj = text_layer('人', FONT_JP, 200)[0]
+        self.p_kun = text_layer('ひと', FONT_JP, 70)[0]
+        self.p_on = text_layer('じん・にん', FONT_JP, 70)[0]
+        self.p_many = text_layer('ONE KANJI, MANY READINGS', FONT_EN_BOLD, 40, tracking=6)[0]
         self.L = []
         for x, col, name, rom, gloss, origin, ex, seal, key in SIDES:
             self.L.append(dict(name=text_layer(name, FONT_JP, 96)[0], rom=text_layer(rom, FONT_EN_BOLD, 40, tracking=8)[0],
                                gloss=text_layer(gloss, FONT_EN_ITALIC, 34)[0], origin=text_layer(origin, FONT_EN_BOLD, 30, tracking=8)[0],
                                ex=[(text_layer(w, FONT_JP, 66)[0], text_layer(r, FONT_JP, 56)[0], k) for w, r, k in ex]))
-        self.t_title = at('These two kinds')[0]
+        self.t_title = at('Do you know')[0]
         self.t_side = [at('Chinese-based')[0] - 0.25, at('native Japanese')[0] - 0.35]
+        self.t_each = at('more than one')[0] - 0.5
         self.t_name = [JA['onyomi_n']['start'], JA['kunyomi_n']['start']]
         self.t_hit = self.t_name[0]
 
@@ -86,5 +93,16 @@ class Scene(KanjiScene):
                 kit.put(fr, cam, L['name'], x, NAME_Y, col, smooth(fn), 1 + 0.3 * np.exp(-fn * 2.5) + 0.06 * p)
                 kit.put(fr, cam, L['rom'], x, ROM_Y, col, smooth(fn - 0.4))
                 kit.put(fr, cam, L['gloss'], x, GLOSS_Y, INK, smooth(fn - 0.8))
+        # one kanji, more than one of each
+        fe = smooth((t - self.t_each) / 0.4)
+        if fe > 0:
+            fr.img[:] = fr.img * (1 - 0.86 * fe) + np.array([0.95, 0.92, 0.85], np.float32) * 0.86 * fe
+            self.plate(fr, cam, 540, 880, 760, 520, fe)
+            kit.put(fr, cam, self.p_kj, 540, 790, INK, fe, 1 + 0.2 * np.exp(-max(t - self.t_each, 0) * 5))
+            for j, (g, kind, x) in enumerate(((self.p_kun, '訓', 300), (self.p_on, '音', 780))):
+                f = smooth((t - self.t_each - 0.3 - 0.3 * j) / 0.3)
+                kit.put(fr, cam, g, x, 980, INDIGO if kind == '訓' else VERM, f, 1 + 0.25 * np.exp(-max(t - self.t_each - 0.3 - 0.3 * j, 0) * 5))
+                self.reading_seal(fr, cam, t, self.t_each + 0.3 + 0.3 * j, kind, x=x, y=860)
+            kit.put(fr, cam, self.p_many, 540, 1095, INK, smooth((t - self.t_each - 0.9) / 0.3))
         self.header(fr, t)
         return fr.img

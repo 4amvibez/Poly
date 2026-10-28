@@ -41,8 +41,8 @@ _CUTS = [
     ('history', 'Japanese was already', 0.3, 0.8),
     ('yama', 'First', 0.3, 0.8),
     ('hi', 'Next', 0.3, 0.8),
-    ('names', 'These two kinds', 0.3, 0.8),
-    ('kokuji', 'And heres something', 0.3, 0.8),
+    ('hito', 'Finally', 0.3, 0.8),
+    ('names', 'Do you know', 0.3, 0.8),
     ('takeaway', 'So dont memorize', 0.3, 0.8),
 ]
 DURATION = round(WORDS[-1]['end'] + 3.6, 2)                 # hold the final frame so the handle can be read

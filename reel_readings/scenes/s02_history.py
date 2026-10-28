@@ -69,8 +69,8 @@ class Scene(SceneBase):
         start = self.route[0]
         dock = self.route[-1]
         hold = (dock[0] + 290, dock[1] + 330, 1.0)                     # Japan in the top half once the book is up
-        self.keys = [(self.t0, wide), (self.t_ship + 0.1, wide), (self.t_ship + 0.6, (start[0] + 240, start[1] + 120, 1.05)),
-                     (self.t_dock - 0.1, (dock[0] + 60, dock[1] + 60, 1.05)), (self.t_fly + 0.4, hold)]
+        self.keys = [(self.t0, wide), (self.t_ship - 0.9, wide), (self.t_ship + 0.6, (start[0] + 240, start[1] + 120, 1.05)),
+                     (self.t_dock - 0.3, (dock[0] + 60, dock[1] + 60, 1.05)), (self.t_dock + 1.3, hold)]
         # the screen-space strokes: on-lines back to the docked ship, the splitting brushstroke
         ds = self.mcam(self.t_pres).matrix() @ np.array([dock[0], dock[1], 1.0])
         self.dock_screen = ds

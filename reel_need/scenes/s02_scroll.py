@@ -24,7 +24,7 @@ SIZE = 90
 # where the speech falls inside the Japanese takes (s from the take's start): 母は | 花が | 好き, and the kana-only line
 # read literally, one syllable at a time: は は は は な が す き
 CH = [(0.0, 0.53), (0.63, 1.15), (1.16, 1.48)]
-SYL = [0.0, 0.37, 0.78, 1.08, 1.55, 2.12, 2.67, 3.64]
+SYL = [0.0, 0.72, 1.44, 2.16, 3.25, 3.45, 3.67, 3.76]
 
 
 class Scene(SceneBase):

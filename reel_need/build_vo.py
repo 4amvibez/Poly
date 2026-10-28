@@ -5,8 +5,8 @@ its breaths:
   after "Here's another example."                 にわにはにわにわとりがいる。 (niwa ni wa, niwa, niwatori ga iru)
   after "Now look at it with kanji."              庭には二羽鶏がいる。 (the same sentence, the same sound)
   after "...master Japanese together!"            またね！
-The Japanese voice reads 母は花が好き from the kanji (a natural sentence, haha wa); the kana-only line is given as
-は、は、は、は、な、が、す、き so it is read the way a learner without kanji would see it; にわにわ、にわ、にわとりが いる
+The Japanese voice reads 母は花が好き from the kanji (a natural sentence, haha wa); the kana-only line is Raj's own
+recording, one は four times and then ながすき (make_haha_kana.py), since TTS laughs at は repeated; にわにわ、にわ、にわとりが いる
 is the spoken reading of the niwa line.  Each take was checked with Scribe before use.  Writes audio/narration.wav + .mp3 and audio/words.json
 (English words shifted into place, plus the Japanese segments)."""
 import json
@@ -20,7 +20,7 @@ A = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'audio')
 SR = 48000
 # (cut point in take_en_b, clip, key, breath before, breath after)
 SPLICES = [(6.64, 'haha_kanji_b.mp3', 'haha_kanji', 0.25, 0.45),
-           (13.05, 'haha_literal_b.mp3', 'haha_kana', 0.3, 0.7),
+           (13.05, 'haha_kana.wav', 'haha_kana', 0.3, 0.7),
            (32.3, 'niwa_a.mp3', 'niwa_kana', 0.25, 0.45),
            (34.1, 'niwa_a.mp3', 'niwa_kanji', 0.25, 0.45)]
 MATANE_GAP = 0.45

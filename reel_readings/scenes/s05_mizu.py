@@ -20,6 +20,7 @@ CAL = (540, 660)
 
 class Scene(KanjiScene):
     paper_seed = 95
+    chapter = 2
 
     def build(self):
         self.big = self.big_kanji('水', seed=71)
@@ -30,6 +31,7 @@ class Scene(KanjiScene):
         self.c_sui = self.card('水曜日', ['すい', 'よう', 'び'], ['on', None, 'kun'], 'suiyōbi', 'Wednesday', focus=0, seed=84)
         self.t_now = at('Now')[0]
         self.t_means = at('means water')[0]
+        self.origin('水', 520, self.t_now - 0.1, seed=7)
         self.t_own = at('On its own', after=self.t0)[0] - 0.1
         self.t_mizu = JA['mizu']['start']
         self.t_but = at('But in', after=self.t0)[0]
@@ -73,7 +75,8 @@ class Scene(KanjiScene):
             self.layer(fr, cam, self.R['ink'] * m, opacity=dim)
             flow = self.R['flow'] * m * (0.5 + 0.5 * np.sin(self.yy / 16 - t * 6))
             self.layer(fr, cam, flow, opacity=0.9 * dim)
-        f = (t - self.t_now) / 0.6
+        self.draw_origin(fr, cam, t, 540, 620)
+        f = self.modern(t)
         if f > 0:
             kit.put(fr, cam, self.big.at(f, soft=0.05), 540, 620, INK, 1 - smooth((t - self.t_means - 0.2) / 0.6))
         # the river curls into one stroke and onto the calendar
@@ -90,4 +93,7 @@ class Scene(KanjiScene):
             self.layer(fr, cam, self.arrows.render(t, red=True), color=VERM)
             self.draw_card(fr, cam, t, self.c_mizu, self.t_same + 0.55, x=270, y=880, scale=0.8, pulse=self.t_word + 0.2)
             self.draw_card(fr, cam, t, self.c_sui, self.t_same + 0.85, x=790, y=880, scale=0.8, pulse=self.t_word + 0.7)
+        self.reading_seal(fr, cam, t, self.t_mizu, '訓', op=1 - smooth((t - self.t_but) / 0.3))
+        self.reading_seal(fr, cam, t, self.t_sui, '音', op=1 - clear)
+        self.header(fr, t)
         return fr.img

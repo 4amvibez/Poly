@@ -1,15 +1,18 @@
 """Scene 1 — the hook, a puzzle: "This word uses the same kanji twice... but reads it two different ways.  Why?"
 Frame 1: the screen is a field of wet black ink with 日曜日 burst out of it in ivory, droplets flying, the camera
-jolting.  In half a second the ink peels back from the centre like a wave drawing off the paper, the kanji turn to
-black ink on washi, a vermilion sun blooms behind 曜 and misty hills rise along the bottom.  On "the same kanji
-twice" both 日 are ringed, the first in vermilion and the last in indigo, and SAME KANJI. is set above; on "two
-different ways" their readings drop in under them, にち (vermilion) and び (indigo), with よう in grey between, and
-DIFFERENT READINGS. appears; in the breath after "Why?" a vermilion WHY? is stamped across the bottom (taiko)."""
+jolting, and CAN YOU READ THIS? already across the top.  In half a second the ink peels back from the centre like
+a wave drawing off the paper, the kanji turn to black ink on washi, a vermilion sun blooms behind 曜 and misty hills
+rise along the bottom.  On "the same kanji twice" the camera whips in, both 日 are ringed (vermilion, indigo) and
+the guess every learner makes appears under them in grey: ひ？ ひ？.  On "two different ways" a vermilion brush
+slashes an X through each guess, WRONG! is stamped over the sun, and the real readings drop in: にち (vermilion),
+よう (grey), び (indigo).  In the breath after "Why?" a vermilion WHY? is stamped across the bottom with a shake
+(taiko)."""
 import numpy as np
 
 import kit
 from cards import INDIGO
-from engine import FONT_BRUSH_EN, FONT_BRUSH_JP, FONT_HEAD, FONT_JP, GREY, H, INK, VERM, W, Cam, blur, cached, ease_out, noise, smooth, text_layer
+from engine import (FONT_BRUSH_EN, FONT_BRUSH_JP, FONT_HEAD, FONT_JP, GREY, H, INK, VERM, W, Cam, StrokeSet, blur, cached, ease_io,
+                    ease_out, noise, smooth, stroke, text_layer)
 from art import sun_disc
 import r5art
 from glyphs import typeset
@@ -29,8 +32,10 @@ class Scene(KanjiScene):
         self.kj = [typeset(c, 280, font=FONT_BRUSH_JP, seed=20 + k, medians=False, sweep=(0.7, 1)) for k, c in enumerate('日曜日')]
         self.rd = [text_layer(r, FONT_JP, 92 if k != 1 else 64)[0] for k, (r, _) in enumerate(READ)]
         self.splat = cached('s01s_splat_v1', lambda: {'d': _splat()})['d']
-        self.l1, _ = text_layer('SAME KANJI.', FONT_HEAD, 76)
-        self.l2, _ = text_layer('DIFFERENT READINGS.', FONT_HEAD, 64)
+        self.head, _ = text_layer('CAN YOU READ THIS?', FONT_HEAD, 78)
+        self.guess, _ = text_layer('ひ？', FONT_JP, 92)
+        self.wrong, _ = text_layer('WRONG!', FONT_BRUSH_EN, 150)
+        self.wrong = self.wrong * (0.85 + 0.15 * noise(*self.wrong.shape, 6, 2, 3))
         self.why, _ = text_layer('WHY?', FONT_BRUSH_EN, 230)
         self.why = self.why * (0.85 + 0.15 * noise(*self.why.shape, 6, 2, 4))
         self.land = cached('s04_land_v1', r5art.sun_landscape)['ink']
@@ -42,13 +47,29 @@ class Scene(KanjiScene):
         self.IVORY = np.array([0.97, 0.94, 0.86], np.float32)
         self.t_same = at('same kanji')[0]
         self.t_two = at('two different')[0]
+        self.t_guess = self.t_same + 0.55
+        self.t_x = [self.t_two - 0.05, self.t_two + 0.12]               # the two slashes through ひ？
+        self.t_wrong = self.t_two + 0.3
+        self.t_read = self.t_two + 0.5
+        xs = StrokeSet(W, H)
+        for k, (x, t0) in enumerate(zip((XS[0], XS[2]), self.t_x)):
+            y = KY + 250
+            xs.add(stroke(W, H, [(x - 75, y - 70), (x + 4, y + 2), (x + 80, y + 72)], 17, ink=0.95, dry=0.45,
+                          profile=((0, 0.4), (0.15, 1), (1, 0.3)), seed=40 + k, red=True), t0, 0.09)
+            xs.add(stroke(W, H, [(x + 78, y - 72), (x - 2, y + 4), (x - 78, y + 70)], 17, ink=0.95, dry=0.45,
+                          profile=((0, 0.4), (0.15, 1), (1, 0.3)), seed=44 + k, red=True), t0 + 0.07, 0.09)
+        self.xs = xs
         c, n = quiet_gap(at('Why?')[1] - 0.15, at('Japan already')[0] + 0.05)
         self.t_hit = c - min(n / 2, 0.1)                               # sync: WHY? stamped (+ taiko, stamp)
 
     def cam(self, t):
         jolt = 0.05 * np.exp(-t * 9)
         punch = 0.035 * np.exp(-max(t - self.t_hit, 0) * 6) * (t > self.t_hit)
-        return Cam(540, 960, 1.0 + jolt + punch + 0.02 * smooth(t / 6))
+        whip = 0.03 * ease_io((t - self.t_same + 0.05) / 0.22) * (1 - ease_io((t - self.t_two - 0.6) / 0.6))   # in on the two 日
+        wy = 1300 * whip
+        sh = np.exp(-max(t - self.t_hit, 0) * 9) * (t > self.t_hit)                                          # WHY? shakes the page
+        dx, dy = 14 * sh * np.sin(t * 83), 10 * sh * np.cos(t * 71)
+        return Cam(540 + dx, 960 + wy + dy, 1.0 + jolt + punch + whip + 0.02 * smooth(t / 6))
 
     def render(self, t):
         cam = self.cam(t)
@@ -66,16 +87,30 @@ class Scene(KanjiScene):
             fr.ink(self.inkfield * m, INK, 1.0)
             for k, g in enumerate(self.kj):
                 kit.put(fr, cam, g.dens, XS[k], KY, self.IVORY, 1.0 - smooth((t - 0.25) / 0.25), 1 + 0.12 * np.exp(-t * 10), over=True)
+        # the question, from the very first frame
+        hp = 1 + 0.08 * np.exp(-t * 8)
+        kit.put(fr, cam, self.head, 540, 300, INK, 1.0, hp)
+        if reveal < 1:
+            kit.put(fr, cam, self.head, 540, 300, self.IVORY, 1 - smooth((t - 0.35) / 0.3), hp, over=True)
         # the same kanji, twice: ringed
         for k, col in ((0, VERM), (2, INDIGO)):
             self.ring(fr, cam, t, self.t_same + 0.25 * (k == 2), XS[k], KY, col, r=3.1)
-        kit.put(fr, cam, self.l1, 540, 330, INK, smooth((t - self.t_same) / 0.25))
-        # ... read two different ways
+        # the guess every learner makes: ひ？ ひ？ ... slashed through
+        gone = smooth((t - self.t_read + 0.1) / 0.2)
+        for k in (0, 2):
+            f = (t - self.t_guess - 0.12 * (k == 2)) / 0.2
+            if f > 0:
+                kit.put(fr, cam, self.guess, XS[k], KY + 250, GREY, smooth(f) * (1 - gone), 1 + 0.25 * np.exp(-f * 2.5))
+        self.layer(fr, cam, self.xs.render(t, red=True), color=VERM, opacity=1 - gone)
+        fw = (t - self.t_wrong) / 0.12
+        if fw > 0:
+            kit.put(fr, cam, self.wrong, 540, 470, INK, smooth(fw) * (1 - smooth((t - self.t_hit + 0.45) / 0.3)),
+                    1 + 0.4 * np.exp(-fw * 2.5), rot=-0.07)
+        # ... the real readings
         for k, (g, (_, col)) in enumerate(zip(self.rd, READ)):
-            f = (t - self.t_two - 0.2 * (k != 1) - 0.25 * (k == 2)) / 0.25
+            f = (t - self.t_read - 0.12 * k) / 0.25
             if f > 0:
                 kit.put(fr, cam, g, XS[k], KY + 250, col, smooth(f) * (0.7 if k == 1 else 1), 1 + 0.35 * np.exp(-f * 2.5))
-        kit.put(fr, cam, self.l2, 540, 430, VERM, smooth((t - self.t_two - 0.4) / 0.25))
         fw = (t - self.t_hit) / 0.15
         if fw > 0:
             kit.put(fr, cam, self.why, 540, 1240, VERM, smooth(fw), 1 + 0.35 * np.exp(-fw * 2.2), rot=-0.05)

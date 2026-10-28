@@ -18,6 +18,7 @@ CAL = (540, 660)
 
 class Scene(KanjiScene):
     paper_seed = 94
+    chapter = 1
 
     def build(self):
         self.big = self.big_kanji('日', seed=51)
@@ -28,6 +29,7 @@ class Scene(KanjiScene):
         self.c_nichi = self.card('日曜日', ['にち', 'よう', 'び'], ['on', None, 'kun'], 'nichiyōbi', 'Sunday', focus=0, seed=64)
         self.t_next = at('Next')[0]
         self.t_sun = at('the sun')[0]
+        self.origin('日', 520, self.t_next - 0.1, seed=6)
         self.t_day = at('or a day')[0]
         self.t_own = at('On its own', after=self.t0)[0] - 0.1
         self.t_hi = JA['hi']['start']
@@ -60,7 +62,8 @@ class Scene(KanjiScene):
         dim = 1 - 0.55 * smooth((t - cal_t) / 0.5)
         self.layer(fr, cam, self.L['ink'] * land, opacity=dim)
         # 日, brushed, then turning into the sun
-        f = (t - self.t_next) / 0.6
+        self.draw_origin(fr, cam, t, 540, 620)
+        f = self.modern(t)
         red = smooth((t - self.t_sun + 0.1) / 0.5)
         if f > 0:
             kit.put(fr, cam, self.big.at(f, soft=0.05), 540, 620, INK, 1 - red)
@@ -74,4 +77,7 @@ class Scene(KanjiScene):
         self.draw_card(fr, cam, t, self.c_hi, self.t_own, op=1 - smooth((t - self.t_but) / 0.3), pulse=self.t_hi)
         if t > self.t_but + 0.2:
             self.draw_card(fr, cam, t, self.c_nichi, self.t_but + 0.3, pulse=self.t_nichi)
+        self.reading_seal(fr, cam, t, self.t_hi, '訓', op=1 - smooth((t - self.t_but) / 0.3))
+        self.reading_seal(fr, cam, t, self.t_nichi, '音')
+        self.header(fr, t)
         return fr.img

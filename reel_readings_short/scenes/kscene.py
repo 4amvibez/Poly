@@ -4,7 +4,7 @@ import numpy as np
 
 import kit
 from cards import WordCard
-from engine import FONT_BRUSH_JP, H, INK, VERM, W, blur, smooth, wash_map
+from engine import FONT_BRUSH_JP, H, INK, VERM, W, blur, ease_io, smooth, wash_map
 from glyphs import typeset
 from scenes.base import SceneBase
 
@@ -38,6 +38,34 @@ class KanjiScene(SceneBase):
         w = int(max(card.n, 2) * CARD_SIZE * 1.1 * scale + 120)
         self.plate(fr, cam, x, y + 0.7 * CARD_SIZE * scale, w, int(CARD_SIZE * 2.2 * scale), op * smooth((t - t0) / 0.3))
         card.at(t).draw(fr, cam, x, y, t0, op=op, pulse=pulse, scale=scale, dim=dim, pulses=pulses)
+
+    def scroll(self, fr, cam, t, t0, x, y, w, h, edge, vertical=False, op=1.0):
+        """a hanging scroll centred at (x, y), unrolling from t0: washi with a coloured mount (edge), dark rods at
+        its ends (top and bottom when vertical, left and right when not)"""
+        f = ease_io((t - t0) / 0.45)
+        if f <= 0 or op <= 0:
+            return
+        key = (w, h)
+        if not hasattr(self, '_scrolls'):
+            self._scrolls = {}
+        if key not in self._scrolls:
+            from engine import noise
+            b = kit.box(h, w, 2.0)
+            self._scrolls[key] = dict(B=b, mount=kit.rim(h, w, inset=4, t=14), line=kit.rim(h, w, inset=24, t=2),
+                                      grain=(b * (0.9 + 0.1 * noise(h, w, 30, 3, 31))).astype(np.float32),
+                                      rod=kit.box(26, w + 60, 2.0) if vertical else kit.box(h + 60, 26, 2.0))
+        S = self._scrolls[key]
+        sx, sy = (1.0, f) if vertical else (f, 1.0)
+        yy = y - (1 - f) * h / 2 if vertical else y                 # a vertical scroll unrolls downwards from its top rod
+        kit.put(fr, cam, blur(S['B'], 10), x + 8, yy + 12, INK, 0.22 * op, sx, sy)
+        kit.put(fr, cam, S['grain'], x, yy, PLATE_RGB, 0.96 * op, sx, sy, over=True)
+        kit.put(fr, cam, S['mount'], x, yy, edge, 0.85 * op, sx, sy)
+        kit.put(fr, cam, S['line'], x, yy, edge, 0.5 * op, sx, sy)
+        for s_ in (-1, 1):
+            if vertical:
+                kit.put(fr, cam, S['rod'], x, yy + s_ * h * f / 2, INK, 0.92 * op)
+            else:
+                kit.put(fr, cam, S['rod'], x + s_ * w * f / 2, y, INK, 0.92 * op)
 
     def wipe_map(self, origin, seed=0):
         if not hasattr(self, '_wipes'):

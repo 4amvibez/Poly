@@ -371,7 +371,11 @@ def build(out_dir=os.path.join(HERE, 'audio')):
     place(sfx, stamp(), 0.0, 1.0)
     hk = g('hook')
     phrase(hk.t_same, [('D', 5), ('Eb', 5)], gap=0.25, gain=0.4)
-    phrase(hk.t_two + 0.2, [('A', 4), ('D', 5)], gap=0.25, gain=0.4, pan=-0.2)
+    phrase(hk.t_read, [('A', 4), ('D', 5)], gap=0.25, gain=0.4, pan=-0.2)
+    place(sfx, whoosh(0.4, 400, 3500), hk.t_same - 0.1, 0.5)                 # the whip in on the two 日
+    for k, t0 in enumerate(hk.t_x):                                          # the slashes through ひ？
+        place(sfx, brush(0.12, 1.3, heavy=True), t0, 0.8, pan=(-0.4, 0.4)[k])
+    place(sfx, stamp(), hk.t_wrong, 0.7)
     hs = g('history')
     place(music, flute(note('A', 4), 2.2), hs.t_ship, 0.35, pan=0.2)
     place(amb, water(int((hs.t1 - hs.t0) * SR), seed=3, bright=0.6), hs.t0, 0.6)

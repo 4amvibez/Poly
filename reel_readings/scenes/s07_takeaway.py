@@ -1,8 +1,8 @@
 """Scene 7 — the takeaway.  "So don't memorize kanji as isolated symbols.  Learn them through real words.  On'yomi
 and kun'yomi reflect different histories, and the word tells you which reading to use.  Every kanji has a story.
 Follow Raj in JP to discover more."
-The four kanji come back, each shut in its own box ("isolated symbols").  On "real words" the words open under them
-in two rows, as in the hook: the kun'yomi words (indigo, 訓) やま ひ みず ひと and the on'yomi words (vermilion, 音)
+The four kanji come back, each shut in its own box ("isolated symbols"), over a faint landscape.  On "real words"
+two hanging scrolls unroll under them, one per row: the kun'yomi words (indigo, 訓) やま ひ みず ひと and the on'yomi words (vermilion, 音)
 富士山 日曜日 水曜日 日本人 with their readings, only the part that belongs to the kanji coloured.  On "on'yomi" a vermilion
 brush band runs under the on row, on "kun'yomi" an indigo band under the kun row; on "the word tells you which
 reading to use" the words pulse column by column.  "Every kanji has a story": the page clears and the ink of all
@@ -21,7 +21,7 @@ from scenes.kscene import KanjiScene
 from timeline import at, quiet_gap
 
 KANJI = '山日水人'
-COLS = [138, 406, 674, 942]
+COLS = [212, 432, 652, 872]
 BOX_Y, KUN_Y, ON_Y, ON_R_Y = 470, 740, 905, 978
 KUN = ['やま', 'ひ', 'みず', 'ひと']
 ON_W = ['富士山', '日曜日', '水曜日', '日本人']
@@ -34,10 +34,10 @@ class Scene(KanjiScene):
     paper_seed = 97
 
     def build(self):
-        self.kj = [typeset(c, 160, font=FONT_BRUSH_JP, seed=120 + k, medians=False, sweep=(0.7, 1)) for k, c in enumerate(KANJI)]
-        self.box, self.rim = kit.box(220, 220), kit.rim(220, 220, inset=8, t=3)
+        self.kj = [typeset(c, 145, font=FONT_BRUSH_JP, seed=120 + k, medians=False, sweep=(0.7, 1)) for k, c in enumerate(KANJI)]
+        self.box, self.rim = kit.box(196, 196), kit.rim(196, 196, inset=8, t=3)
         self.kun = [text_layer(r, FONT_JP, 64)[0] for r in KUN]
-        self.onw = [text_layer(r, FONT_JP, 60)[0] for r in ON_W]
+        self.onw = [text_layer(r, FONT_JP, 56)[0] for r in ON_W]
         self.onr = []
         for a, b, which in ON_R:
             ga, gb = text_layer(a, FONT_JP, 38)[0], text_layer(b, FONT_JP, 38)[0]
@@ -83,6 +83,12 @@ class Scene(KanjiScene):
         fr = self.frame(cam)
         out = 1 - smooth((t - self.t_story + 0.2) / 0.5)
         if out > 0:
+            # a faint landscape behind, and the two rows of words on hanging scrolls: 訓 (indigo mount), 音 (vermilion)
+            haze = 0.14 * smooth((t - self.t0) / 0.8) * out
+            self.layer(fr, cam, self.F['sun'], color=VERM, opacity=haze * 1.4)
+            self.layer(fr, cam, self.F['ink'], opacity=haze)
+            self.scroll(fr, cam, t, self.t_learn - 0.1, 542, KUN_Y, 920, 130, INDIGO, op=out)
+            self.scroll(fr, cam, t, self.t_learn + 0.45, 542, (ON_Y + ON_R_Y) / 2, 920, 190, VERM, op=out)
             self.layer(fr, cam, self.bands.render(t, red=True), color=VERM, opacity=0.35 * out)
             self.layer(fr, cam, self.bands.render(t), color=INDIGO, opacity=0.3 * out)
             for k, g in enumerate(self.kj):
@@ -105,11 +111,11 @@ class Scene(KanjiScene):
                     x0 = COLS[k] + 12 - (wa + wb) / 2
                     kit.put(fr, cam, ga, x0 + wa / 2, ON_R_Y, VERM if which == 0 else GREY, fo, 1 + (0.3 * pk if which == 0 else 0))
                     kit.put(fr, cam, gb, x0 + wa + wb / 2, ON_R_Y, VERM if which == 1 else GREY, fo, 1 + (0.3 * pk if which == 1 else 0))
-            for row, (y, t0) in enumerate(((KUN_Y, self.t_learn), (ON_Y + 30, self.t_learn + 0.6))):
+            for row, (y, t0) in enumerate(((KUN_Y - 65, self.t_learn + 0.3), (ON_Y - 55, self.t_learn + 0.9))):   # tags on the scrolls' corners
                 sq, ch, col = self.tags[row]
                 ft = smooth((t - t0) / 0.3) * out
-                kit.put(fr, cam, sq, 30, y, col, 0.92 * ft)
-                kit.put(fr, cam, ch, 30, y, IVORY, ft, over=True)
+                kit.put(fr, cam, sq, 110, y, col, 0.92 * ft)
+                kit.put(fr, cam, ch, 110, y, IVORY, ft, over=True)
         # one landscape
         if t > self.t_story - 0.2:
             m = self.wipe(self.T_land, ease_io((t - self.t_story + 0.25) / 0.8))

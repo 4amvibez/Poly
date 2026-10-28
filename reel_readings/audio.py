@@ -293,7 +293,8 @@ def scene_events():
     strokes(hk.strokes, 0.8)
     hs = g('history')
     strokes(hs.tick, 0.5)
-    strokes(hs.split, 1.0)
+    card(hs.t_split)                                                      # the 音読み / 訓読み panels settle
+    card(hs.t_split + 0.35)
     ys = g('yama')
     ev.append((ys.t_first, 0.75, 1.3, True))
     card(ys.t_own)
@@ -401,6 +402,13 @@ def build(out_dir=os.path.join(HERE, 'audio')):
     place(sfx, stamp(), H_['seal'], 1.2)
     place(music, taiko(2.2, 58), H_['seal'], 0.8)
     place(music, bowl(note('D', 5), 5.0), H_['seal'] + 0.05, 0.5)
+    # the 3,000-year-old forms scratched in, the 訓 / 音 seals stamped beside the cards, the header seal of each chapter
+    for k, (n, ja_kun, ja_on) in enumerate((('yama', 'yama', 'san'), ('hi', 'hi', 'nichi'), ('mizu', 'mizu', 'sui'), ('hito', 'hito', 'jin'))):
+        sc = g(n)
+        place(sfx, brush(0.4, 0.7), sc._anc_t0, 0.55, pan=-0.2)
+        place(sfx, stamp() * 0.5, sc.t0 + 0.15, 0.5, pan=0.3)
+        for key in (ja_kun, ja_on):
+            place(sfx, stamp(), JA[key]['start'], 0.55, pan=0.35)
     dips = np.ones(N)
     for _, th in hit_times():
         n = int(0.025 * SR)

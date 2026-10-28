@@ -15,6 +15,7 @@ from timeline import JA, at, quiet_gap
 
 class Scene(KanjiScene):
     paper_seed = 96
+    chapter = 3
 
     def build(self):
         self.big = self.big_kanji('人', size=470, seed=101)
@@ -24,6 +25,7 @@ class Scene(KanjiScene):
         self.c_jin = self.card('日本人', ['に', 'ほん', 'じん'], [None, None, 'on'], 'nihonjin', 'Japanese person', focus=2, seed=114)
         self.t_fin = at('Finally')[0]
         self.t_means = at('means person')[0]
+        self.origin('人', 470, self.t_fin - 0.1, seed=8)
         self.t_alone = at('Alone', after=self.t0)[0] - 0.1
         self.t_hito = JA['hito']['start']
         self.t_but = at('But in', after=self.t0)[0]
@@ -35,6 +37,22 @@ class Scene(KanjiScene):
 
     def cam(self, t):
         return Cam(540, 960, 1.0 + 0.03 * smooth((t - self.t_fin) / 4) - 0.03 * smooth((t - self.t_but) / 1) + 0.02 * smooth((t - self.t_but - 1) / 4))
+
+    def petals(self, u):
+        """cherry petals blown off the branch, tumbling down and to the right"""
+        import cv2
+        from engine import H, W
+        d = np.zeros((H, W), np.float32)
+        rng = np.random.default_rng(12)
+        for k in range(22):
+            x0, y0, ph, sp = rng.uniform(40, 420), rng.uniform(560, 900), rng.uniform(0, 6.3), rng.uniform(0.6, 1.2)
+            v = (u * sp + rng.uniform(0, 6)) % 6
+            x = x0 + 95 * v + 30 * np.sin(v * 2.2 + ph)
+            y = y0 + 70 * v + 18 * np.sin(v * 3.1 + ph)
+            if 0 < x < W and 0 < y < H:
+                a = np.degrees(v * 2.5 + ph)
+                cv2.ellipse(d, (int(x), int(y)), (int(9 * abs(np.cos(v * 3 + ph)) + 3), 5), a, 0, 360, 0.9, -1, cv2.LINE_AA)
+        return d
 
     def render(self, t):
         cam = self.cam(t)
@@ -49,8 +67,10 @@ class Scene(KanjiScene):
             self.layer(fr, cam, self.G['figs'] * op, 0, -110)
             self.layer(fr, cam, self.G['branch'] * op, 0, -110, opacity=0.9)
             self.layer(fr, cam, self.G['bloss'] * op, 0, -110, color=SAKURA, opacity=0.9)
+            self.layer(fr, cam, self.petals(t - self.t_but) * op, color=SAKURA, opacity=0.95)
         # 人, then the traveller it becomes
-        f = (t - self.t_fin) / 0.55
+        self.draw_origin(fr, cam, t, 380, 760, label_y=1040)
+        f = self.modern(t)
         become = smooth((t - self.t_means - 0.1) / 0.7)
         if f > 0:
             kit.put(fr, cam, self.big.at(f, soft=0.05), 380, 760, INK, 1 - become, 1 - 0.15 * become)
@@ -59,4 +79,7 @@ class Scene(KanjiScene):
         self.draw_card(fr, cam, t, self.c_hito, self.t_alone, op=1 - smooth((t - self.t_but) / 0.3), pulse=self.t_hito)
         if t > self.t_but + 0.2:
             self.draw_card(fr, cam, t, self.c_jin, self.t_but + 0.3, pulse=self.t_jin)
+        self.reading_seal(fr, cam, t, self.t_hito, '訓', op=1 - smooth((t - self.t_but) / 0.3))
+        self.reading_seal(fr, cam, t, self.t_jin, '音')
+        self.header(fr, t)
         return fr.img

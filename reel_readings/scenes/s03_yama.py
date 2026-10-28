@@ -15,6 +15,7 @@ from timeline import JA, at, quiet_gap
 
 class Scene(KanjiScene):
     paper_seed = 93
+    chapter = 0
 
     def build(self):
         self.big = self.big_kanji('山', seed=31)
@@ -32,6 +33,7 @@ class Scene(KanjiScene):
         c, n = quiet_gap(JA['san']['end'] - 0.05, at('Next')[0] + 0.05)
         self.t_hit = c - min(n / 2, 0.1)                               # sync: さん and the sun pulse (+ bowl, koto), mid-breath
         self.T_rise = self.wipe_map((540, 1150), seed=3)
+        self.origin('山', 520, self.t_first - 0.1, seed=5)
         self.T_sweep = self.wipe_map((-200, 300), seed=4)
 
     def cam(self, t):
@@ -51,7 +53,8 @@ class Scene(KanjiScene):
             self.layer(fr, cam, self.Fj['ink'] * sweep)
             self.layer(fr, cam, self.Fj['sun_refl'] * sweep, color=VERM, opacity=0.6)
         # the big 山, written, then rising into the mountain
-        f = (t - self.t_first) / 0.75
+        self.draw_origin(fr, cam, t, 540, 640)
+        f = self.modern(t)
         if f > 0:
             u = ease_io((t - self.t_means - 0.1) / 0.9)
             kit.put(fr, cam, self.big.at(f, soft=0.05), 540, lerp(640, 470, u), INK, 1 - smooth(u * 1.2), lerp(1.0, 1.15, u))
@@ -59,4 +62,7 @@ class Scene(KanjiScene):
         self.draw_card(fr, cam, t, self.c_yama, self.t_own, op=1 - smooth((t - self.t_but) / 0.3), pulse=self.t_yama)
         if t > self.t_but + 0.2:
             self.draw_card(fr, cam, t, self.c_fuji, self.t_but + 0.25, pulse=self.t_san if t < self.t_hit else self.t_hit)
+        self.reading_seal(fr, cam, t, self.t_yama, '訓', op=1 - smooth((t - self.t_but) / 0.3))
+        self.reading_seal(fr, cam, t, self.t_san, '音')
+        self.header(fr, t)
         return fr.img

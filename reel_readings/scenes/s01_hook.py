@@ -3,14 +3,15 @@ Japan adapted Chinese writing."
 Frame 1 is 山 being brushed across the whole screen, ink still flying.  Then 日, 水 and 人 slam in the same way, one
 after another (each with a taiko hit and a camera jolt), and each flies up into its own strip of paper, where it
 turns into what it means: the ink rises into a mountain, a vermilion sun blooms, a river starts to flow, a traveller
-stands on a ridge.  The four freeze side by side; "ONE CHARACTER. / MULTIPLE READINGS." is set under them as Raj
-says it, and on "why?" a vermilion WHY? is stamped across the page.  On "adapted Chinese writing" a long dry brush
+stands on a ridge.  The four freeze side by side, and as Raj says "multiple readings" each one's readings are set
+under it in two rows: the kun'yomi (native Japanese words, indigo, 訓) やま ひ みず ひと and the on'yomi
+(Chinese-derived, vermilion, 音) サン ニチ スイ ジン.  "ONE CHARACTER. / MULTIPLE READINGS." is set under them, and on "why?" a vermilion WHY? is stamped across the page.  On "adapted Chinese writing" a long dry brush
 sweeps across the bottom, carrying us into the history."""
 import numpy as np
 
 import kit
 from art import blossom_cluster, cherry_branch, figure, sun_disc
-from engine import (FONT_BRUSH_EN, FONT_BRUSH_JP, FONT_EN_BOLD, FONT_HEAD, GREY, H, INK, SAKURA, SEA, VERM, W, Cam,
+from engine import (FONT_BRUSH_EN, FONT_BRUSH_JP, FONT_EN_BOLD, FONT_HEAD, FONT_JP, GREY, H, INK, SAKURA, SEA, VERM, W, Cam,
                     StrokeSet, blur, cached, ease_io, ease_out, lerp, noise, reveal_time, smooth, spline, stroke, text_layer,
                     wash_map)
 from glyphs import typeset
@@ -25,6 +26,13 @@ COLS = [138, 406, 674, 942]
 PW, PH = 252, 540            # one strip of paper
 TOP = 400                    # top of the strips (world y)
 KY = 300                     # the kanji row
+S = 0.8                      # the strips are painted at PW x PH and shown at this scale
+STRIP_CY, BOTTOM = TOP + PH * S / 2, TOP + PH * S
+KUN = ['やま', 'ひ', 'みず', 'ひと']          # kun'yomi: the native Japanese words
+ON = ['サン', 'ニチ', 'スイ', 'ジン']         # on'yomi: Chinese-derived (in katakana, as dictionaries write them)
+KUN_Y, ON_Y = 928, 1000
+INDIGO = np.array([40, 62, 118], np.float32) / 255
+IVORY = np.array([0.98, 0.95, 0.88], np.float32)
 BIG, SMALL = 820, 210        # glyph size when it slams in, and in its strip
 SLAM = (540, 900)
 T_SLAM = [0.0, 0.42, 0.84, 1.26]
@@ -37,22 +45,27 @@ class Scene(SceneBase):
 
     def build(self):
         self.big = [typeset(c, BIG, font=FONT_BRUSH_JP, seed=10 + k, medians=False, sweep=(0.7, 1)) for k, c in enumerate(KANJI)]
-        self.A = cached('s01_strips_v4', _paint_strips)
+        self.A = cached('s01_strips_v5', _paint_strips)
         self.splat = [cached(f's01_splat_v1_{k}', lambda k=k: {'d': _splat(k)})['d'] for k in range(4)]
         self.lbl = [text_layer(s, FONT_EN_BOLD, 30, tracking=5)[0] for s in LABELS]
-        self.l1, _ = text_layer('ONE CHARACTER.', FONT_HEAD, 74)
-        self.l2, _ = text_layer('MULTIPLE READINGS.', FONT_HEAD, 74)
-        self.why, _ = text_layer('WHY?', FONT_BRUSH_EN, 200)
+        self.kun = [text_layer(r, FONT_JP, 58)[0] for r in KUN]
+        self.on = [text_layer(r, FONT_JP, 58)[0] for r in ON]
+        sq = kit.blur(np.pad(np.ones((46, 46), np.float32), 4), 1.2)
+        self.tags = [(sq, text_layer(c, FONT_JP, 32)[0], col) for c, col in (('訓', INDIGO), ('音', VERM))]
+        self.l1, _ = text_layer('ONE CHARACTER.', FONT_HEAD, 66)
+        self.l2, _ = text_layer('MULTIPLE READINGS.', FONT_HEAD, 66)
+        self.why, _ = text_layer('WHY?', FONT_BRUSH_EN, 190)
         self.why = self.why * (0.85 + 0.15 * noise(*self.why.shape, 6, 2, 4))
         self.tmap = [wash_map(PH, PW, (PW / 2, 0 if k != 1 else PH * 0.35), noise_amp=0.3, noise_scale=90, seed=40 + k) for k in range(4)]
         self.t_l1 = max(at('character')[0], 1.75)
         self.t_l2 = at('multiple readings')[0]
+        self.t_read = at('multiple readings')[0] - 0.05
         self.t_why = at('But why?')[0] + 0.12
         self.t_sweep = at('adapted')[0]
         ss = StrokeSet(W, H)
         ss.add(stroke(W, H, spline([(1060, 1215), (760, 1190), (420, 1225), (60, 1195)], 14), 34, ink=0.85, dry=0.7,
                       profile=((0, 0.3), (0.08, 1), (0.85, 0.8), (1, 0.15)), seed=5), self.t_sweep, 0.7)
-        ss.add(stroke(W, H, [(330, 1378), (540, 1370), (760, 1376)], 12, ink=0.95, dry=0.4,
+        ss.add(stroke(W, H, [(340, 1388), (540, 1380), (750, 1386)], 12, ink=0.95, dry=0.4,
                       profile=((0, 0.3), (0.1, 1), (0.9, 0.8), (1, 0.1)), seed=6, red=True), self.t_why + 0.12, 0.22)
         self.strokes = ss
 
@@ -78,17 +91,26 @@ class Scene(SceneBase):
             f = (t - self.landed(k) + 0.05) / 0.75
             if f <= 0:
                 continue
-            x0, y0 = COLS[k] - PW // 2, TOP
             ink = reveal_time(A['ink'][k], self.tmap[k], f, soft=0.06, wet=0.3)
             if k == 2:                                     # the river flows
                 yy = np.arange(PH, dtype=np.float32)[:, None]
                 ink = ink + reveal_time(A['flow'], self.tmap[k], f, soft=0.06) * (0.55 + 0.45 * np.sin(yy / 15 - t * 7 + np.arange(PW)[None] / 40))
-            self.layer(fr, cam, ink, x0, y0)
-            if k == 1:
-                self.layer(fr, cam, A['sun'] * smooth(f * 1.3), x0, y0, color=VERM, opacity=0.95)
             if k == 2:
-                self.layer(fr, cam, reveal_time(A['sea'], self.tmap[k], f), x0, y0, color=SEA, opacity=0.5)
-            kit.put(fr, cam, self.lbl[k], COLS[k], TOP + PH + 34, GREY, smooth((t - self.landed(k) - 0.5) / 0.3))
+                kit.put(fr, cam, reveal_time(A['sea'], self.tmap[k], f), COLS[k], STRIP_CY, SEA, 0.5, S)
+            kit.put(fr, cam, ink, COLS[k], STRIP_CY, INK, 1.0, S)
+            if k == 1:
+                kit.put(fr, cam, A['sun'] * smooth(f * 1.3), COLS[k], STRIP_CY, VERM, 0.95, S)
+            kit.put(fr, cam, self.lbl[k], COLS[k], BOTTOM + 28, GREY, smooth((t - self.landed(k) - 0.5) / 0.3))
+        # the readings, two rows: kun'yomi (indigo) and on'yomi (vermilion), as Raj says "multiple readings"
+        for row, (gl, y, t0) in enumerate(((self.kun, KUN_Y, self.t_read), (self.on, ON_Y, self.t_read + 0.4))):
+            sq, ch, col = self.tags[row]
+            ft = smooth((t - t0 + 0.1) / 0.25)
+            kit.put(fr, cam, sq, 34, y, col, 0.92 * ft)
+            kit.put(fr, cam, ch, 34, y, IVORY, ft, over=True)
+            for k, g in enumerate(gl):
+                fk = (t - t0 - 0.07 * k) / 0.22
+                if fk > 0:
+                    kit.put(fr, cam, g, COLS[k] + 14, y, col, smooth(fk), 1 + 0.25 * np.exp(-fk * 2.5))
         # the splash round each kanji as it slams in
         for k, T in enumerate(T_SLAM):
             o = 1 - smooth((t - T - 0.15) / 0.5)
@@ -106,11 +128,11 @@ class Scene(SceneBase):
             kit.put(fr, cam, d, x, y, INK, 1.0, sc)
         # ONE CHARACTER. / MULTIPLE READINGS. / WHY?
         out = 1 - smooth((t - self.t_sweep + 0.4) / 0.5)
-        kit.put(fr, cam, self.l1, 540, 1060, INK, smooth((t - self.t_l1) / 0.25) * out)
-        kit.put(fr, cam, self.l2, 540, 1145, INK, smooth((t - self.t_l2) / 0.25) * out)
+        kit.put(fr, cam, self.l1, 540, 1085, INK, smooth((t - self.t_l1) / 0.25) * out)
+        kit.put(fr, cam, self.l2, 540, 1155, INK, smooth((t - self.t_l2) / 0.25) * out)
         fw = (t - self.t_why) / 0.16
         if fw > 0:
-            kit.put(fr, cam, self.why, 540, 1268, VERM, smooth(fw) * out, 1 + 0.35 * np.exp(-fw * 2.2), rot=-0.04)
+            kit.put(fr, cam, self.why, 540, 1285, VERM, smooth(fw) * out, 1 + 0.35 * np.exp(-fw * 2.2), rot=-0.04)
         self.layer(fr, cam, self.strokes.render(t, red=True), color=VERM, opacity=out)
         self.layer(fr, cam, self.strokes.render(t), opacity=0.9)
         return fr.img
@@ -197,7 +219,7 @@ def _paint_strips():
     # the rules between the strips
     rs = StrokeSet(W, H)
     for k, x in enumerate((272, 540, 808)):
-        rs.add(stroke(W, H, [(x + 2, TOP - 170), (x - 1, TOP + PH / 2), (x + 1, TOP + PH + 50)], 3, ink=0.6, dry=0.6,
+        rs.add(stroke(W, H, [(x + 2, TOP - 170), (x - 1, TOP + 240), (x + 1, TOP + 470)], 3, ink=0.6, dry=0.6,
                       profile=((0, 0.2), (0.1, 1), (0.9, 1), (1, 0.2)), seed=60 + k), 0, 1)
     # a cherry branch reaching in from the top-left corner
     bs = StrokeSet(W, H)

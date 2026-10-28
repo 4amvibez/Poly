@@ -1,7 +1,7 @@
 """assemble — the merged reel: the short's hook, the full reel's body, the short's tip + comment question, the ending.
 
     A  reel_readings_short   0.00 ->  6.40   ink-burst hook (日曜日 puzzle, WHY?)
-    B  reel_readings         8.50 -> 73.70   history map ... "Every kanji has a story."
+    B  reel_readings         8.50 -> 90.35   history map, 山 日, on'yomi / kun'yomi, kokuji ... "Every kanji has a story."
     C  reel_readings_short  42.95 -> 57.00   QUICK TIP, 今日？ COMMENT BELOW, FOLLOW
     D  ending (make_ending.py)  6.20 s       THANK YOU FOR WATCHING TILL THE END!  またね！
 
@@ -20,7 +20,7 @@ FULL = os.path.join(HERE, '..', 'reel_readings', 'audio', 'mix_raw.wav')
 XF = 0.3
 # (video, audio source, audio start, duration, crossfade curves into the next part: (out, in))
 PARTS = [('A_hook.mp4', SHORT, 0.0, 6.40, ('tri', 'nofade')),
-         ('B_main.mp4', FULL, 8.50, 65.20, ('nofade', 'tri')),
+         ('B_main.mp4', FULL, 8.50, 81.85, ('nofade', 'tri')),
          ('C_tip_cta.mp4', SHORT, 42.95, 14.05, ('tri', 'nofade')),
          ('D_ending.mov', os.path.join(HERE, 'audio', 'ending.wav'), 0.0, 6.20, None)]
 

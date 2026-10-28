@@ -7,7 +7,7 @@ from timeline import JA, SCENES
 
 _exit_maps = {}
 BEATS = sorted(v['start'] for v in JA.values())          # a small push on every Japanese word
-MIST_SCENES = ('yama', 'hi', 'mizu', 'hito')
+MIST_SCENES = ('yama', 'hi', 'names', 'kokuji')
 _mist = {}
 
 

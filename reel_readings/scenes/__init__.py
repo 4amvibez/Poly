@@ -5,8 +5,8 @@ import importlib
 from timeline import SCENES
 
 _MODULES = {
-    'hook': 's01_hook', 'history': 's02_history', 'yama': 's03_yama', 'hi': 's04_hi', 'mizu': 's05_mizu',
-    'hito': 's06_hito', 'takeaway': 's07_takeaway',
+    'hook': 's01_hook', 'history': 's02_history', 'yama': 's03_yama', 'hi': 's04_hi', 'names': 's05_names',
+    'kokuji': 's06_kokuji', 'takeaway': 's07_takeaway',
 }
 _built = {}
 

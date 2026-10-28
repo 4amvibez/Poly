@@ -19,7 +19,7 @@ CX, CY = 520, 1436                 # slightly left of centre: clear of the like/
 INK_RGB = np.array([24, 22, 21], np.float32) / 255
 PLATE_RGB = np.array([244, 238, 224], np.float32) / 255
 INDIGO = np.array([40, 62, 118], np.float32) / 255
-KUN = {'yama', 'hi', 'mizu', 'hito', 'kunyomi'}
+KUN = {'yama', 'hi', 'mizu', 'hito', 'kunyomi', 'hataraku', 'touge'}
 ON = {'san', 'nichi', 'sui', 'jin', 'onyomi'}
 COLOR = {'ink': INK_RGB, 'kun': INDIGO, 'on': VERM}
 def _style(w):
@@ -27,6 +27,7 @@ def _style(w):
     k = w.get('ja')
     if not k:
         return False, 'ink'
+    k = k[:-2] if k.endswith('_n') else k                  # a word said a second time (san_n ...)
     return True, 'kun' if k in KUN else 'on' if k in ON else 'ink'
 
 

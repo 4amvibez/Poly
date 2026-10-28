@@ -260,8 +260,8 @@ def thud():
 
 
 # ------------------------------------------------------------------ events from the scenes
-NAMES = ['hook', 'history', 'yama', 'hi', 'mizu', 'hito', 'takeaway']
-HIT_NAMES = {'hook': 'why', 'history': 'dock', 'yama': 'san', 'hi': 'sunday', 'mizu': 'wednesday', 'hito': 'nihon',
+NAMES = ['hook', 'history', 'yama', 'hi', 'names', 'kokuji', 'takeaway']
+HIT_NAMES = {'hook': 'why', 'history': 'dock', 'yama': 'san', 'hi': 'sunday', 'names': 'onyomi_name', 'kokuji': 'hataraku_makes',
              'takeaway': 'seal'}
 
 
@@ -303,16 +303,17 @@ def scene_events():
     ev.append((hi.t_next, 0.6, 1.3, True))
     card(hi.t_own)
     card(hi.t_but + 0.3, 3)
-    mz = g('mizu')
-    ev.append((mz.t_now, 0.6, 1.3, True))
-    card(mz.t_own)
-    strokes(mz.curl, 1.0)
-    card(mz.t_but + 0.35, 3)
-    strokes(mz.arrows, 0.6)
-    ht = g('hito')
-    ev.append((ht.t_fin, 0.55, 1.3, True))
-    card(ht.t_alone)
-    card(ht.t_but + 0.3, 3)
+    nm = g('names')
+    for k in range(2):
+        card(nm.t_side[k], 2)                                             # a scroll unrolling
+        ev.append((nm.t_name[k] - 0.15, 0.3, 1.1, True))                  # its name brushed in
+    kk = g('kokuji')
+    ev.append((kk.t_kokuji - 0.25, 0.5, 1.3, True))
+    ev.append((kk.t_kokuji + 0.0, 0.4, 1.1, True))
+    for k in range(2):
+        ev.append((kk.t_makes[k] + 0.25, 0.5, 1.4, True))
+        card(kk.t_read[k] - 0.35)
+    strokes(kk.path, 0.5)
     tk = g('takeaway')
     for k in range(4):
         ev.append((tk.t_so + 0.12 * k, 0.35, 0.9, False))
@@ -342,7 +343,7 @@ def build(out_dir=os.path.join(HERE, 'audio')):
     chords = {
         'hook': ([('D', 2), ('A', 2), ('D', 3)], 0.65), 'history': ([('G', 2), ('D', 3), ('A', 3)], 0.6),
         'yama': ([('D', 2), ('A', 2), ('D', 3), ('A', 3)], 0.6), 'hi': ([('Bb', 1), ('D', 3), ('A', 3)], 0.6),
-        'mizu': ([('G', 2), ('D', 3), ('Bb', 3)], 0.6), 'hito': ([('D', 2), ('A', 2), ('Eb', 3), ('Bb', 3)], 0.65),
+        'names': ([('G', 2), ('D', 3), ('Bb', 3)], 0.6), 'kokuji': ([('D', 2), ('A', 2), ('Eb', 3), ('Bb', 3)], 0.65),
         'takeaway': ([('D', 2), ('A', 2), ('D', 3), ('A', 3)], 0.8)}
     for nm, a, b in SCENES:
         notes, lvl = chords[nm]
@@ -376,12 +377,18 @@ def build(out_dir=os.path.join(HERE, 'audio')):
     phrase(hs.t_split + 0.7, [('D', 4), ('A', 4)], gap=0.15, gain=0.5)
     # the four kanji scenes: a koto note on each reading as Raj says it
     for key, n in (('yama', ('A', 4)), ('fujisan', ('D', 5)), ('hi', ('A', 4)), ('nichiyoubi', ('D', 5)),
-                   ('nichi', ('Eb', 5)), ('mizu', ('G', 4)), ('suiyoubi', ('Bb', 4)), ('sui', ('D', 5)), ('hito', ('A', 4)),
-                   ('nihonjin', ('D', 5)), ('jin', ('Eb', 5)), ('onyomi', ('D', 5)), ('kunyomi', ('A', 4))):
+                   ('nichi', ('Eb', 5)), ('san_n', ('D', 5)), ('nichi_n', ('Eb', 5)), ('onyomi_n', ('D', 5)),
+                   ('yama_n', ('A', 4)), ('hi_n', ('G', 4)), ('kunyomi_n', ('A', 4)), ('kokuji', ('D', 5)), ('wasei', ('A', 4)),
+                   ('hataraku', ('A', 4)), ('touge', ('G', 4)), ('onyomi', ('D', 5)), ('kunyomi', ('A', 4))):
         phrase(JA[key]['end'] + 0.02, [n], gain=0.28, pan=0.25)
-    mz = g('mizu')
-    place(amb, water(int((mz.t1 - mz.t_means) * SR), seed=5, bright=1.0), mz.t_means, 1.0)
-    place(sfx, splash() * 0.5, mz.t_means + 0.05, 0.6)
+    kk = g('kokuji')
+    place(music, flute(note('A', 4), 2.4), kk.t_some, 0.3, pan=-0.2)         # the junk turning back
+    place(music, bowl(note('D', 5), 5.0), kk.t_japan + 0.3, 0.5)             # the sun of Japan
+    place(sfx, stamp(), kk.t_japan + 0.5, 0.9)                               # MADE IN JAPAN
+    for k in range(2):
+        for j, tp in enumerate(kk.t_part[k]):                                # each part popping in
+            phrase(tp - 0.1, [[('D', 4), ('A', 4), ('D', 5)][j]], gain=0.3, pan=(-0.3, 0.3)[j % 2])
+        place(sfx, whoosh(0.45, 500, 4000), kk.t_makes[k] - 0.05, 0.6)       # the parts sliding together
     tk = g('takeaway')
     place(music, flute(note('D', 5), 3.0), tk.t_story - 0.1, 0.35, pan=0.2)
     phrase(tk.t_follow, [('D', 4), ('A', 4), ('D', 5)], gap=0.2, gain=0.45)
@@ -395,20 +402,24 @@ def build(out_dir=os.path.join(HERE, 'audio')):
     place(music, koto(note('A', 5)), H_['san'], 0.45)
     place(music, bowl(note('A', 5), 4.0), H_['sunday'], 0.6)
     place(sfx, brush(0.12, 1.0), H_['sunday'] - 0.1, 0.8)
-    place(music, bowl(note('G', 5), 4.0), H_['wednesday'], 0.6)
-    place(sfx, brush(0.12, 1.0), H_['wednesday'] - 0.1, 0.8)
-    place(music, taiko(2.0, 54), H_['nihon'], 0.7)
-    place(music, bowl(note('D', 5), 5.0), H_['nihon'], 0.5)
+    place(music, bowl(note('G', 5), 4.0), H_['onyomi_name'], 0.5)
+    place(music, taiko(2.0, 54), H_['hataraku_makes'] + 0.25, 0.7)
+    place(music, bowl(note('D', 5), 5.0), H_['hataraku_makes'] + 0.25, 0.45)
     place(sfx, stamp(), H_['seal'], 1.2)
     place(music, taiko(2.2, 58), H_['seal'], 0.8)
     place(music, bowl(note('D', 5), 5.0), H_['seal'] + 0.05, 0.5)
     # the 3,000-year-old forms scratched in, the 訓 / 音 seals stamped beside the cards, the header seal of each chapter
-    for k, (n, ja_kun, ja_on) in enumerate((('yama', 'yama', 'san'), ('hi', 'hi', 'nichi'), ('mizu', 'mizu', 'sui'), ('hito', 'hito', 'jin'))):
+    for k, (n, ja_kun, ja_on) in enumerate((('yama', 'yama', 'san'), ('hi', 'hi', 'nichi'))):
         sc = g(n)
         place(sfx, brush(0.4, 0.7), sc._anc_t0, 0.55, pan=-0.2)
-        place(sfx, stamp() * 0.5, sc.t0 + 0.15, 0.5, pan=0.3)
         for key in (ja_kun, ja_on):
             place(sfx, stamp(), JA[key]['start'], 0.55, pan=0.35)
+    for n in ('yama', 'hi', 'names', 'kokuji'):
+        place(sfx, stamp() * 0.5, g(n).t0 + 0.15, 0.5, pan=0.3)
+    for k in range(2):
+        place(sfx, stamp(), g('names').t_side[k] + 0.35, 0.55, pan=(-0.35, 0.35)[k])
+        place(sfx, stamp(), kk.t_read[k], 0.55, pan=0.35)
+        place(sfx, stamp(), kk.t_most + 0.35 + 0.2 * k, 0.5, pan=(-0.35, 0.35)[k])
     dips = np.ones(N)
     for _, th in hit_times():
         n = int(0.025 * SR)
@@ -424,7 +435,7 @@ def build(out_dir=os.path.join(HERE, 'audio')):
         place(sfx, brush(d, inten, heavy), t, 1.0, pan=rng.uniform(-0.25, 0.25))
     for name, a, b in SCENES[1:]:
         place(sfx, whoosh(1.1, 250, 2600), a - 0.1, 0.8, pan=rng.uniform(-0.3, 0.3))
-    for tt in (g('hi').t_but + 0.35, g('mizu').t_but + 0.45):
+    for tt in (g('hi').t_but + 0.35,):
         place(sfx, flip(), tt, 0.9)                                     # the calendar swinging in
 
     # narration

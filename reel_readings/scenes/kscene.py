@@ -18,7 +18,7 @@ CARD_SIZE = 140
 PLATE_RGB = np.array([0.95, 0.92, 0.85], np.float32)
 CAL_RGB = np.array([0.97, 0.95, 0.89], np.float32)
 IVORY = np.array([0.98, 0.95, 0.88], np.float32)
-CHAPTERS = [('山', 'MOUNTAIN'), ('日', 'SUN · DAY'), ('水', 'WATER'), ('人', 'PERSON')]
+CHAPTERS = [('山', 'MOUNTAIN'), ('日', 'SUN · DAY'), ('読', "ON'YOMI · KUN'YOMI"), ('国', 'KOKUJI')]
 SEAL_Y, SEAL_X, SEAL = 246, [405, 495, 585, 675], 62
 SCREEN = Cam(540, 960, 1.0)
 

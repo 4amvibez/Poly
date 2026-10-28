@@ -1,0 +1,62 @@
+"""Scene 6 — 人.  "Finally, this kanji means person.  Alone, it's often ひと.  But in 日本人, a Japanese person, it
+becomes じん."
+One 人 in black ink, standing on a ridge.  On "means person" its two strokes settle into the silhouette of a
+traveller in a straw hat (the same traveller as the hook).  Card: 人 / ひと (indigo) / hito / PERSON.  "But in 日本人":
+the mist opens on a small group of travellers on a shore under a large vermilion circle, a pagoda and cherry
+blossom.  Card: 日本人 / に・ほん・じん with じん in vermilion (on'yomi), pulsing on "jin"."""
+import numpy as np
+
+import kit
+import r5art
+from engine import INK, SAKURA, VERM, Cam, cached, ease_io, smooth
+from scenes.kscene import KanjiScene
+from timeline import JA, at, quiet_gap
+
+
+class Scene(KanjiScene):
+    paper_seed = 96
+
+    def build(self):
+        self.big = self.big_kanji('人', size=470, seed=101)
+        self.P = cached('s06_person_v1', r5art.person_scene)
+        self.G = cached('s06_group_v1', r5art.group_scene)
+        self.c_hito = self.card('人', ['ひと'], ['kun'], 'hito', 'person', seed=110)
+        self.c_jin = self.card('日本人', ['に', 'ほん', 'じん'], [None, None, 'on'], 'nihonjin', 'Japanese person', focus=2, seed=114)
+        self.t_fin = at('Finally')[0]
+        self.t_means = at('means person')[0]
+        self.t_alone = at('Alone', after=self.t0)[0] - 0.1
+        self.t_hito = JA['hito']['start']
+        self.t_but = at('But in', after=self.t0)[0]
+        self.t_jin = JA['jin']['start']
+        c, n = quiet_gap(at('Japanese person')[1] - 0.15, at('it becomes')[0] + 0.05)
+        self.t_hit = c - n / 2 + 0.04                                  # sync: the red circle swells (+ taiko, bowl)
+        self.T_in = self.wipe_map((540, 1000), seed=8)
+        self.T_open = self.wipe_map((540, 820), seed=9)
+
+    def cam(self, t):
+        return Cam(540, 960, 1.0 + 0.03 * smooth((t - self.t_fin) / 4) - 0.03 * smooth((t - self.t_but) / 1) + 0.02 * smooth((t - self.t_but - 1) / 4))
+
+    def render(self, t):
+        cam = self.cam(t)
+        fr = self.frame(cam)
+        land = self.wipe(self.T_in, smooth((t - self.t0) / 1.1))
+        op = self.wipe(self.T_open, ease_io((t - self.t_but + 0.05) / 0.9))
+        self.layer(fr, cam, self.P['land'] * land * (1 - op))
+        if op.any():
+            sw = 1 + 0.04 * np.exp(-max(t - self.t_hit, 0) * 3) * (t > self.t_hit)
+            kit.put(fr, cam, self.G['sun'] * op, 540, 960 - 110 + (1 - sw) * -260, VERM, 0.85, sw)
+            self.layer(fr, cam, self.G['land'] * op, 0, -110)
+            self.layer(fr, cam, self.G['figs'] * op, 0, -110)
+            self.layer(fr, cam, self.G['branch'] * op, 0, -110, opacity=0.9)
+            self.layer(fr, cam, self.G['bloss'] * op, 0, -110, color=SAKURA, opacity=0.9)
+        # 人, then the traveller it becomes
+        f = (t - self.t_fin) / 0.55
+        become = smooth((t - self.t_means - 0.1) / 0.7)
+        if f > 0:
+            kit.put(fr, cam, self.big.at(f, soft=0.05), 380, 760, INK, 1 - become, 1 - 0.15 * become)
+        self.layer(fr, cam, self.P['fig'] * (1 - op), opacity=become)
+        # the cards
+        self.draw_card(fr, cam, t, self.c_hito, self.t_alone, op=1 - smooth((t - self.t_but) / 0.3), pulse=self.t_hito)
+        if t > self.t_but + 0.2:
+            self.draw_card(fr, cam, t, self.c_jin, self.t_but + 0.3, pulse=self.t_jin)
+        return fr.img

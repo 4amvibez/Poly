@@ -137,6 +137,7 @@ def main():
             k = replaced[i]
             rom = next(r for kk, _, r in JA_WORDS if kk == k)
             punct = w['text'][-1] if w['text'][-1] in '.,' else ''
+            rom = rom[0].upper() + rom[1:] if w['text'][0].isupper() else rom
             ws.append(dict(text=rom + punct, type='word', ja=k, start=segs_out[k]['start'], end=segs_out[k]['end']))
         else:
             ws.append(dict(text=w['text'], type='word', start=round(sh(w['start']), 3), end=round(sh(w['end']), 3)))

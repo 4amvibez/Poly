@@ -1,8 +1,0 @@
-One Japanese character can have multiple readings. But why? The answer goes back to how Japan adapted Chinese writing.
-Japanese was already a spoken language before Chinese characters arrived. Japanese speakers connected these characters with their own words, while also preserving Chinese-derived pronunciations. That's why many kanji have different readings.
-First, 山 means mountain. On its own, we say やま. But in 富士山, we say さん.
-山は「やま」とも読みます。でも、「富士山」は「ふじさん」と読みます。
-Next, 日 can mean the sun, or a day. On its own, it's ひ. But in 日曜日, Sunday, it's にち.
-Now, 水 means water. On its own, it's みず. But in 水曜日, Wednesday, it's すい. The character stays the same; the word decides the reading.
-Finally, 人 means person. Alone, it's often ひと. But in 日本人, a Japanese person, it becomes じん.
-So don't memorize kanji as isolated symbols. Learn them through real words. On'yomi and kun'yomi reflect different histories, and the word tells you which reading to use. Every kanji has a story. Follow @raj_in_jp to discover more.

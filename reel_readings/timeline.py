@@ -10,8 +10,8 @@ VO_OFFSET = 0.4          # narration starts just after the first brush contact
 _W = json.load(open(os.path.join(HERE, 'audio', 'words.json'), encoding='utf8'))
 _words = _W['words']
 # the Japanese inserts (Raj in Japanese), e.g. yama, fujisan, yama_line -> {text, start, end}
-JA = {k: dict(text=v['text'], start=v['start'] + VO_OFFSET, end=v['end'] + VO_OFFSET) for k, v in _W['ja'].items()}
-WORDS = [dict(text=w['text'], start=w['start'] + VO_OFFSET, end=w['end'] + VO_OFFSET)
+JA = {k: dict(v, start=v['start'] + VO_OFFSET, end=v['end'] + VO_OFFSET) for k, v in _W['ja'].items()}
+WORDS = [dict(text=w['text'], start=w['start'] + VO_OFFSET, end=w['end'] + VO_OFFSET, ja=w.get('ja'))
          for w in _words if w.get('type', 'word') == 'word']
 
 
@@ -19,11 +19,14 @@ def _norm(s):
     return re.sub(r'[^a-z0-9]', '', s.lower())
 
 
-def at(phrase, nth=0):
-    """(start, end) in video seconds of a phrase in the narration, e.g. at('Look at this')"""
+def at(phrase, nth=0, after=None):
+    """(start, end) in video seconds of a phrase in the narration, e.g. at('Look at this'); after = only matches
+    starting after that time (the same phrase comes back in several scenes)"""
     target = [_norm(p) for p in phrase.split()]
     hits = 0
     for i in range(len(WORDS) - len(target) + 1):
+        if after is not None and WORDS[i]['start'] < after:
+            continue
         if all(_norm(WORDS[i + k]['text']) == target[k] for k in range(len(target))):
             if hits == nth:
                 return WORDS[i]['start'], WORDS[i + len(target) - 1]['end']

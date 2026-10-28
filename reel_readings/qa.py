@@ -102,7 +102,7 @@ def main(path):
         al, _ = subtitles._render(k)
         h, w = al.shape
         x0, x1 = subtitles.CX - w / 2, subtitles.CX + w / 2
-        y0, y1 = subtitles.CY - h / 2, subtitles.CY + h / 2
+        y0, y1 = c.get('cy', subtitles.CY) - h / 2, c.get('cy', subtitles.CY) + h / 2
         if x0 < SAFE_LEFT or x1 > SAFE_RIGHT or y0 < SAFE_TOP or y1 > SAFE_BOTTOM:
             bad_subs.append(' '.join(wd for wd, _ in c['words']))
     if bad_subs:
@@ -120,4 +120,4 @@ def main(path):
 
 
 if __name__ == '__main__':
-    main(sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, 'output', 'raj_in_jp_kanji_necessary_reel.mp4'))
+    main(sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, 'output', 'raj_in_jp_multiple_readings_reel.mp4'))

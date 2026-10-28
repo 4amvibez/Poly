@@ -33,7 +33,7 @@ def main():
     cuts = [[a, round(b_ - a + 0.1, 3)] for (_, a, _), (_, _, b_) in zip(SCENES[1:], SCENES[:-1])]   # each transition window
     import scenes
     hk = scenes.get('hook')
-    cuts = [[0.0, 1.15], [round(hk.t_hit, 3), 0.3]] + cuts   # designed: the stamp jolt and the pull-back, the burst
+    cuts = [[0.0, 1.9], [round(hk.t_hit, 3), 0.3]] + cuts     # designed: the four kanji slamming in, the WHY? stamp
     data = {'FPS': 30, 'FORMAT': '9:16', 'DURATION': DURATION, 'S': S, 'markers': markers(), 'cuts': cuts, 'subtitles': subs}
     js = ('(function (root, f) { if (typeof module === "object") module.exports = f(); else root.SCORE = f(); })'
           '(this, function () {\n  return ' + json.dumps(data, ensure_ascii=False, indent=1) + ';\n});\n')

@@ -18,7 +18,7 @@ from glyphs import typeset
 from inkpaint import Painting
 from poly_ink.brush import PRESS_DOWN, SWEEP, wash as pwash
 from scenes.base import SceneBase
-from timeline import at
+from timeline import at, quiet_gap
 
 KANJI = '山日水人'
 LABELS = ['MOUNTAIN', 'SUN / DAY', 'WATER', 'PERSON']
@@ -60,7 +60,8 @@ class Scene(SceneBase):
         self.t_l1 = max(at('character')[0], 1.75)
         self.t_l2 = at('multiple readings')[0]
         self.t_read = at('multiple readings')[0] - 0.05
-        self.t_why = at('But why?')[0] + 0.12
+        c, n = quiet_gap(at('why?')[1] - 0.15, at('The answer')[0] + 0.05)
+        self.t_why = self.t_hit = c - n / 2 + 0.05                    # sync: WHY? stamped (+ taiko, stamp)
         self.t_sweep = at('adapted')[0]
         ss = StrokeSet(W, H)
         ss.add(stroke(W, H, spline([(1060, 1215), (760, 1190), (420, 1225), (60, 1195)], 14), 34, ink=0.85, dry=0.7,

@@ -1,12 +1,13 @@
 """audio — the soundtrack, synthesized in code and synced to the animation's own events.
 
 Score: a quiet drone in the miyako-bushi scale (D Eb G A Bb) with Karplus-Strong koto plucks on the things that land
-(the meanings, the guesses, the cards turning, each stair as it is climbed), a low taiko on the opening slam and on
-"Don't fear kanji.", singing-bowl chimes on the reveals: 漢字 bursting, the kanji wiped away, the eye opening,
-またね！  Every sync hit sits in a measured breath of the narration, never on a word.
-Sound design: brush-on-paper texture from every stroke and glyph the scenes write, an ink splash for the burst,
-paper flicks for the cards, wood knocks for the ？ jolt and the signboards, two little clucks as the hens pop into the
-garden, stone thuds as the wall of kanji drops in and rebuilds itself as stairs, paper whooshes at the transitions.
+(each reading as Raj says it, the readings rows of the hook, the words on the book), a taiko under each kanji that
+slams in at the start and on the WHY? stamp, a breathy flute while the junk sails and over the final landscape,
+singing-bowl chimes on the reveals.  Every sync hit sits in a measured breath of the narration, never on a word:
+WHY? stamped, the junk docking, the two cards parting before the Japanese line, the circle closing round 日 and
+round 水 on the calendar, the red circle swelling behind the travellers, the seal.
+Sound design: brush-on-paper texture from every stroke and glyph the scenes write, sea and river water, a wood knock
+as the junk docks, paper flicks as the calendars swing in, paper whooshes at the transitions.
 The music ducks under the narration.
 
     python audio.py            -> audio/mix_raw.wav (48 kHz stereo) + audio/stems/*.wav
@@ -259,54 +260,64 @@ def thud():
 
 
 # ------------------------------------------------------------------ events from the scenes
+NAMES = ['hook', 'history', 'yama', 'hi', 'mizu', 'hito', 'takeaway']
+HIT_NAMES = {'hook': 'why', 'history': 'dock', 'yama': 'cards', 'hi': 'sunday', 'mizu': 'wednesday', 'hito': 'nihon',
+             'takeaway': 'seal'}
+
+
 def hit_times():
     """the sync hits: (name, time) — each in a breath of the narration, each with a picture event on it"""
     import scenes
-    g = scenes.get
-    return [('burst', g('hook').t_hit), ('erase', g('scroll').t_hit), ('huh', g('scroll').t_huh), ('eye', g('alike').t_hit),
-            ('hens', g('niwa').t_hit), ('signs', g('answer').t_hit), ('fear', g('obstacle').t_hit), ('matane', g('endcard').t_hit)]
+    return [(HIT_NAMES[n], scenes.get(n).t_hit) for n in NAMES]
 
 
 def scene_events():
     """(time, duration, intensity, heavy) for every brush event the animation shows"""
     import scenes
+    from timeline import JA
     ev = []
+    g = scenes.get
 
     def strokes(ss, gain=1.0):
         for st, s0, d, *_ in ss.items:
             area = float(st.dens.sum())
             ev.append((s0, d, gain * np.clip(np.sqrt(area) / 220, 0.15, 1.6), area > 60 * 900))
 
-    def spans(sp, gain=0.9):
-        for a, b in sp:
-            ev.append((a, b - a, gain, False))
+    def card(t0, n=1):
+        ev.append((t0, 0.3 + 0.08 * n, 0.55, False))                  # the card writing itself
 
-    s = scenes.get('hook')
-    ev.append((0.0, 0.35, 1.5, True))                                  # the question slapped on in frame 1
-    s = scenes.get('scroll')
-    ev.append((s.t_unroll, 0.6, 0.8, False))
-    spans(s.sp_old)
-    strokes(s.arr, 0.6)
-    spans([(a, b) for a, b in s.sp_new[:2]] + [s.sp_new[2]])
-    s = scenes.get('confusion')
-    strokes(s.spiral, 0.5)
-    ev.append((s.t_joke, 0.4, 1.0, True))
-    s = scenes.get('alike')
-    strokes(s.waves, 0.4)
-    for tf in s.t_flip:
-        ev.append((tf + 0.2, 0.35, 0.8, False))
-    s = scenes.get('niwa')
-    spans(s.sp_h)
-    spans(s.sp_k)
-    strokes(s.arr, 0.6)
-    s = scenes.get('answer')
-    ev.append((s.t_q, 0.5, 0.8, False))
-    strokes(s.tie, 1.0)
-    s = scenes.get('obstacle')
-    ev.append((s.t_mean + 0.2, 0.6, 1.2, True))
-    s = scenes.get('endcard')
-    ev.append((s.t_follow - 0.1, 0.36, 1.3, True))
-    ev.append((s.t_tog - 0.2, 0.6, 0.8, False))
+    hk = g('hook')
+    from scenes.s01_hook import T_SLAM
+    for T in T_SLAM:
+        ev.append((max(T - 0.02, 0), 0.2, 1.6, True))                 # each kanji slapped on
+    strokes(hk.strokes, 0.8)
+    hs = g('history')
+    strokes(hs.tick, 0.5)
+    strokes(hs.split, 1.0)
+    ys = g('yama')
+    ev.append((ys.t_first, 0.75, 1.3, True))
+    card(ys.t_own)
+    card(ys.t_but + 0.25, 3)
+    hi = g('hi')
+    ev.append((hi.t_next, 0.6, 1.3, True))
+    card(hi.t_own)
+    card(hi.t_but + 0.3, 3)
+    mz = g('mizu')
+    ev.append((mz.t_now, 0.6, 1.3, True))
+    card(mz.t_own)
+    strokes(mz.curl, 1.0)
+    card(mz.t_but + 0.35, 3)
+    strokes(mz.arrows, 0.6)
+    ht = g('hito')
+    ev.append((ht.t_fin, 0.55, 1.3, True))
+    card(ht.t_alone)
+    card(ht.t_but + 0.3, 3)
+    tk = g('takeaway')
+    for k in range(4):
+        ev.append((tk.t_so + 0.12 * k, 0.35, 0.9, False))
+    strokes(tk.bands, 0.7)
+    strokes(tk.ul, 0.8)
+    strokes(tk.banner, 1.0)
     hits = [h for _, h in hit_times()]
     out = []
     for t, d, i, hv in ev:
@@ -320,6 +331,7 @@ def scene_events():
 # ------------------------------------------------------------------ build the mix
 def build(out_dir=os.path.join(HERE, 'audio')):
     import scenes
+    from timeline import JA
     g = scenes.get
     music = np.zeros((N, 2))
     sfx = np.zeros((N, 2))
@@ -327,10 +339,10 @@ def build(out_dir=os.path.join(HERE, 'audio')):
     H_ = dict(hit_times())
 
     chords = {
-        'hook': ([('D', 2), ('A', 2), ('D', 3)], 0.65), 'scroll': ([('G', 2), ('D', 3), ('A', 3)], 0.55),
-        'confusion': ([('Bb', 1), ('D', 3), ('Eb', 3)], 0.55), 'alike': ([('D', 2), ('A', 2), ('D', 3), ('A', 3)], 0.6),
-        'niwa': ([('G', 2), ('D', 3), ('Bb', 3)], 0.6), 'answer': ([('D', 2), ('A', 2), ('Eb', 3), ('Bb', 3)], 0.7),
-        'obstacle': ([('D', 2), ('A', 2), ('D', 3), ('A', 3)], 0.8), 'endcard': ([('D', 2), ('A', 2), ('D', 3), ('A', 3)], 0.8)}
+        'hook': ([('D', 2), ('A', 2), ('D', 3)], 0.65), 'history': ([('G', 2), ('D', 3), ('A', 3)], 0.6),
+        'yama': ([('D', 2), ('A', 2), ('D', 3), ('A', 3)], 0.6), 'hi': ([('Bb', 1), ('D', 3), ('A', 3)], 0.6),
+        'mizu': ([('G', 2), ('D', 3), ('Bb', 3)], 0.6), 'hito': ([('D', 2), ('A', 2), ('Eb', 3), ('Bb', 3)], 0.65),
+        'takeaway': ([('D', 2), ('A', 2), ('D', 3), ('A', 3)], 0.8)}
     for nm, a, b in SCENES:
         notes, lvl = chords[nm]
         dur = b - a + 1.5
@@ -344,55 +356,51 @@ def build(out_dir=os.path.join(HERE, 'audio')):
         for k, (n, o) in enumerate(notes):
             place(music, koto(note(n, o)), t0 + k * gap, gain, pan=pan + 0.1 * np.sin(k))
 
-    place(music, taiko(2.4, 50), 0.0, 1.0)                              # the opening slam
-    hk0 = g('hook')
-    place(sfx, whoosh(0.25, 800, 5000), hk0.T_STAMP - 0.05, 0.6)         # the ensō swept round 漢字
-    place(sfx, stamp(), hk0.T_STAMP + 0.14, 1.4)                        # and the slash stamped across it
-    place(music, taiko(1.8, 64), hk0.T_STAMP + 0.14, 0.6)
-    phrase(0.05, [('D', 4), ('A', 4), ('D', 5)], gap=0.12, gain=0.7)
+    # the hook: a taiko under each kanji slam, koto as the readings appear
+    from scenes.s01_hook import T_SLAM
     hk = g('hook')
-    phrase(hk.t_what, [('A', 4), ('Bb', 4), ('D', 5), ('Eb', 5), ('D', 5)], gap=0.14, gain=0.4, pan=-0.3)
-    sc = g('scroll')
-    for tt, n in zip(sc.t_mean, [('D', 5), ('A', 4), ('G', 4)]):
-        phrase(tt, [n], gain=0.5)
-    cf = g('confusion')
-    for k, tt in enumerate(cf.t_pop):
-        phrase(tt, [[('A', 4), ('Bb', 4), ('Eb', 5), ('D', 5), ('Bb', 4), ('A', 4)][k]], gain=0.4, pan=0.3 * (-1) ** k)
-    phrase(cf.t_joke, [('Eb', 4), ('D', 4)], gap=0.2, gain=0.5)
-    al = g('alike')
-    for tt, n in zip(al.t_flip, [('D', 5), ('A', 4), ('D', 5)]):
-        phrase(tt + 0.2, [n], gain=0.5)
-    nw = g('niwa')
-    for (a, _), n in zip(nw.sp_h, [('A', 4), ('G', 4), ('Eb', 4)]):
-        phrase(a + 0.1, [n], gain=0.4)
-    phrase(nw.t_split + 0.8, [('D', 5), ('A', 5)], gap=0.15, gain=0.5)
-    an = g('answer')
-    for tt, n in zip(an.t_scr, [('D', 4), ('G', 4), ('A', 4)]):
-        phrase(tt, [n], gain=0.5)
-    ob = g('obstacle')
-    for k, tc in enumerate(ob.t_climb):
-        phrase(tc + 0.28, [[('D', 4), ('Eb', 4), ('G', 4), ('A', 4), ('Bb', 4), ('D', 5), ('Eb', 5), ('A', 5)][k]], gain=0.45, pan=-0.3 + 0.08 * k)
-    place(music, flute(note('D', 5), 3.4), ob.t_mean - 0.2, 0.4, pan=0.2)
-    ec = g('endcard')
-    phrase(ec.t_follow, [('D', 4), ('A', 4)], gap=0.2, gain=0.5)
-    phrase(H_['matane'] + 0.25, [('D', 3), ('A', 3), ('D', 4), ('A', 4)], gap=0.06, gain=0.45)
+    for k, T in enumerate(T_SLAM):
+        place(music, taiko(1.6, [50, 56, 62, 68][k]), T, 1.0 if k == 0 else 0.75)
+        place(sfx, whoosh(0.22, 900, 5000), max(T - 0.12, 0), 0.5)
+    phrase(hk.t_read, [('D', 5), ('A', 4), ('D', 5), ('Eb', 5)], gap=0.07, gain=0.35, pan=-0.3)
+    phrase(hk.t_read + 0.4, [('A', 4), ('G', 4), ('A', 4), ('D', 4)], gap=0.07, gain=0.35, pan=0.3)
+    # the history: a breathy flute as the junk sails, a wood knock as it docks
+    hs = g('history')
+    place(music, flute(note('A', 4), 2.4), hs.t_ship, 0.35, pan=0.2)
+    place(music, flute(note('D', 5), 1.6), hs.t_ship + 1.2, 0.3, pan=0.2)
+    place(amb, water(int((hs.t_split - hs.t0) * SR), seed=3, bright=0.6), hs.t0, 0.6)
+    for k in range(4):
+        phrase(hs.t_own + 0.25 * k, [[('D', 4), ('G', 4), ('A', 4), ('D', 5)][k]], gain=0.35, pan=-0.3)
+        phrase(hs.t_pres + 0.35 + 0.25 * k, [[('A', 4), ('Bb', 4), ('D', 5), ('Eb', 5)][k]], gain=0.35, pan=0.3)
+    phrase(hs.t_split + 0.7, [('D', 4), ('A', 4)], gap=0.15, gain=0.5)
+    # the four kanji scenes: a koto note on each reading as Raj says it
+    for key, n in (('yama', ('A', 4)), ('fujisan', ('D', 5)), ('san', ('Eb', 5)), ('hi', ('A', 4)), ('nichiyoubi', ('D', 5)),
+                   ('nichi', ('Eb', 5)), ('mizu', ('G', 4)), ('suiyoubi', ('Bb', 4)), ('sui', ('D', 5)), ('hito', ('A', 4)),
+                   ('nihonjin', ('D', 5)), ('jin', ('Eb', 5)), ('onyomi', ('D', 5)), ('kunyomi', ('A', 4))):
+        phrase(JA[key]['end'] + 0.02, [n], gain=0.28, pan=0.25)
+    mz = g('mizu')
+    place(amb, water(int((mz.t1 - mz.t_means) * SR), seed=5, bright=1.0), mz.t_means, 1.0)
+    place(sfx, splash() * 0.5, mz.t_means + 0.05, 0.6)
+    tk = g('takeaway')
+    place(music, flute(note('D', 5), 3.0), tk.t_story - 0.1, 0.35, pan=0.2)
+    phrase(tk.t_follow, [('D', 4), ('A', 4), ('D', 5)], gap=0.2, gain=0.45)
 
     # accents, each in a breath of the narration
-    place(music, bowl(note('A', 4)), H_['burst'], 0.7, pan=0.1)
-    place(sfx, splash(), H_['burst'], 1.0)
-    place(music, bowl(note('D', 5), 5.0), H_['erase'], 0.6, pan=-0.2)
-    place(sfx, splash() * 0.6, H_['erase'], 0.8)
-    place(sfx, clack(1.0), H_['huh'], 1.0)
-    place(music, koto(note('Eb', 5)), H_['huh'], 0.5)
-    place(music, bowl(note('A', 5), 4.0), H_['eye'], 0.6)
-    place(sfx, clack(1.3), H_['hens'], 0.7, pan=-0.2)
-    place(sfx, cluck(1.0), H_['hens'] + 0.02, 1.0, pan=-0.2)
-    place(sfx, cluck(1.15), H_['hens'] + 0.12, 0.9, pan=0.2)
-    place(sfx, clack(0.85), H_['signs'], 1.0, pan=-0.1)
-    place(sfx, clack(0.95), H_['signs'] + 0.07, 0.6, pan=0.2)
-    place(music, taiko(2.2, 58), H_['fear'], 0.8)
-    place(sfx, stamp(), H_['fear'], 1.0)
-    place(music, bowl(note('D', 5), 5.0), H_['matane'], 0.5)
+    place(music, taiko(2.2, 58), H_['why'], 0.9)
+    place(sfx, stamp(), H_['why'], 1.0)
+    place(sfx, clack(0.9), H_['dock'], 1.0)
+    place(music, bowl(note('A', 4)), H_['dock'], 0.6, pan=0.1)
+    place(music, bowl(note('D', 5), 5.0), H_['cards'], 0.6, pan=-0.2)
+    place(music, koto(note('A', 5)), H_['cards'], 0.45)
+    place(music, bowl(note('A', 5), 4.0), H_['sunday'], 0.6)
+    place(sfx, brush(0.12, 1.0), H_['sunday'] - 0.1, 0.8)
+    place(music, bowl(note('G', 5), 4.0), H_['wednesday'], 0.6)
+    place(sfx, brush(0.12, 1.0), H_['wednesday'] - 0.1, 0.8)
+    place(music, taiko(2.0, 54), H_['nihon'], 0.7)
+    place(music, bowl(note('D', 5), 5.0), H_['nihon'], 0.5)
+    place(sfx, stamp(), H_['seal'], 1.2)
+    place(music, taiko(2.2, 58), H_['seal'], 0.8)
+    place(music, bowl(note('D', 5), 5.0), H_['seal'] + 0.05, 0.5)
     dips = np.ones(N)
     for _, th in hit_times():
         n = int(0.025 * SR)
@@ -403,22 +411,13 @@ def build(out_dir=os.path.join(HERE, 'audio')):
         gg[i1 - i0:] = np.minimum(1, 0.3 + 0.7 * np.linspace(0, 1, i2 - i1) ** 0.5)
         dips[i0:i2] = np.minimum(dips[i0:i2], gg)
 
-    # brush on paper, cards, stones
+    # brush on paper, and the page turning between scenes
     for t, d, inten, heavy in scene_events():
         place(sfx, brush(d, inten, heavy), t, 1.0, pan=rng.uniform(-0.25, 0.25))
     for name, a, b in SCENES[1:]:
         place(sfx, whoosh(1.1, 250, 2600), a - 0.1, 0.8, pan=rng.uniform(-0.3, 0.3))
-    for tt in al.t_deal:
-        place(sfx, flip(), tt, 0.6, pan=rng.uniform(-0.3, 0.3))
-    for tt in al.t_flip:
-        place(sfx, flip(), tt + 0.18, 1.0, pan=rng.uniform(-0.3, 0.3))
-    for tt in an.t_sign:
-        place(sfx, clack(0.8) * 0.4, tt + 0.3, 0.6)
-    for i in range(20):                                                 # the wall drops in, block by block
-        place(sfx, thud() * 0.6, ob.t_wall + 0.04 * i + 0.33, 0.6, pan=rng.uniform(-0.3, 0.3))
-    place(sfx, thud(), ob.t_obst, 1.0)
-    for k, tc in enumerate(ob.t_climb):
-        place(sfx, thud() * 0.5, tc + 0.28, 0.6)
+    for tt in (g('hi').t_but + 0.35, g('mizu').t_but + 0.45):
+        place(sfx, flip(), tt, 0.9)                                     # the calendar swinging in
 
     # narration
     sr, vo = wavfile.read(os.path.join(out_dir, 'narration.wav'))

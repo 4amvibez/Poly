@@ -4,6 +4,8 @@
     audio/words_ja_a.mp3                      こくじ。 うごく。 ひと。 はたらく。 とうげ。 はたけ。 (split on its silences)
     audio/line_ja_a.mp3                       一歩ずつ、夢に近づこう。 (after "being written!")
     audio/final_en_a.mp3 + words_final_a.json "Thanks for watching till the end! Follow me for more."
+    audio/opening_b.mp3 + words_opening_b.json  a calmer second line, "Japan created some of its own." — take A's
+                                              rose about 11 semitones on "own!"; this one stays within ~2 of line 1
 
 Each stand-in is cut at the silent edge either side of it (so the pauses round it stay) and replaced by its
 Japanese clip.  Writes audio/narration.wav + .mp3 and audio/words.json: the English words shifted into place
@@ -28,7 +30,7 @@ STAND_IN = {'kokuji': 'kokuji,', 'ugoku': 'ugoku.', 'hito': 'hito,', 'hataraku':
             'hatake': 'hatake,'}
 LINE = ('dream_line', '一歩ずつ、夢に近づこう。', 'Ippo zutsu, yume ni chikazukō.')
 AFTER_LINE = 'written!'                 # the Japanese line follows this word
-HOLD = {'own!': 0.4, 'sight!': 0.4, 'move.': 0.3, 'person.': 0.3, 'work!': 0.7, 'mountains.': 0.6, 'field.': 0.7,
+HOLD = {'own.': 0.4, 'sight!': 0.4, 'move.': 0.3, 'person.': 0.3, 'work!': 0.7, 'mountains.': 0.6, 'field.': 0.7,
         'more!': 2.8}                    # silence after these words: each reveal lands, the eight kokuji cards are read
 PAD = 0.05
 
@@ -114,10 +116,33 @@ def draft():
     print(f'draft narration {t:.2f}s')
 
 
-def main():
+def english():
+    """take A with its second line ("Japan created some of its own!") replaced by the calmer one from opening_b"""
     en = load('take_en_a.mp3')
     e = env(en)
     words = [w for w in json.load(open(os.path.join(A, 'words_en_a.json')))['words'] if w.get('type', 'word') == 'word']
+    i0 = next(i for i, w in enumerate(words) if w['text'] == 'Japan')
+    i1 = next(i for i, w in enumerate(words) if w['text'] == 'own!')
+    a = quietest(e, words[i0 - 1]['end'] + 0.03, words[i0]['start'] - 0.03)
+    b = quietest(e, words[i1]['end'] + 0.03, words[i1 + 1]['start'] - 0.03)
+    op = load('opening_b.mp3')
+    ow = [w for w in json.load(open(os.path.join(A, 'words_opening_b.json')))['words'] if w.get('type', 'word') == 'word']
+    j0 = next(i for i, w in enumerate(ow) if w['text'] == 'Japan')
+    eo = env(op)
+    s0 = quietest(eo, ow[j0 - 1]['end'] + 0.03, ow[j0]['start'] - 0.03)
+    s1 = min(len(op) / SR, ow[-1]['end'] + 0.12)
+    rms = lambda x: np.sqrt(np.mean(x[np.abs(x) > 0.01] ** 2))
+    new = faded(op[int(s0 * SR):int(s1 * SR)])
+    new *= rms(en) / rms(new)
+    d = (s1 - s0) - (b - a)
+    out = words[:i0] + [dict(w, start=round(a + w['start'] - s0, 3), end=round(a + w['end'] - s0, 3)) for w in ow[j0:]]
+    out += [dict(w, start=round(w['start'] + d, 3), end=round(w['end'] + d, 3)) for w in words[i1 + 1:]]
+    return np.concatenate([en[:int(a * SR)], new, en[int(b * SR):]]), out
+
+
+def main():
+    en, words = english()
+    e = env(en)
     rms = lambda x: np.sqrt(np.mean(x[np.abs(x) > 0.01] ** 2))
     level = rms(en)
     jw = load('words_ja_a.mp3')

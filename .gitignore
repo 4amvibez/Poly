@@ -39,3 +39,7 @@ reel_readings_short/output/master_crf14.mp4
 reel_readings_final/segments/
 reel_readings_final/audio/*.wav
 reel_readings_final/output/
+reel_kokuji/cache/
+reel_kokuji/audio/stems/
+reel_kokuji/audio/*.wav
+reel_kokuji/output/

@@ -28,7 +28,8 @@ STAND_IN = {'kokuji': 'kokuji,', 'ugoku': 'ugoku.', 'hito': 'hito,', 'hataraku':
             'hatake': 'hatake,'}
 LINE = ('dream_line', '一歩ずつ、夢に近づこう。', 'Ippo zutsu, yume ni chikazukō.')
 AFTER_LINE = 'written!'                 # the Japanese line follows this word
-HOLD = {'more!': 2.6}                   # silence after these words: the eight kokuji cards are read in it
+HOLD = {'own!': 0.4, 'sight!': 0.4, 'move.': 0.3, 'person.': 0.3, 'work!': 0.7, 'mountains.': 0.6, 'field.': 0.7,
+        'more!': 2.8}                    # silence after these words: each reveal lands, the eight kokuji cards are read
 PAD = 0.05
 
 EN_TEXT = ("Not every kanji came from China. Japan created some of its own! "
@@ -134,6 +135,11 @@ def main():
         b = silent_edge(e, words[i]['end'] - 0.06, nxt + 0.04, 'after')
         pad = np.zeros(int(PAD * SR), np.float32)
         edits.append([a, b, np.concatenate([pad, clips[k], pad]), k, i])
+    # silences held after some words (the kokuji cards are read in them)
+    for i, w in enumerate(words):
+        if w['text'] in HOLD:
+            c = quietest(e, w['end'] + 0.02, words[i + 1]['start'] - 0.02)
+            edits.append([c, c, np.zeros(int(HOLD[w['text']] * SR), np.float32), None, i])
     # the Japanese line goes in after "being written!", then the final English take
     i_line = next(i for i, w in enumerate(words) if w['text'] == AFTER_LINE)
     cut_line = words[i_line]['end'] + 0.25
@@ -150,7 +156,8 @@ def main():
     for a, b, audio, k, i in sorted(edits):
         out.append(en[int(cursor * SR):int(a * SR)])
         t += a - cursor
-        segs_out[k] = dict(start=round(t + PAD, 3), end=round(t + len(audio) / SR - PAD, 3))
+        if k is not None:
+            segs_out[k] = dict(start=round(t + PAD, 3), end=round(t + len(audio) / SR - PAD, 3))
         out.append(audio)
         t += len(audio) / SR
         shifts.append((a, b, t))
@@ -173,7 +180,7 @@ def main():
             base_en, base_out = b, t_after
         return base_out + (x - base_en)
 
-    replaced = {x[4]: x[3] for x in edits}
+    replaced = {x[4]: x[3] for x in edits if x[3] is not None}
     lex = {k: (kana, rom) for k, kana, rom in JA_WORDS}
     ws = []
     for i, w in enumerate(words[:i_line + 1]):

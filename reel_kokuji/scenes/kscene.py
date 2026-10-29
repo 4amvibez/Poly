@@ -13,7 +13,7 @@ from engine import FONT_BRUSH_JP, FONT_EN_BOLD, FONT_EN_ITALIC, FONT_HEAD, FONT_
 from glyphs import typeset
 from scenes.base import SceneBase
 
-CARD_Y = 1150
+CARD_Y = 1085
 CARD_SIZE = 140
 PLATE_RGB = np.array([0.95, 0.92, 0.85], np.float32)
 CAL_RGB = np.array([0.97, 0.95, 0.89], np.float32)

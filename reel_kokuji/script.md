@@ -49,15 +49,7 @@ Voice (Raj): "Over two hundred kokuji exist. Here are a few more!"
 
 Pause on the cards so viewers can read them.
 
-## 7. DREAM (0:45–0:58)
-
-Visual: the kanji float up into the mist. A student walks toward the sunrise. 夢 is written in the sky.
-
-Voice (Raj): "Every kanji has a story. Keep learning, one step at a time. Your Japanese journey is still being written!"
-
-Japanese line (Raj in Japanese, on screen with romaji and English): 一歩ずつ、夢に近づこう。 (Ippo zutsu, yume ni chikazukō.) "Step by step, move closer to your dream."
-
-## 8. FINAL (0:58–1:05)
+## 7. FINAL (0:45–0:52)
 
 Visual: the red sun sinks into the paper. KEEP LEARNING. KEEP GROWING. THANK YOU FOR WATCHING TILL THE END!
 then FOLLOW @raj_in_jp.
@@ -66,7 +58,7 @@ Voice (Raj): "Thanks for watching till the end! Follow me for more."
 
 ## Japanese word list (Raj in Japanese)
 
-こくじ。 うごく。 ひと。 はたらく。 とうげ。 はたけ。 一歩ずつ、夢に近づこう。
+こくじ。 うごく。 ひと。 はたらく。 とうげ。 はたけ。
 
 ## Notes
 

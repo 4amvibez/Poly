@@ -1,12 +1,12 @@
-"""audio — the soundtrack of the kokuji reel, synthesized in code and synced to the animation's own events.
+"""audio — the soundtrack of the kokuji reel: the user's own track (audio/bgm.mp3) as the music bed, with light sound
+design synced to the animation's own events.
 
-Score: a quiet drone in the miyako-bushi scale (D Eb G A Bb) under each scene, koto plucks on the things that land
-(each part of a kanji, each Japanese word as Raj says it), a singing bowl and a soft taiko on each reveal (国字, 働,
-峠, 畑, 夢), a breathy flute over the mountains and the closing landscape.
-Sound design: brush-on-paper texture under every kanji the scenes write, an ink-stamp thud on each seal and on 働,
-mountain wind under 峠, a low fire crackle under 火, paper whooshes at the transitions, paper ticks as the eight
-kokuji cards are laid down.
-The voice always leads: music ducks deeply under every word and the effects duck with it, so nothing is ever as
+Music: the track's opening runs under the reel and crossfades, beat-matched, into the song's real ending, so the
+last bar lands as the reel ends.
+Sound design: brush-on-paper under every kanji the scenes write, an ink-stamp thud (and a soft taiko) as each part
+slams in and on each build, a shove on "pushes", mountain wind under 峠, a low fire crackle under 火, paper whooshes
+at the transitions, paper ticks as the eight kokuji cards are laid down.
+The voice always leads: the music ducks deeply under every word and the effects duck with it, so nothing is ever as
 loud as Raj.
 
     python audio.py            -> audio/mix_raw.wav (48 kHz stereo) + audio/stems/*.wav
@@ -25,6 +25,7 @@ SR = 48000
 from timeline import DURATION, SCENES, VO_OFFSET
 
 N = int(DURATION * SR)
+MUSIC_GAIN = 0.27                 # the user's track is mastered loud (-14.5 LUFS): this sits it well under Raj
 rng = np.random.default_rng(7)
 D4 = 293.66
 SCALE = {'D': 0, 'Eb': 1, 'G': 5, 'A': 7, 'Bb': 8}
@@ -277,80 +278,89 @@ def crackle(n, seed=0):
 
 
 # ------------------------------------------------------------------ events from the scenes
+def bgm(join=43.0, end_at=136.4, xf=1.2):
+    """the user's track (audio/bgm.mp3) cut to the reel: its own opening up to `join` seconds, then a beat-matched
+    crossfade into its real ending, placed so the song's last bar ends with the reel"""
+    import subprocess
+    raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', os.path.join(HERE, 'audio', 'bgm.mp3'), '-ac', '2', '-ar', str(SR),
+                          '-f', 'f32le', '-'], capture_output=True, check=True).stdout
+    x = np.frombuffer(raw, np.float32).reshape(-1, 2).astype(np.float64)
+    tail0 = end_at - (DURATION - join)                       # where the ending section starts in the song
+
+    def flux(a, n):
+        m = x[int(a * SR):int(a * SR) + n, 0]
+        h = SR // 200
+        e = np.sqrt(np.convolve(m ** 2, np.ones(h) / h, 'same')[::h])
+        return np.maximum(np.diff(e), 0)
+    ref = flux(join - 4, 4 * SR)                             # line the beats up: the tail's onsets on the head's
+    best = max(np.arange(-0.5, 0.5, 0.005), key=lambda d: np.dot(ref, flux(tail0 + d - 4, 4 * SR)))
+    tail0 += best
+    out = np.zeros((N, 2))
+    nh = int((join + xf / 2) * SR)
+    out[:nh] = x[:nh]
+    seg = x[int((tail0 - xf / 2) * SR):int((tail0 - xf / 2) * SR) + N - int((join - xf / 2) * SR)]
+    out[int((join - xf / 2) * SR):int((join - xf / 2) * SR) + len(seg)] += seg * np.clip(
+        np.arange(len(seg)) / (xf * SR), 0, 1)[:, None] ** 0.5
+    a = int((join - xf / 2) * SR)
+    out[a:nh] *= 1.0                                         # head fades out over the crossfade (equal power)
+    out[a:nh] = x[a:nh] * np.cos(np.linspace(0, np.pi / 2, nh - a))[:, None] + out[a:nh] - x[a:nh]
+    return out
+
+
 def build(out_dir=os.path.join(HERE, 'audio')):
     import scenes
     g = scenes.get
-    music, sfx, amb = np.zeros((N, 2)), np.zeros((N, 2)), np.zeros((N, 2))
-    chords = {'hook': [('D', 2), ('A', 2), ('D', 3)], 'secret': [('G', 2), ('D', 3), ('A', 3)], 'work': [('D', 2), ('A', 2), ('Eb', 3)],
-              'pass': [('G', 2), ('D', 3), ('Bb', 3)], 'field': [('D', 2), ('A', 2), ('D', 3)], 'more': [('Bb', 1), ('D', 3), ('A', 3)],
-              'dream': [('D', 2), ('A', 2), ('D', 3), ('A', 3)], 'final': [('D', 2), ('A', 2), ('D', 3)]}
-    for nm, a, b in SCENES:
-        dur = b - a + 1.5
-        sig = sum(pad_voice(note(n, o), dur, bright=1100) for n, o in chords[nm]) / len(chords[nm]) ** 0.5
-        e = np.clip(np.minimum(np.arange(len(sig)) / (1.4 * SR), (len(sig) - np.arange(len(sig))) / (1.6 * SR)), 0, 1) ** 1.5
-        place(music, sig * e * 0.3, a, pan=-0.15)
-        place(music, np.roll(sig, 900) * e * 0.3, a, pan=0.15)
+    sfx, amb = np.zeros((N, 2)), np.zeros((N, 2))
+    music = bgm()
 
-    def phrase(t0, notes, gap=0.3, gain=0.8, pan=0.2):
-        for k, (n, o) in enumerate(notes):
-            place(music, koto(note(n, o)), t0 + k * gap, gain, pan=pan + 0.1 * np.sin(k))
-
-    def reveal(t, pitch=('D', 5), big=True):
-        place(music, bowl(note(*pitch), 4.0), t, 0.5)
-        if big:
-            place(music, taiko(1.8, 56), t, 0.55)
-        place(sfx, stamp(), t, 0.6)
+    def hit(t, gain=0.6, drum=True):
+        place(sfx, stamp(), t, gain)
+        if drum:
+            place(sfx, taiko(1.4, 54), t, 0.35)
 
     hk = g('hook')
-    place(music, taiko(2.4, 52), 0.0, 0.8)
-    place(sfx, brush(0.5, 1.4, True), 0.0, 0.7)
-    phrase(0.3, [('D', 4), ('A', 4), ('D', 5)], gap=0.18, gain=0.45)
-    reveal(hk.t_hit, ('A', 4))
+    place(sfx, brush(0.3, 1.4, True), hk.t_nin, 0.6)
+    hit(hk.t_nin, 0.5)
+    hit(hk.t_dou, 0.55)
+    place(sfx, brush(0.3, 1.0, True), hk.t_cross, 0.45)
+    place(sfx, whoosh(0.5, 500, 4000), hk.t_join, 0.45)
+    place(sfx, brush(0.4, 1.4, True), hk.t_lock - 0.1, 0.6)
+    hit(hk.t_lock, 0.4, drum=False)
+    hit(hk.t_hit, 0.75)
     sc = g('secret')
     for k in range(2):
-        place(sfx, brush(0.45, 1.3, True), sc.t_kokuji - 0.55 + 0.25 * k, 0.6)
-    reveal(sc.t_kokuji + 0.1, ('D', 5), big=False)
-    for k in range(5):
-        phrase(sc.t_hide + 0.3 * k, [[('A', 5), ('G', 5), ('D', 5), ('Eb', 5), ('A', 4)][k]], gain=0.22, pan=(-0.4, 0.4)[k % 2])
+        place(sfx, brush(0.45, 1.3, True), sc.t_kokuji - 0.55 + 0.25 * k, 0.55)
+    hit(sc.t_kokuji + 0.1, 0.45, drum=False)
     wk = g('work')
-    place(sfx, brush(0.5, 1.4, True), wk.t_first - 0.15, 0.7)
-    place(sfx, whoosh(0.8, 300, 2500), wk.t_first + 0.2, 0.35)
-    phrase(wk.t_ugoku, [('D', 4)], gain=0.4)
-    place(sfx, brush(0.45, 1.2, True), wk.t_add + 0.2, 0.6)
-    phrase(wk.t_hito, [('A', 4)], gain=0.4)
-    place(sfx, whoosh(0.45, 500, 4000), wk.t_comb, 0.45)
-    place(sfx, whoosh(0.45, 500, 4000), wk.t_get - 0.05, 0.5)
-    place(sfx, brush(0.55, 1.4, True), wk.t_get + 0.3, 0.7)
-    reveal(wk.t_read, ('D', 5))
+    place(sfx, brush(0.5, 1.4, True), wk.t_first - 0.15, 0.6)
+    place(sfx, whoosh(0.8, 300, 2500), wk.t_first + 0.2, 0.3)
+    place(sfx, brush(0.45, 1.2, True), wk.t_add + 0.2, 0.55)
+    place(sfx, whoosh(0.5, 300, 3000), wk.t_push, 0.5)
+    place(sfx, thud(), wk.t_push + 0.3, 0.5)
+    place(sfx, whoosh(0.45, 500, 4000), wk.t_comb, 0.4)
+    place(sfx, whoosh(0.45, 500, 4000), wk.t_get - 0.05, 0.45)
+    place(sfx, brush(0.55, 1.4, True), wk.t_get + 0.3, 0.6)
+    hit(wk.t_get + 0.3, 0.5)
     for nm in ('pass', 'field'):
         s = g(nm)
-        for j, p in enumerate(s._parts):
-            place(sfx, brush(0.3, 1.0, True), p['t'] - 0.1, 0.5)
-            phrase(p['t'], [[('D', 4), ('A', 4), ('D', 5)][j]], gain=0.35, pan=(-0.3, 0, 0.3)[j])
-        place(sfx, whoosh(0.45, 500, 4000), s.t_merge - 0.05, 0.5)
-        place(sfx, brush(0.55, 1.4, True), s.t_merge + 0.3, 0.7)
-        reveal(s.t_read, ('A', 4) if nm == 'pass' else ('G', 4))
+        for p in s._parts:
+            place(sfx, brush(0.3, 1.0, True), p['t'] - 0.1, 0.45)
+        place(sfx, whoosh(0.45, 500, 4000), s.t_merge - 0.05, 0.45)
+        place(sfx, brush(0.55, 1.4, True), s.t_merge + 0.3, 0.6)
+        hit(s.t_merge + 0.3, 0.45)
     ps = g('pass')
     place(amb, wind(int((ps.t1 - ps.t0) * SR), seed=3), ps.t0, 0.9)
-    place(music, flute(note('A', 4), 2.6), ps.t0 + 0.5, 0.3, pan=0.2)
     fd = g('field')
     place(amb, crackle(int((fd.t_merge - fd.t_fire + 0.5) * SR), seed=4), fd.t_fire, 0.7)
     mo = g('more')
-    reveal(mo.t_over, ('D', 5), big=False)
+    hit(mo.t_over, 0.45, drum=False)
     for k in range(8):
         place(sfx, flip() * 0.6, mo.t_few + 0.3 * k, 0.5, pan=0.12 * (k % 4 - 1.5))
-        phrase(mo.t_few + 0.3 * k + 0.05, [[('D', 5), ('Eb', 5), ('G', 5), ('A', 5)][k % 4]], gain=0.18, pan=0.12 * (k % 4 - 1.5))
-    dr = g('dream')
-    place(music, flute(note('D', 5), 3.2), dr.t0 + 0.4, 0.3, pan=0.2)
-    place(sfx, brush(0.7, 1.4, True), dr.t_keep - 0.2, 0.7)
-    reveal(dr.t_keep + 0.4, ('D', 5))
-    phrase(dr.t_line + 0.1, [('D', 4), ('A', 4), ('D', 5), ('A', 5)], gap=0.35, gain=0.3)
     fn = g('final')
-    phrase(fn.t_follow, [('D', 4), ('A', 4), ('D', 5)], gap=0.2, gain=0.4)
-    place(sfx, stamp(), fn.t_hit, 0.8)
-    place(music, bowl(note('D', 5), 5.0), fn.t_hit, 0.45)
+    place(sfx, brush(0.5, 1.2, True), fn.t_follow - 0.05, 0.5)
+    hit(fn.t_hit, 0.6)
     for name, a, b in SCENES[1:]:
-        place(sfx, whoosh(1.1, 250, 2600), a - 0.1, 0.55, pan=rng.uniform(-0.3, 0.3))
+        place(sfx, whoosh(1.1, 250, 2600), a - 0.1, 0.5, pan=rng.uniform(-0.3, 0.3))
     # narration
     sr, vo = wavfile.read(os.path.join(out_dir, 'narration.wav'))
     vo = vo.astype(np.float64)
@@ -370,10 +380,10 @@ def build(out_dir=os.path.join(HERE, 'audio')):
     for i in range(1, len(e)):
         out[i] = e[i] if e[i] > out[i - 1] else out[i - 1] * 0.97 + e[i] * 0.03
     duck = np.interp(np.arange(N), np.arange(len(out)) * hop, out)
-    music *= (1 - 0.65 * duck)[:, None]
+    music *= (1 - 0.8 * duck)[:, None]
     amb *= (1 - 0.55 * duck)[:, None]
-    sfx *= (1 - 0.35 * duck)[:, None]
-    stems = {'voice': voice, 'music': music * 0.18, 'sfx': sfx * 0.5, 'amb': amb * 0.35}
+    sfx *= (1 - 0.65 * duck)[:, None]
+    stems = {'voice': voice, 'music': music * MUSIC_GAIN, 'sfx': sfx * 0.4, 'amb': amb * 0.3}
     mix = sum(stems.values())
     fade = np.ones(N)
     fade[-int(1.2 * SR):] = np.linspace(1, 0, int(1.2 * SR)) ** 1.5

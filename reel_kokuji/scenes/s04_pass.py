@@ -1,5 +1,4 @@
-"""Scene 4 — 峠, built.  "Next: mountain, up, and down.  Together they make とうげ, a mountain pass, a path through the
-mountains."
+"""Scene 4 — 峠, built.  "Mountain, up, and down together make とうげ, a mountain pass."
 The camera rises slowly over tall ink mountains in mist.  On "mountain", "up" and "down" the parts come in one by
 one, 山 MOUNTAIN + 上 UP + 下 DOWN, and a dotted vermilion path climbs over the ridge behind them and runs down the far
 side as Raj says "up" and "down".  On "make" they slide together and 峠 is brushed over them; card 峠 / とうげ /
@@ -17,7 +16,7 @@ class Scene(CompoundScene):
 
     def build(self):
         self.Mt = cached('s03_mountain_v1', r5art.mountain_scene)['ink']
-        t_m = at('Next mountain')[0] + 0.25
+        t_m = at('Mountain up')[0]
         t_up = at('up', after=t_m)[0]
         t_down = at('down', after=t_up)[0]
         self.parts('山上下', ('MOUNTAIN', 'UP', 'DOWN'), (t_m, t_up, t_down), (200, 540, 880))

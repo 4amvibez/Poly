@@ -1,4 +1,4 @@
-"""The eight scenes of the reel.  Each scene is built lazily (painting its assets once, cached on disk) and renders
+"""The seven scenes of the reel.  Each scene is built lazily (painting its assets once, cached on disk) and renders
 a float RGB frame for any absolute time inside its window."""
 import importlib
 
@@ -6,7 +6,7 @@ from timeline import SCENES
 
 _MODULES = {
     'hook': 's01_hook', 'secret': 's02_secret', 'work': 's03_work', 'pass': 's04_pass', 'field': 's05_field',
-    'more': 's06_more', 'dream': 's07_dream', 'final': 's08_final',
+    'more': 's06_more', 'final': 's08_final',
 }
 _built = {}
 

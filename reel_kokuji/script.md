@@ -59,5 +59,8 @@ Japanese (Raj in Japanese): またね！ (matane)
 
 - The 働 explanation (push, then work) is a visual memory aid, not the full history of the character.
 - 働 also has an on'yomi (ドウ, as in 労働). The reel teaches はたらく only.
-- New lines are not recorded yet: the hook, kokuji, 働, 峠, 畑, more kokuji and the final English line.
-  They need a new voice take and a Scribe check before build_vo and the scene timings change.
+- Recorded: audio/take_en_c.mp3 (Raj, Scribe exact), Japanese words from audio/words_ja_a.mp3 and またね from
+  audio/matane_a.mp3 (Raj in Japanese). The spliced narration was Scribe-checked: every word, tōge with its long o.
+- Music: the user's track (audio/bgm.mp3). Its own opening runs under the reel, then a beat-matched crossfade goes into
+  its real ending, so the last bar lands with the reel. It is ducked under every word: the voice leads the music and
+  effects by a median of 24 dB while Raj speaks.

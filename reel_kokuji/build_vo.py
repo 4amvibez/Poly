@@ -1,23 +1,17 @@
 """build_vo — the narration: Raj's English take with every Japanese word spoken by Raj in Japanese.
 
-    audio/take_en_a.mp3 + words_en_a.json     the English take, romaji stand-ins in it (Scribe word timings)
+    audio/take_en_c.mp3 + words_en_c.json     the English take, romaji stand-ins in it (Scribe word timings)
     audio/words_ja_a.mp3                      こくじ。 うごく。 ひと。 はたらく。 とうげ。 はたけ。 (split on its silences)
-    audio/line_ja_a.mp3                       一歩ずつ、夢に近づこう。 (after "being written!")
-    audio/final_en_a.mp3 + words_final_a.json "Thanks for watching till the end! Follow me for more."
-    audio/opening_b.mp3 + words_opening_b.json  a calmer second line, "Japan created some of its own." — take A's
-                                              rose about 11 semitones on "own!"; this one stays within ~2 of line 1
+    audio/matane_a.mp3                        またね！ (after "follow for more.")
 
 Each stand-in is cut at the silent edge either side of it (so the pauses round it stay) and replaced by its
-Japanese clip.  Writes audio/narration.wav + .mp3 and audio/words.json: the English words shifted into place
-(each replaced word keeps its romaji, flagged ja) plus the Japanese segments {key: text, romaji, start, end}.
-
-    python build_vo.py --draft   # no audio yet: timings estimated from script.md's text, silent narration
+Japanese clip; kokuji is said twice and both use the same clip.  Writes audio/narration.wav + .mp3 and
+audio/words.json: the English words shifted into place (each replaced word keeps its romaji, flagged ja) plus the
+Japanese segments {key: text, romaji, start, end} (the second kokuji is 'kokuji2', the goodbye 'matane').
 """
 import json
 import os
-import re
 import subprocess
-import sys
 
 import numpy as np
 from scipy.io import wavfile
@@ -26,24 +20,14 @@ A = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'audio')
 SR = 48000
 JA_WORDS = [('kokuji', 'こくじ', 'kokuji'), ('ugoku', 'うごく', 'ugoku'), ('hito', 'ひと', 'hito'),
             ('hataraku', 'はたらく', 'hataraku'), ('touge', 'とうげ', 'tōge'), ('hatake', 'はたけ', 'hatake')]
-STAND_IN = {'kokuji': 'kokuji,', 'ugoku': 'ugoku.', 'hito': 'hito,', 'hataraku': 'hataraku,', 'touge': 'touge,',
-            'hatake': 'hatake,'}
-LINE = ('dream_line', '一歩ずつ、夢に近づこう。', 'Ippo zutsu, yume ni chikazukō.')
-AFTER_LINE = 'written!'                 # the Japanese line follows this word
-HOLD = {'own.': 0.4, 'sight!': 0.4, 'move.': 0.3, 'person.': 0.3, 'work!': 0.7, 'mountains.': 0.6, 'field.': 0.7,
-        'more!': 2.8}                    # silence after these words: each reveal lands, the eight kokuji cards are read
+# stand-ins in the order they are spoken: (word in the take, key in words.json, clip)
+STAND_IN = [('kokuji,', 'kokuji', 'kokuji'), ('ugoku,', 'ugoku', 'ugoku'), ('hito,', 'hito', 'hito'),
+            ('hataraku,', 'hataraku', 'hataraku'), ('touge,', 'touge', 'touge'), ('hatake,', 'hatake', 'hatake'),
+            ('kokuji.', 'kokuji2', 'kokuji')]
+MATANE = ('matane', 'またね！', 'matane!')
+HOLD = {'this.': 0.5, 'sight!': 0.4, 'move.': 0.4, 'it.': 0.6, 'work.': 0.2, 'work!': 0.7, 'pass.': 0.6,
+        'field.': 0.6, 'more!': 3.0}         # silence after these words: each build lands, the eight cards are read
 PAD = 0.05
-
-EN_TEXT = ("Not every kanji came from China. Japan created some of its own! "
-           "They're called kokuji, Japanese-created kanji. And some of them are hiding in plain sight! "
-           "First, look at this character: ugoku. It means to move. Now, add hito, a person. Combine them, "
-           "and you get hataraku, meaning to work! "
-           "Next: mountain, up, and down. Together they make touge, a mountain pass, a path through the mountains. "
-           "And fire, plus rice field, makes hatake, a cultivated field. "
-           "Some compiled lists contain over two hundred of these characters. Here are a few more! "
-           "Every kanji has a story. Every mistake helps you grow. Keep learning, one step at a time. "
-           "Your Japanese journey is still being written!")
-FINAL_TEXT = "Thanks for watching till the end! Follow me for more."
 
 
 def load(name):
@@ -93,56 +77,10 @@ def silent_edge(e, t0, t1, side, thresh=-55):
     return (a + (q[-1] if side == 'before' else q[0])) / 100
 
 
-def draft():
-    """estimated timings (2.6 words/s, breaths at punctuation) and a silent narration, to build the scenes on"""
-    t, ws, ja = 0.0, [], {}
-    lex = {k: (kana, rom) for k, kana, rom in JA_WORDS}
-    for text in (EN_TEXT, None, FINAL_TEXT):
-        if text is None:
-            ja[LINE[0]] = dict(text=LINE[1], romaji=LINE[2], start=round(t + 0.3, 3), end=round(t + 3.1, 3))
-            t += 3.6
-            continue
-        for w in text.split():
-            key = next((k for k, s in STAND_IN.items() if s.rstrip(',.:!') == re.sub(r'[,.:!]', '', w)), None)
-            d = 0.62 if key else max(0.16, 0.055 * len(w) + 0.1)
-            if key:
-                ja[key] = dict(text=lex[key][0], romaji=lex[key][1], start=round(t, 3), end=round(t + d, 3))
-            ws.append(dict(text=(lex[key][1] + w[-1] if key and w[-1] in ',.:!' else lex[key][1]) if key else w, type='word',
-                           start=round(t, 3), end=round(t + d, 3), **({'ja': key} if key else {})))
-            t += d + 0.06 + (0.3 if w[-1] in ',:' else 0.55 if w[-1] in '.!?' else 0) + HOLD.get(w, 0)
-    n = int((t + 1) * SR)
-    wavfile.write(os.path.join(A, 'narration.wav'), SR, np.zeros(n, np.int16))
-    json.dump({'words': ws, 'ja': ja, 'draft': True}, open(os.path.join(A, 'words.json'), 'w'), ensure_ascii=False, indent=0)
-    print(f'draft narration {t:.2f}s')
-
-
-def english():
-    """take A with its second line ("Japan created some of its own!") replaced by the calmer one from opening_b"""
-    en = load('take_en_a.mp3')
-    e = env(en)
-    words = [w for w in json.load(open(os.path.join(A, 'words_en_a.json')))['words'] if w.get('type', 'word') == 'word']
-    i0 = next(i for i, w in enumerate(words) if w['text'] == 'Japan')
-    i1 = next(i for i, w in enumerate(words) if w['text'] == 'own!')
-    a = quietest(e, words[i0 - 1]['end'] + 0.03, words[i0]['start'] - 0.03)
-    b = quietest(e, words[i1]['end'] + 0.03, words[i1 + 1]['start'] - 0.03)
-    op = load('opening_b.mp3')
-    ow = [w for w in json.load(open(os.path.join(A, 'words_opening_b.json')))['words'] if w.get('type', 'word') == 'word']
-    j0 = next(i for i, w in enumerate(ow) if w['text'] == 'Japan')
-    eo = env(op)
-    s0 = quietest(eo, ow[j0 - 1]['end'] + 0.03, ow[j0]['start'] - 0.03)
-    s1 = min(len(op) / SR, ow[-1]['end'] + 0.12)
-    rms = lambda x: np.sqrt(np.mean(x[np.abs(x) > 0.01] ** 2))
-    new = faded(op[int(s0 * SR):int(s1 * SR)])
-    new *= rms(en) / rms(new)
-    d = (s1 - s0) - (b - a)
-    out = words[:i0] + [dict(w, start=round(a + w['start'] - s0, 3), end=round(a + w['end'] - s0, 3)) for w in ow[j0:]]
-    out += [dict(w, start=round(w['start'] + d, 3), end=round(w['end'] + d, 3)) for w in words[i1 + 1:]]
-    return np.concatenate([en[:int(a * SR)], new, en[int(b * SR):]]), out
-
-
 def main():
-    en, words = english()
+    en = load('take_en_c.mp3')
     e = env(en)
+    words = [w for w in json.load(open(os.path.join(A, 'words_en_c.json')))['words'] if w.get('type', 'word') == 'word']
     rms = lambda x: np.sqrt(np.mean(x[np.abs(x) > 0.01] ** 2))
     level = rms(en)
     jw = load('words_ja_a.mp3')
@@ -152,33 +90,25 @@ def main():
     for k in clips:
         clips[k] *= 0.95 * level / rms(clips[k])
     edits, i0 = [], 0
-    for k, kana, rom in JA_WORDS:
-        i = next(i for i in range(i0, len(words)) if words[i]['text'] == STAND_IN[k])
+    for word, key, clip in STAND_IN:
+        i = next(i for i in range(i0, len(words)) if words[i]['text'] == word)
         i0 = i + 1
         prev_end, nxt = words[i - 1]['end'], words[i + 1]['start'] if i + 1 < len(words) else words[i]['end'] + 0.3
         a = silent_edge(e, prev_end - 0.04, words[i]['start'] + 0.06, 'before')
         b = silent_edge(e, words[i]['end'] - 0.06, nxt + 0.04, 'after')
         pad = np.zeros(int(PAD * SR), np.float32)
-        edits.append([a, b, np.concatenate([pad, clips[k], pad]), k, i])
-    # silences held after some words (the kokuji cards are read in them)
-    for i, w in enumerate(words):
+        edits.append([a, b, np.concatenate([pad, clips[clip], pad]), key, i])
+    for i, w in enumerate(words[:-1]):
         if w['text'] in HOLD:
             c = quietest(e, w['end'] + 0.02, words[i + 1]['start'] - 0.02)
             edits.append([c, c, np.zeros(int(HOLD[w['text']] * SR), np.float32), None, i])
-    # the Japanese line goes in after "being written!", then the final English take
-    i_line = next(i for i, w in enumerate(words) if w['text'] == AFTER_LINE)
-    cut_line = words[i_line]['end'] + 0.25
-    line = load('line_ja_a.mp3')
-    ls = segments(line, hold=40)
-    line = faded(line[int(ls[0][0] * SR):int(ls[-1][1] * SR)])
-    line *= 0.95 * level / rms(line)
-    fin = load('final_en_a.mp3')
-    fs = segments(fin, hold=40)
-    f0 = fs[0][0]
-    fin = faded(fin[int(f0 * SR):int(fs[-1][1] * SR)])
-    fin *= level / rms(fin)
+    end = min(len(en) / SR, words[-1]['end'] + 0.15)
+    mt = load('matane_a.mp3')
+    ms = segments(mt, hold=40)
+    mt = faded(mt[int(ms[0][0] * SR):int(ms[-1][1] * SR)])
+    mt *= 0.95 * level / rms(mt)
     out, segs_out, cursor, t, shifts = [], {}, 0.0, 0.0, []
-    for a, b, audio, k, i in sorted(edits):
+    for a, b, audio, k, i in sorted(edits, key=lambda x: (x[0], x[1])):
         out.append(en[int(cursor * SR):int(a * SR)])
         t += a - cursor
         if k is not None:
@@ -187,14 +117,10 @@ def main():
         t += len(audio) / SR
         shifts.append((a, b, t))
         cursor = b
-    out.append(en[int(cursor * SR):int(cut_line * SR)])
-    t += cut_line - cursor
-    gap = np.zeros(int(0.35 * SR), np.float32)
-    t_line = t + 0.35
-    out += [gap, line, gap]
-    t = t_line + len(line) / SR + 0.35
-    t_fin = t + 0.3
-    out += [np.zeros(int(0.3 * SR), np.float32), fin]
+    out.append(faded(en[int(cursor * SR):int(end * SR)]))
+    t += end - cursor
+    t_mt = t + 0.45
+    out += [np.zeros(int(0.45 * SR), np.float32), mt, np.zeros(int(0.2 * SR), np.float32)]
     nar = np.concatenate(out)
 
     def sh(x):
@@ -207,18 +133,19 @@ def main():
 
     replaced = {x[4]: x[3] for x in edits if x[3] is not None}
     lex = {k: (kana, rom) for k, kana, rom in JA_WORDS}
+    lex['kokuji2'] = lex['kokuji']
     ws = []
-    for i, w in enumerate(words[:i_line + 1]):
+    for i, w in enumerate(words):
         if i in replaced:
             k = replaced[i]
             punct = w['text'][-1] if w['text'][-1] in '.,:!' else ''
             ws.append(dict(text=lex[k][1] + punct, type='word', ja=k, start=segs_out[k]['start'], end=segs_out[k]['end']))
         else:
             ws.append(dict(text=w['text'], type='word', start=round(sh(w['start']), 3), end=round(sh(w['end']), 3)))
-    fw = [w for w in json.load(open(os.path.join(A, 'words_final_a.json')))['words'] if w.get('type', 'word') == 'word']
-    ws += [dict(text=w['text'], type='word', start=round(t_fin + w['start'] - f0, 3), end=round(t_fin + w['end'] - f0, 3)) for w in fw]
+    t_end = round(t_mt + len(mt) / SR, 3)
+    ws.append(dict(text=MATANE[2], type='word', ja=MATANE[0], start=round(t_mt, 3), end=t_end))
     ja = {k: dict(text=lex[k][0], romaji=lex[k][1], **segs_out[k]) for k in segs_out}
-    ja[LINE[0]] = dict(text=LINE[1], romaji=LINE[2], start=round(t_line, 3), end=round(t_line + len(line) / SR, 3))
+    ja[MATANE[0]] = dict(text=MATANE[1], romaji=MATANE[2], start=round(t_mt, 3), end=t_end)
     wavfile.write(os.path.join(A, 'narration.wav'), SR, (np.clip(nar, -1, 1) * 32767).astype(np.int16))
     subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', os.path.join(A, 'narration.wav'), '-b:a', '192k',
                     os.path.join(A, 'narration.mp3')], check=True)
@@ -229,4 +156,4 @@ def main():
 
 
 if __name__ == '__main__':
-    draft() if '--draft' in sys.argv else main()
+    main()

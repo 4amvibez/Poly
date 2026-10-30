@@ -20,7 +20,7 @@ INK_RGB = np.array([24, 22, 21], np.float32) / 255
 PLATE_RGB = np.array([244, 238, 224], np.float32) / 255
 INDIGO = np.array([40, 62, 118], np.float32) / 255
 KUN = {'ugoku', 'hito', 'hataraku', 'touge', 'hatake'}
-ON = {'kokuji'}
+ON = {'kokuji', 'kokuji2'}
 COLOR = {'ink': INK_RGB, 'kun': INDIGO, 'on': VERM}
 def _style(w):
     """(italic, colour key) for a word"""

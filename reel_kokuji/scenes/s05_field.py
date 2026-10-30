@@ -1,4 +1,4 @@
-"""Scene 5 — 畑, built.  "And fire, plus rice field, makes はたけ, a cultivated field."
+"""Scene 5 — 畑, built.  "Fire, plus rice field, makes はたけ, a cultivated field."
 The mountains dissolve into a wide field: rows of crops running away to a farmhouse on a low horizon.  On "fire"
 火 comes in with a flickering brushed flame beside it (FIRE); on "rice field" 田 (RICE FIELD); on "makes" they slide together and 畑 is brushed over them; card 畑 / はたけ /
 cultivated field."""
@@ -18,7 +18,7 @@ class Scene(CompoundScene):
     def build(self):
         self.F = cached('k6_fields_v1', k6art.fields)['ink']
         self.fl = cached('k6_flame_v1', k6art.flame)
-        t_fire = at('And fire')[0] + 0.2
+        t_fire = at('Fire plus')[0]
         t_rice = at('rice field')[0]
         self.parts('火田', ('FIRE', 'RICE FIELD'), (t_fire, t_rice), (300, 780), color=(VERM, INK))
         self.c_field = self.card('畑', ['はたけ'], ['kun'], 'hatake', 'cultivated field', seed=260)

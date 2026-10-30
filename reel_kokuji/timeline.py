@@ -9,7 +9,7 @@ VO_OFFSET = 0.4          # narration starts just after the first brush contact
 
 _W = json.load(open(os.path.join(HERE, 'audio', 'words.json'), encoding='utf8'))
 _words = _W['words']
-# the Japanese inserts (Raj in Japanese), e.g. yama, fujisan, yama_line -> {text, start, end}
+# the Japanese inserts (Raj in Japanese), e.g. kokuji, ugoku, matane -> {text, start, end}
 JA = {k: dict(v, start=v['start'] + VO_OFFSET, end=v['end'] + VO_OFFSET) for k, v in _W['ja'].items()}
 WORDS = [dict(text=w['text'], start=w['start'] + VO_OFFSET, end=w['end'] + VO_OFFSET, ja=w.get('ja'))
          for w in _words if w.get('type', 'word') == 'word']
@@ -39,11 +39,10 @@ def at(phrase, nth=0, after=None):
 _CUTS = [
     ('hook', None, 0.0, 0.0),
     ('secret', 'Theyre called', 0.3, 0.8),
-    ('work', 'First look', 0.3, 0.8),
-    ('pass', 'Next mountain', 0.3, 0.8),
-    ('field', 'And fire', 0.3, 0.8),
-    ('more', 'Some compiled', 0.3, 0.8),
-    ('dream', 'Every kanji has', 0.3, 0.8),
+    ('work', 'This part is', 0.3, 0.8),
+    ('pass', 'Mountain up', 0.3, 0.8),
+    ('field', 'Fire plus', 0.3, 0.8),
+    ('more', 'Dictionaries list', 0.3, 0.8),
     ('final', 'Thanks for watching', 0.3, 0.8),
 ]
 DURATION = round(WORDS[-1]['end'] + 3.2, 2)                 # hold the final frame so the handle can be read

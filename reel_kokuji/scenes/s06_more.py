@@ -1,5 +1,5 @@
-"""Scene 6 — more kokuji.  "Some compiled lists contain over two hundred of these characters.  Here are a few more!"
-OVER 200 is brushed large in vermilion with KOKUJI under it.  On "Here are a few more!" eight small washi cards are
+"""Scene 6 — more kokuji.  "Dictionaries list hundreds of kokuji.  Here are a few more!"
+HUNDREDS is brushed large in vermilion with KOKUJI under it and "listed in dictionaries" below.  On "Here are a few more!" eight small washi cards are
 laid down one by one in a 4 x 2 grid, each with its kanji, a little brush motif, its reading and its meaning:
 凪 なぎ calm sea · 雫 しずく drop · 辻 つじ crossroads · 枠 わく frame · 匂 におい scent · 笹 ささ bamboo grass ·
 榊 さかき sakaki tree · 鰯 いわし sardine — then held still long enough to read (the narration pauses here)."""
@@ -10,7 +10,7 @@ import kit
 from cards import INDIGO
 from engine import FONT_BRUSH_EN, FONT_EN_BOLD, FONT_EN_ITALIC, FONT_HEAD, FONT_JP, GREY, INK, VERM, Cam, cached, noise, smooth, text_layer
 from scenes.kscene import KanjiScene
-from timeline import at
+from timeline import JA, at
 
 CARDS = [('凪', 'なぎ', 'calm sea', 'wave'), ('雫', 'しずく', 'drop', 'drop'), ('辻', 'つじ', 'crossroads', 'cross'),
          ('枠', 'わく', 'frame', 'frame'), ('匂', 'におい', 'scent', 'scent'), ('笹', 'ささ', 'bamboo grass', 'leaf'),
@@ -25,16 +25,16 @@ class Scene(KanjiScene):
     paper_seed = 206
 
     def build(self):
-        self.over = text_layer('OVER 200', FONT_BRUSH_EN, 150)[0]
+        self.over = text_layer('HUNDREDS', FONT_BRUSH_EN, 150)[0]
         self.over = self.over * (0.86 + 0.14 * noise(*self.over.shape, 6, 2, 3))
         self.kk, _ = text_layer('KOKUJI', FONT_HEAD, 56)
-        self.sub, _ = text_layer('in some compiled lists', FONT_EN_ITALIC, 36)
+        self.sub, _ = text_layer('listed in dictionaries', FONT_EN_ITALIC, 36)
         self.box, self.rim = kit.box(CH, CW, 3.0), kit.rim(CH, CW, inset=10, t=3)
         self.icons = cached('k6_icons_v1', lambda: {k: k6art.icon(k, seed=40 + j) for j, (_, _, _, k) in enumerate(CARDS)})
         self.C = [(text_layer(c, FONT_JP, 120)[0], text_layer(r, FONT_JP, 40)[0], text_layer(m.upper(), FONT_EN_BOLD, 22, tracking=3)[0], ic)
                   for c, r, m, ic in CARDS]
-        self.t_some = at('Some compiled')[0]
-        self.t_over = at('over two hundred')[0]
+        self.t_some = at('Dictionaries list')[0]
+        self.t_over = at('hundreds')[0]
         self.t_few = at('Here are a few')[0]
         self.t_hit = self.t_over
         r = np.random.default_rng(66)
@@ -57,7 +57,7 @@ class Scene(KanjiScene):
         y0 = 380 - 90 * smooth((t - self.t_few) / 0.5)
         if fo > 0:
             kit.put(fr, cam, self.over, 540, y0, VERM, smooth(fo), top * (1 + 0.3 * np.exp(-fo * 2.5)), rot=-0.03)
-        kit.put(fr, cam, self.kk, 540, y0 + 120 * top, INK, smooth((t - self.t_some) / 0.3) * 1.0, top)
+        kit.put(fr, cam, self.kk, 540, y0 + 120 * top, INK, smooth((t - JA['kokuji2']['start']) / 0.3), top * (1 + 0.15 * np.exp(-max(t - JA['kokuji2']['start'], 0) * 4)))
         kit.put(fr, cam, self.sub, 540, y0 + 185 * top, GREY, smooth((t - self.t_over - 0.4) / 0.3) * (1 - smooth((t - self.t_few) / 0.4)))
         for k, (g, r, m, ic) in enumerate(self.C):
             f = (t - self.t_few - 0.3 * k) / 0.3

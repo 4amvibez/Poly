@@ -42,7 +42,7 @@ Voice (Raj): "Fire, plus rice field, makes hatake, a cultivated field."
 
 Visual: eight cards, laid down one by one, with a pause so people can read them: 凪 雫 辻 枠 匂 笹 榊 鰯.
 
-Voice (Raj): "Over two hundred kokuji exist. Here are a few more!"
+Voice (Raj): "Dictionaries list hundreds of kokuji. Here are a few more!"
 
 ## 7. FINAL (0:45–0:52)
 
